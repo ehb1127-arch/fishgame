@@ -1,0 +1,175 @@
+[
+  {
+    "id": "coral_guardian", "name": "Coral Guardian", "name_ko": "산호 수호자",
+    "faction": "coral", "cost": "1W", "types": ["Creature"], "subtypes": ["Soldier"],
+    "power": 1, "toughness": 3, "keywords": ["Sleepless"],
+    "depth": "surface", "rarity": "driftwood",
+    "text": "Sleepless", "text_ko": "불면"
+  },
+  {
+    "id": "reef_warden", "name": "Reef Warden", "name_ko": "암초 파수꾼",
+    "faction": "coral", "cost": "2W", "types": ["Creature"], "subtypes": ["Soldier"],
+    "power": 2, "toughness": 2, "keywords": ["Siphon", "Amphibious"],
+    "depth": "surface", "rarity": "driftwood",
+    "text": "Siphon, Amphibious", "text_ko": "흡혈, 양서"
+  },
+  {
+    "id": "lantern_angler", "name": "Lantern Angler", "name_ko": "등불 아귀",
+    "faction": "coral", "cost": "3W", "types": ["Creature"], "subtypes": ["Fish"],
+    "power": 3, "toughness": 3, "keywords": ["Lure", "Sleepless"],
+    "depth": "midwater", "rarity": "coral",
+    "text": "Lure, Sleepless", "text_ko": "유인, 불면",
+    "flavor": "The Concord does not hide its defenders. It advertises them.",
+    "flavor_ko": "성단은 수비대를 숨기지 않는다. 광고한다."
+  },
+  {
+    "id": "spire_acolyte", "name": "Spire Acolyte", "name_ko": "첨탑의 시종",
+    "faction": "coral", "cost": "W", "types": ["Creature"], "subtypes": ["Cleric"],
+    "power": 1, "toughness": 2, "depth": "surface", "rarity": "driftwood",
+    "text": "When Spire Acolyte enters the battlefield, you gain 2 life.",
+    "text_ko": "전장에 들어올 때, 당신은 생명 2점을 얻는다.",
+    "abilities": [
+      {"kind": "triggered", "trigger": "self_etb",
+       "effects": [{"op": "gain_life", "amount": 2, "per_star": 1, "to": "controller"}]}
+    ]
+  },
+  {
+    "id": "shoal_marshal", "name": "Shoal Marshal", "name_ko": "치어 떼 지휘관",
+    "faction": "coral", "cost": "2W", "types": ["Creature"], "subtypes": ["Soldier"],
+    "power": 2, "toughness": 3, "keywords": ["Swarm"],
+    "depth": "surface", "rarity": "coral",
+    "text": "Swarm", "text_ko": "군체",
+    "flavor": "A hundred small things, moving as one, is not a hundred small things.",
+    "flavor_ko": "하나처럼 움직이는 백 개의 작은 것은 더 이상 작은 것 백 개가 아니다.",
+    "upgrade": {"milestones": {"3": {"keywords": ["Sleepless"]}}}
+  },
+  {
+    "id": "coral_anthem", "name": "Coral Anthem", "name_ko": "산호의 성가",
+    "faction": "coral", "cost": "2W", "types": ["Enchantment"], "rarity": "coral",
+    "text": "Creatures you control get +1/+1.",
+    "text_ko": "당신이 조종하는 생물은 +1/+1을 받는다.",
+    "abilities": [
+      {"kind": "static", "effect": {
+        "type": "pt_boost", "power": 1, "toughness": 1,
+        "affects": {"kind": "creature", "controller": "you"}}}
+    ],
+    "upgrade": {"spell_bonus_per_star": 0}
+  },
+  {
+    "id": "tidal_blessing", "name": "Tidal Blessing", "name_ko": "조류의 축복",
+    "faction": "coral", "cost": "W", "types": ["Instant"], "rarity": "driftwood",
+    "text": "Target creature you control gets +2/+2 and gains Siphon until end of turn.",
+    "text_ko": "당신이 조종하는 목표 생물은 턴 종료까지 +2/+2와 흡혈을 얻는다.",
+    "abilities": [
+      {"kind": "spell", "targets": [{"id": "t1", "kind": "creature", "controller": "you"}],
+       "effects": [{"op": "pump", "power": 2, "toughness": 2, "per_star": 1,
+                    "keywords": ["Siphon"], "to": "t1"}]}
+    ]
+  },
+  {
+    "id": "purify_the_shoals", "name": "Purify the Shoals", "name_ko": "여울을 정화하다",
+    "faction": "coral", "cost": "2W", "types": ["Sorcery"], "rarity": "coral",
+    "text": "Destroy target creature with power 4 or greater.",
+    "text_ko": "공격력 4 이상인 목표 생물 하나를 파괴한다.",
+    "abilities": [
+      {"kind": "spell",
+       "targets": [{"id": "t1", "kind": "creature", "controller": "any",
+                    "filter": {"min_power": 4}}],
+       "effects": [{"op": "destroy", "to": "t1"}]}
+    ]
+  },
+  {
+    "id": "schools_call", "name": "School's Call", "name_ko": "무리의 부름",
+    "faction": "coral", "cost": "3W", "types": ["Sorcery"], "rarity": "driftwood",
+    "text": "Create three 1/1 blue Shoal creature tokens with Swarm at the Surface.",
+    "text_ko": "수면에 군체를 가진 1/1 청색 치어 떼 토큰 세 개를 만든다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "token", "token": "token_shoal", "amount": 3, "per_star": 1}
+      ]}
+    ],
+    "upgrade": {"spell_bonus_per_star": 1}
+  },
+  {
+    "id": "breakwater_line", "name": "Breakwater Line", "name_ko": "방파제 전선",
+    "faction": "coral", "cost": "1W", "types": ["Sorcery"], "rarity": "driftwood",
+    "text": "Create two 0/4 white Coral Ward creature tokens with Breakwater and Anchored.",
+    "text_ko": "방파제와 정박을 가진 0/4 백색 산호 수호물 토큰 두 개를 만든다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "token", "token": "token_coral_ward", "amount": 2}
+      ]}
+    ]
+  },
+  {
+    "id": "bleaching", "name": "Bleaching", "name_ko": "백화",
+    "faction": "coral", "cost": "3W", "types": ["Sorcery"], "rarity": "pearl",
+    "text": "Each creature your opponents control gets -2/-2 until end of turn.",
+    "text_ko": "상대가 조종하는 각 생물은 턴 종료까지 -2/-2를 받는다.",
+    "flavor": "The reef turns white when it is dying. Thalassa calls it purity.",
+    "flavor_ko": "산호초는 죽어갈 때 하얘진다. 탈라사는 그것을 순결이라 부른다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "pump", "power": -2, "toughness": -2, "per_star": -1,
+         "to": "creatures_opponent_controls"}
+      ]}
+    ]
+  },
+  {
+    "id": "the_sealing_chant", "name": "The Sealing Chant", "name_ko": "봉인의 성가",
+    "faction": "coral", "cost": "2WW", "types": ["Enchantment"], "rarity": "pearl",
+    "text": "Each opponent skips their next turn when this enters the battlefield. Sacrifice The Sealing Chant at the beginning of your next end step.",
+    "text_ko": "전장에 들어올 때, 각 상대는 다음 턴을 건너뛴다. 당신의 다음 종료단 시작에 이 카드를 희생한다.",
+    "flavor": "Sealing something does not make it stop. It makes it wait.",
+    "flavor_ko": "봉인은 멈추게 하는 것이 아니다. 기다리게 하는 것이다.",
+    "abilities": [
+      {"kind": "triggered", "trigger": "self_etb",
+       "effects": [{"op": "skip_turn", "to": "each_opponent"}]},
+      {"kind": "triggered", "trigger": "end_step",
+       "effects": [{"op": "sacrifice", "to": "self"}]}
+    ]
+  },
+  {
+    "id": "spire_of_coral", "name": "Spire of Coral", "name_ko": "산호의 첨탑",
+    "faction": "coral", "cost": "4W", "types": ["Enchantment"],
+    "supertypes": ["Legendary"], "rarity": "gold",
+    "text": "Creatures you control at the Surface get +1/+2. At the beginning of your upkeep, create a 1/1 blue Shoal creature token.",
+    "text_ko": "수면에 있는 당신의 생물은 +1/+2를 받는다. 당신의 유지단 시작에, 1/1 청색 치어 떼 토큰 하나를 만든다.",
+    "abilities": [
+      {"kind": "static", "effect": {
+        "type": "pt_boost", "power": 1, "toughness": 2,
+        "affects": {"kind": "creature", "controller": "you",
+                    "filter": {"depth": "surface"}}}},
+      {"kind": "triggered", "trigger": "upkeep",
+       "effects": [{"op": "token", "token": "token_shoal", "amount": 1}]}
+    ]
+  },
+  {
+    "id": "unbroken_reef", "name": "Unbroken Reef", "name_ko": "부서지지 않는 암초",
+    "faction": "coral", "cost": "2W", "types": ["Instant"], "rarity": "coral",
+    "text": "Creatures you control gain Unsinkable until end of turn.",
+    "text_ko": "당신이 조종하는 생물은 턴 종료까지 불침을 얻는다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "pump", "power": 0, "toughness": 0, "keywords": ["Unsinkable"],
+         "to": "creatures_you_control"}
+      ]}
+    ]
+  },
+  {
+    "id": "what_the_coral_knows", "name": "What the Coral Knows", "name_ko": "산호가 아는 것",
+    "faction": "coral", "cost": "1W", "types": ["Instant"], "rarity": "relic",
+    "supertypes": ["Legendary"],
+    "text": "Look at each opponent's hand. Put a card from among them into your hand. You gain 3 life.",
+    "text_ko": "각 상대의 손을 본다. 그중 카드 한 장을 당신의 손으로 가져온다. 당신은 생명 3점을 얻는다.",
+    "flavor": "It grew through the library walls. It read everything on the way.",
+    "flavor_ko": "그것은 도서관 벽을 뚫고 자랐다. 자라면서 모든 것을 읽었다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "reveal_hand", "to": "each_opponent"},
+        {"op": "steal_hand", "amount": 1, "to": "each_opponent"},
+        {"op": "gain_life", "amount": 3, "to": "controller"}
+      ]}
+    ]
+  }
+]

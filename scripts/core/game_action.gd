@@ -29,8 +29,11 @@ var targets: Array = []
 var x_value: int = 0
 ## For MOVE_DEPTH: how many bands to move, negative towards the surface.
 var depth_delta: int = 0
-## For DECLARE_ATTACKERS: the uids that attack.
-var attackers: Array[int] = []
+## For DECLARE_ATTACKERS: attacker uid -> the player index it attacks.
+var attacks: Dictionary = {}
+## Optional: attacker uid -> the uid of that player's Champion it attacks
+## instead of the player themselves.
+var champion_attacks: Dictionary = {}
 ## For DECLARE_BLOCKERS: blocker uid -> attacker uid.
 var blocks: Dictionary = {}
 ## Human-readable label, filled in by the engine for the UI and the log.
@@ -78,12 +81,30 @@ static func move_depth(player: int, uid: int, delta: int) -> GameAction:
 	a.depth_delta = delta
 	return a
 
-static func declare_attackers(player: int, uids: Array[int]) -> GameAction:
+## [param assignment] maps each attacking creature to the player it attacks.
+static func declare_attackers(player: int, assignment: Dictionary) -> GameAction:
 	var a := GameAction.new()
 	a.kind = Kind.DECLARE_ATTACKERS
 	a.player_index = player
-	a.attackers = uids.duplicate()
+	a.attacks = assignment.duplicate()
 	return a
+
+
+## Declares attacks where some creatures go after a Champion rather than its
+## controller. [param champions] maps attacker uid to Champion uid.
+static func declare_attackers_with_champions(player: int, assignment: Dictionary,
+		champions: Dictionary) -> GameAction:
+	var a := declare_attackers(player, assignment)
+	a.champion_attacks = champions.duplicate()
+	return a
+
+
+## Convenience for a two-player game: everything attacks the same opponent.
+static func attack_all(player: int, uids: Array[int], defender: int) -> GameAction:
+	var assignment := {}
+	for uid in uids:
+		assignment[uid] = defender
+	return declare_attackers(player, assignment)
 
 static func declare_blockers(player: int, assignment: Dictionary) -> GameAction:
 	var a := GameAction.new()

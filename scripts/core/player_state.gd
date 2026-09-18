@@ -8,6 +8,11 @@ extends RefCounted
 var index: int = 0
 var name: String = "Player"
 var is_ai: bool = false
+## Players sharing a team win and lose together and cannot attack each other.
+## In a free-for-all every player has their own team.
+var team: int = 0
+## Position in the turn order.
+var seat: int = 0
 
 var life: int = 20
 var starting_life: int = 20
@@ -38,10 +43,12 @@ var tried_to_draw_from_empty: bool = false
 var mulligans: int = 0
 
 
-static func create(p_index: int, p_name: String, p_life: int = 20) -> PlayerState:
+static func create(p_index: int, p_name: String, p_life: int = 20, p_team: int = -1) -> PlayerState:
 	var p := PlayerState.new()
 	p.index = p_index
 	p.name = p_name
+	p.team = p_team if p_team >= 0 else p_index
+	p.seat = p_index
 	p.life = p_life
 	p.starting_life = p_life
 	p.mana_pool = Mana.Pool.new()

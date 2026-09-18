@@ -68,9 +68,14 @@ var revealed_hands: Dictionary = {}
 ## Snapshot of the board as it stood when the current turn began, which rewind
 ## effects restore.
 var _turn_snapshot: Dictionary = {}
+## Attacked players still waiting to declare blocks this combat.
+var _blocker_queue: Array[int] = []
 
 var game_over: bool = false
+## The surviving player in a duel; -1 when a team of several won.
 var winner_index: int = -1
+## The team that won, which is what multiplayer results are read from.
+var winning_team: int = -1
 
 var event_log: Array[Dictionary] = []
 var rng := RandomNumberGenerator.new()
@@ -88,7 +93,7 @@ var _resolving_source: CardInstance = null
 ## full 60 cards (or however many).
 func setup(player_names: Array, decks: Array, seed_value: int = 0,
 		ai_flags: Array = [], match_rules: MatchRules = null,
-		star_levels: Array = []) -> void:
+		star_levels: Array = [], teams: Array = []) -> void:
 	rules = match_rules if match_rules != null else MatchRules.standard()
 	rng.seed = seed_value if seed_value != 0 else randi()
 	players.clear()
@@ -104,7 +109,8 @@ func setup(player_names: Array, decks: Array, seed_value: int = 0,
 	_turn_snapshot.clear()
 
 	for i in player_names.size():
-		var p := PlayerState.create(i, str(player_names[i]), rules.starting_life)
+		var team_id := int(teams[i]) if i < teams.size() else i
+		var p := PlayerState.create(i, str(player_names[i]), rules.starting_life, team_id)
 		p.is_ai = i < ai_flags.size() and bool(ai_flags[i])
 		players.append(p)
 		var stars := (star_levels[i] as Dictionary) if i < star_levels.size() else {}
@@ -181,8 +187,51 @@ func get_card(uid: int) -> CardInstance:
 func get_player(index: int) -> PlayerState:
 	return players[index] if index >= 0 and index < players.size() else null
 
+## The next seat in turn order, skipping players who have already lost.
+func next_in_turn_order(index: int) -> int:
+	var count := players.size()
+	for step in range(1, count + 1):
+		var candidate := (index + step) % count
+		if not players[candidate].has_lost:
+			return candidate
+	return index
+
+
+## Kept for two-player convenience; with more players use [method opponents_of].
 func opponent_of(index: int) -> int:
-	return (index + 1) % players.size()
+	return next_in_turn_order(index)
+
+
+## Every living player not on this player's team.
+func opponents_of(index: int) -> Array[int]:
+	var out: Array[int] = []
+	var team := get_player(index).team
+	for p in players:
+		if p.index != index and p.team != team and not p.has_lost:
+			out.append(p.index)
+	return out
+
+
+## Every living ally, not counting the player themselves.
+func teammates_of(index: int) -> Array[int]:
+	var out: Array[int] = []
+	var team := get_player(index).team
+	for p in players:
+		if p.index != index and p.team == team and not p.has_lost:
+			out.append(p.index)
+	return out
+
+
+func are_allies(a: int, b: int) -> bool:
+	return get_player(a).team == get_player(b).team
+
+
+func living_players() -> Array[int]:
+	var out: Array[int] = []
+	for p in players:
+		if not p.has_lost:
+			out.append(p.index)
+	return out
 
 func is_over() -> bool:
 	return game_over
@@ -191,8 +240,25 @@ func is_over() -> bool:
 func awaiting_player() -> int:
 	return awaiting_index
 
+## Players currently being attacked, in seat order.
+func defending_players() -> Array[int]:
+	var out: Array[int] = []
+	for uid in attacking_uids():
+		var c := get_card(uid)
+		if c != null and c.attack_target >= 0 and c.attack_target not in out:
+			out.append(c.attack_target)
+	out.sort()
+	return out
+
+
+## The single defender, for two-player games and for damage that has to land
+## somewhere when no target was recorded.
 func defending_player_index() -> int:
-	return opponent_of(active_player_index)
+	var defenders := defending_players()
+	if not defenders.is_empty():
+		return defenders[0]
+	var enemies := opponents_of(active_player_index)
+	return enemies[0] if not enemies.is_empty() else next_in_turn_order(active_player_index)
 
 func stack_is_empty() -> bool:
 	return stack.is_empty()
@@ -309,6 +375,8 @@ func move_to_zone(card: CardInstance, dest: GameEnums.Zone, reason: String = "")
 			card.summoning_sick = true
 			card.entered_on_turn = turn_number
 			card.depth = card.data.native_depth
+			if card.data.is_champion() and card.data.fathom > 0:
+				card.counters[GameEnums.COUNTER_FATHOM] = card.data.fathom
 			get_player(card.controller_index).battlefield.append(card.uid)
 			refresh_continuous()
 			log_event("enters_battlefield", {"uid": card.uid})
@@ -935,6 +1003,17 @@ func deal_damage_to_player(player_index: int, amount: int, source: CardInstance 
 func deal_damage_to_permanent(card: CardInstance, amount: int, source: CardInstance = null, is_combat: bool = false) -> void:
 	if amount <= 0 or card.zone != GameEnums.Zone.BATTLEFIELD:
 		return
+
+	# A Champion loses Fathom rather than taking damage; running out is what
+	# kills it.
+	if card.is_champion():
+		card.add_counters(GameEnums.COUNTER_FATHOM, -amount)
+		log_event("champion_damage", {"uid": card.uid, "amount": amount,
+				"fathom": card.fathom_count()})
+		if source != null:
+			_apply_lifelink(source, amount)
+		return
+
 	card.damage += amount
 	log_event("damage", {"uid": card.uid, "amount": amount,
 			"source": source.uid if source != null else 0})
@@ -1217,9 +1296,9 @@ func _enter_step(step: GameEnums.Step) -> void:
 			if _attacking_uids().is_empty():
 				_skip_to_step(GameEnums.Step.END_COMBAT)
 				return
-			awaiting = "blockers"
-			awaiting_index = defending_player_index()
-			_notify()
+			# Every attacked player declares blocks, one after another.
+			_blocker_queue = defending_players()
+			_ask_next_defender()
 
 		GameEnums.Step.COMBAT_DAMAGE:
 			if _attacking_uids().is_empty():
@@ -1381,8 +1460,8 @@ func _retain_priority() -> void:
 
 func _pass_priority() -> void:
 	passes_in_succession += 1
-	if passes_in_succession < players.size():
-		priority_player_index = opponent_of(priority_player_index)
+	if passes_in_succession < living_players().size():
+		priority_player_index = next_in_turn_order(priority_player_index)
 		awaiting_index = priority_player_index
 		_notify()
 		return
@@ -1421,7 +1500,13 @@ func check_state_based_actions() -> bool:
 		for p in players:
 			for uid in p.battlefield.duplicate():
 				var c := get_card(uid)
-				if c == null or not c.is_creature():
+				if c == null:
+					continue
+				if c.is_champion() and c.fathom_count() <= 0:
+					_send_to_graveyard(c, "out of fathom")
+					changed = true
+					continue
+				if not c.is_creature():
 					continue
 				if c.has_zero_toughness():
 					# Zero toughness is not destruction: indestructible does
@@ -1438,6 +1523,9 @@ func check_state_based_actions() -> bool:
 						_send_to_graveyard(c, "lethal damage")
 					changed = true
 
+		if _enforce_uniqueness():
+			changed = true
+
 		if changed:
 			any_change = true
 			refresh_continuous()
@@ -1450,6 +1538,32 @@ func check_state_based_actions() -> bool:
 	if any_change:
 		_check_for_winner()
 	return any_change
+
+
+## A player may control only one copy of a given Relic or Champion. The
+## newest arrival stays and the rest are put in the wreck.
+func _enforce_uniqueness() -> bool:
+	var changed := false
+	for p in players:
+		var seen: Dictionary = {}
+		for uid in p.battlefield.duplicate():
+			var c := get_card(uid)
+			if c == null:
+				continue
+			if not (c.data.is_unique() or c.is_champion()):
+				continue
+			var key := str(c.data.id)
+			if seen.has(key):
+				var older: int = int(seen[key])
+				var loser := older if older < uid else uid
+				seen[key] = older if older > uid else uid
+				var doomed := get_card(loser)
+				if doomed != null and doomed.zone == GameEnums.Zone.BATTLEFIELD:
+					_send_to_graveyard(doomed, "uniqueness rule")
+					changed = true
+			else:
+				seen[key] = uid
+	return changed
 
 
 func _player_loses(player_index: int, reason: String) -> void:
@@ -1465,15 +1579,22 @@ func _player_loses(player_index: int, reason: String) -> void:
 func _check_for_winner() -> void:
 	if game_over:
 		return
-	var alive: Array[int] = []
-	for p in players:
-		if not p.has_lost:
-			alive.append(p.index)
-	if alive.size() <= 1:
+	var alive := living_players()
+	var teams: Array[int] = []
+	for index in alive:
+		var team := get_player(index).team
+		if team not in teams:
+			teams.append(team)
+
+	# The game ends when one team is left standing, however many players that
+	# team has.
+	if teams.size() <= 1:
 		game_over = true
+		winning_team = teams[0] if teams.size() == 1 else -1
 		winner_index = alive[0] if alive.size() == 1 else -1
 		awaiting = ""
-		log_event("game_over", {"winner": winner_index})
+		log_event("game_over", {"winner": winner_index, "team": winning_team,
+				"survivors": alive})
 		game_ended.emit(winner_index)
 		_notify()
 
@@ -1741,7 +1862,20 @@ func _activation_actions(player_index: int, card: CardInstance, sorcery_speed: b
 	var abilities := card.data.abilities
 	for i in abilities.size():
 		var a := abilities[i] as Dictionary
-		if str(a.get("kind", "")) != "activated":
+		var kind := str(a.get("kind", ""))
+		if kind == "champion":
+			if _can_use_champion_ability(card, a):
+				var specs_c := a.get("targets", []) as Array
+				for targets in _target_combinations(specs_c, player_index, card):
+					var champ_action := GameAction.activate(player_index, card.uid, i, targets, 0)
+					var delta := int(a.get("cost", 0))
+					champ_action.description = "%s [%s%d]: %s" % [
+						card.display_name(), "+" if delta >= 0 else "", delta,
+						str(a.get("text", "ability")),
+					]
+					out.append(champ_action)
+			continue
+		if kind != "activated":
 			continue
 		if str(a.get("timing", "instant")) == "sorcery" and not sorcery_speed:
 			continue
@@ -1753,6 +1887,21 @@ func _activation_actions(player_index: int, card: CardInstance, sorcery_speed: b
 			action.description = "%s: %s" % [card.data.name, str(a.get("text", "ability"))]
 			out.append(action)
 	return out
+
+
+## A Champion ability costs Fathom, is sorcery speed, and only one may be
+## used per turn per Champion.
+func _can_use_champion_ability(card: CardInstance, ability: Dictionary) -> bool:
+	if not card.is_champion() or card.zone != GameEnums.Zone.BATTLEFIELD:
+		return false
+	if card.champion_ability_used:
+		return false
+	if not can_act_at_sorcery_speed(card.controller_index):
+		return false
+	var delta := int(ability.get("cost", 0))
+	if delta < 0 and card.fathom_count() < -delta:
+		return false
+	return true
 
 
 func _can_pay_activation(player_index: int, card: CardInstance, ability: Dictionary) -> bool:
@@ -1824,9 +1973,17 @@ func attacking_uids() -> Array[int]:
 
 ## For each creature the defender could block with, which attackers it may be
 ## assigned to: {blocker_uid: [attacker_uid, ...]}.
+## For each creature this player could block with, the attackers aimed at
+## them it may be assigned to: {blocker_uid: [attacker_uid, ...]}.
 func possible_blocks(player_index: int) -> Dictionary:
 	var out: Dictionary = {}
-	var attackers := _attacking_uids()
+	var attackers: Array[int] = []
+	for uid in _attacking_uids():
+		var a := get_card(uid)
+		if a != null and a.attack_target == player_index:
+			attackers.append(uid)
+	if attackers.is_empty():
+		return out
 	for uid in get_player(player_index).battlefield:
 		var blocker := get_card(uid)
 		if blocker == null or not blocker.can_block():
@@ -2009,7 +2166,23 @@ func _perform_activate(action: GameAction) -> bool:
 	if action.ability_index < 0 or action.ability_index >= card.data.abilities.size():
 		return false
 	var ability := card.data.abilities[action.ability_index] as Dictionary
-	if str(ability.get("kind", "")) != "activated":
+	var ability_kind := str(ability.get("kind", ""))
+
+	if ability_kind == "champion":
+		if not _can_use_champion_ability(card, ability):
+			return false
+		var champ_specs := ability.get("targets", []) as Array
+		if not _targets_are_legal(champ_specs, action.targets, action.player_index, card):
+			return false
+		card.add_counters(GameEnums.COUNTER_FATHOM, int(ability.get("cost", 0)))
+		card.champion_ability_used = true
+		log_event("champion_ability", {"uid": card.uid, "name": card.data.name,
+				"cost": int(ability.get("cost", 0)), "fathom": card.fathom_count()})
+		_push_ability(card, ability, action.targets, 0, "champion")
+		_retain_priority()
+		return true
+
+	if ability_kind != "activated":
 		return false
 
 	var sorcery_speed := can_act_at_sorcery_speed(action.player_index)
@@ -2087,14 +2260,19 @@ func _perform_declare_attackers(action: GameAction) -> bool:
 	if awaiting != "attackers" or awaiting_index != action.player_index:
 		return false
 	var legal := _possible_attackers(action.player_index)
-	for uid in action.attackers:
-		if uid not in legal:
+	var enemies := opponents_of(action.player_index)
+	for uid_key in action.attacks:
+		if int(uid_key) not in legal:
 			return false
-	Combat.declare_attackers(self, action.attackers)
+		# You cannot attack yourself or an ally.
+		if int(action.attacks[uid_key]) not in enemies:
+			return false
+
+	Combat.declare_attackers(self, action.attacks, action.champion_attacks)
 	check_state_based_actions()
 	if game_over:
 		return true
-	if action.attackers.is_empty():
+	if action.attacks.is_empty():
 		_skip_to_step(GameEnums.Step.END_COMBAT)
 		return true
 	_open_priority(active_player_index)
@@ -2112,8 +2290,24 @@ func _perform_declare_blockers(action: GameAction) -> bool:
 	check_state_based_actions()
 	if game_over:
 		return true
-	_open_priority(active_player_index)
+	_blocker_queue.erase(action.player_index)
+	_ask_next_defender()
 	return true
+
+
+## Hands the block declaration to the next attacked player, or moves on to
+## damage when everyone has declared.
+func _ask_next_defender() -> void:
+	while not _blocker_queue.is_empty():
+		var who: int = _blocker_queue[0]
+		if get_player(who).has_lost:
+			_blocker_queue.pop_front()
+			continue
+		awaiting = "blockers"
+		awaiting_index = who
+		_notify()
+		return
+	_open_priority(active_player_index)
 
 
 ## --- Debug ---------------------------------------------------------------

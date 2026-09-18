@@ -1,0 +1,13 @@
+{
+  "id": "last_tide",
+  "code": "LT",
+  "name": "The Last Tide",
+  "name_ko": "마지막 조류",
+  "sea": "Upper Reach",
+  "sea_ko": "상해",
+  "era": "present",
+  "released": 1,
+  "description": "The first set. Sunlight still reaches this layer, and five factions fight over what to do about the Heart beating far below.",
+  "description_ko": "첫 번째 세트. 아직 햇빛이 닿는 층에서, 저 아래 맥동하는 심장을 두고 다섯 진영이 싸운다.",
+  "mechanics": ["depth", "tide", "wreck", "champion"]
+}

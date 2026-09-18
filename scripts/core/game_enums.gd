@@ -78,10 +78,16 @@ const TYPE_INSTANT := "Instant"
 const TYPE_SORCERY := "Sorcery"
 const TYPE_ENCHANTMENT := "Enchantment"
 const TYPE_ARTIFACT := "Artifact"
+## A Champion is a commander figure that sits on the battlefield, spends
+## Fathom counters to use one ability per turn, and can be attacked directly.
+const TYPE_CHAMPION := "Champion"
 
 const PERMANENT_TYPES: Array[String] = [
-	TYPE_LAND, TYPE_CREATURE, TYPE_ENCHANTMENT, TYPE_ARTIFACT,
+	TYPE_LAND, TYPE_CREATURE, TYPE_ENCHANTMENT, TYPE_ARTIFACT, TYPE_CHAMPION,
 ]
+
+## The counter a Champion spends to use its abilities.
+const COUNTER_FATHOM := "fathom"
 
 ## Mana colors. "C" is colorless mana, which is not a color but is produced
 ## and spent like one.

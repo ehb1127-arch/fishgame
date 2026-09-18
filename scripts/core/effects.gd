@@ -386,6 +386,9 @@ static func resolve_amount(game, value: Variant, ctx: Dictionary) -> int:
 			var f := d.get("filter", {}) as Dictionary
 			var scope := str(d.get("controller", "you"))
 			return _count_permanents(game, f, controller, scope)
+		"half_life":
+			# Rounded down, as printed on Queen's Bargain.
+			return int(game.get_player(controller).life / 2)
 		"cards_in_hand":
 			return game.get_player(controller).hand.size()
 		"spells_cast_this_turn":
@@ -411,12 +414,23 @@ static func resolve_amount(game, value: Variant, ctx: Dictionary) -> int:
 			return int(d.get("value", 0))
 
 
+## Whether a scope word ("you", "ally", "opponent", "any") covers a player.
+static func _scope_includes(game, scope: String, controller: int, subject: int) -> bool:
+	match scope:
+		"you":
+			return subject == controller
+		"ally", "team":
+			return game.are_allies(controller, subject)
+		"opponent":
+			return not game.are_allies(controller, subject)
+		_:
+			return true
+
+
 static func _count_permanents(game, f: Dictionary, controller: int, scope: String) -> int:
 	var n := 0
 	for p in game.players:
-		if scope == "you" and p.index != controller:
-			continue
-		if scope == "opponent" and p.index == controller:
+		if not _scope_includes(game, scope, controller, p.index):
 			continue
 		for uid in p.battlefield:
 			var c: CardInstance = game.get_card(uid)
@@ -454,9 +468,18 @@ static func resolve_refs(game, selector: Variant, ctx: Dictionary) -> Array:
 			return [GameAction.player_target(controller)]
 		"each_opponent", "opponent":
 			var out: Array = []
-			for p in game.players:
-				if p.index != controller and not p.has_lost:
-					out.append(GameAction.player_target(p.index))
+			for index in game.opponents_of(controller):
+				out.append(GameAction.player_target(index))
+			return out
+		"each_ally", "team":
+			var out: Array = [GameAction.player_target(controller)]
+			for index in game.teammates_of(controller):
+				out.append(GameAction.player_target(index))
+			return out
+		"teammates":
+			var out: Array = []
+			for index in game.teammates_of(controller):
+				out.append(GameAction.player_target(index))
 			return out
 		"each_player":
 			var out: Array = []
@@ -498,9 +521,7 @@ static func _band_refs(game, band: int, scope: String, ctx: Dictionary) -> Array
 	var controller := int(ctx.get("controller", 0))
 	var out: Array = []
 	for p in game.players:
-		if scope == "you" and p.index != controller:
-			continue
-		if scope == "opponent" and p.index == controller:
+		if not _scope_includes(game, scope, controller, p.index):
 			continue
 		for uid in p.battlefield:
 			var c: CardInstance = game.get_card(uid)
@@ -517,9 +538,7 @@ static func _resolve_group(game, group: Dictionary, ctx: Dictionary) -> Array:
 	var f := group.get("filter", {}) as Dictionary
 
 	for p in game.players:
-		if scope == "you" and p.index != controller:
-			continue
-		if scope == "opponent" and p.index == controller:
+		if not _scope_includes(game, scope, controller, p.index):
 			continue
 		for uid in p.battlefield.duplicate():
 			var c: CardInstance = game.get_card(uid)

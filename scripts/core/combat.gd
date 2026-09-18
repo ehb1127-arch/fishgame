@@ -73,17 +73,24 @@ static func validate_blocks(game, blocks: Dictionary, defender_index: int) -> St
 
 ## --- Declaration ---------------------------------------------------------
 
-static func declare_attackers(game, uids: Array[int]) -> void:
-	for uid in uids:
+## [param attacks] maps each attacking creature to the player it attacks.
+static func declare_attackers(game, attacks: Dictionary, champion_attacks: Dictionary = {}) -> void:
+	for uid_key in attacks:
+		var uid := int(uid_key)
 		var c: CardInstance = game.get_card(uid)
 		if c == null or not c.can_attack():
 			continue
+		var defender := int(attacks[uid_key])
 		c.attacking = true
+		c.attack_target = defender
+		c.attack_target_uid = int(champion_attacks.get(uid_key, 0))
 		if not c.has_keyword(GameEnums.KW_SLEEPLESS):
 			c.tapped = true
-		game.log_event("attacks", {"uid": uid, "player": c.controller_index})
-		game.emit_trigger_event("attacks", {"uid": uid, "player": c.controller_index})
-	game.log_event("attackers_declared", {"count": uids.size()})
+		game.log_event("attacks", {"uid": uid, "player": c.controller_index,
+				"defender": defender})
+		game.emit_trigger_event("attacks", {"uid": uid, "player": c.controller_index,
+				"defender": defender})
+	game.log_event("attackers_declared", {"count": attacks.size()})
 
 
 static func declare_blockers(game, blocks: Dictionary) -> void:
@@ -161,7 +168,9 @@ static func _deals_damage_this_step(c: CardInstance, first_strike_step: bool) ->
 ## over to the defending player.
 static func _attacker_assignments(game, attacker: CardInstance) -> Array:
 	var out: Array = []
-	var defender_index := game.defending_player_index()
+	var defender_index := attacker.attack_target
+	if defender_index < 0:
+		defender_index = game.defending_player_index()
 
 	var blockers: Array[CardInstance] = []
 	for uid in attacker.blocked_by:
@@ -171,10 +180,15 @@ static func _attacker_assignments(game, attacker: CardInstance) -> Array:
 
 	if blockers.is_empty():
 		# Blocked but every blocker left combat: an unblocked-by-removal
-		# attacker deals no damage unless it has trample.
+		# attacker deals no damage unless it has Breach.
 		if attacker.was_blocked and not attacker.has_keyword(GameEnums.KW_BREACH):
 			return out
-		out.append({"source": attacker, "player_index": defender_index, "amount": attacker.eff_power})
+		var champion := game.get_card(attacker.attack_target_uid) if attacker.attack_target_uid > 0 else null
+		if champion != null and champion.zone == GameEnums.Zone.BATTLEFIELD:
+			out.append({"source": attacker, "target": champion, "amount": attacker.eff_power})
+		else:
+			out.append({"source": attacker, "player_index": defender_index,
+					"amount": attacker.eff_power})
 		return out
 
 	var remaining := attacker.eff_power
@@ -191,7 +205,12 @@ static func _attacker_assignments(game, attacker: CardInstance) -> Array:
 
 	if remaining > 0:
 		if attacker.has_keyword(GameEnums.KW_BREACH):
-			out.append({"source": attacker, "player_index": defender_index, "amount": remaining})
+			var champion := game.get_card(attacker.attack_target_uid) if attacker.attack_target_uid > 0 else null
+			if champion != null and champion.zone == GameEnums.Zone.BATTLEFIELD:
+				out.append({"source": attacker, "target": champion, "amount": remaining})
+			else:
+				out.append({"source": attacker, "player_index": defender_index,
+						"amount": remaining})
 		else:
 			# Excess damage is simply piled onto the last blocker.
 			var last := out[out.size() - 1] as Dictionary

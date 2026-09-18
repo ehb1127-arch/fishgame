@@ -1,0 +1,116 @@
+[
+  {
+    "id": "coral_shallows", "name": "Coral Shallows", "name_ko": "산호 여울",
+    "cost": "0", "types": ["Land"], "supertypes": ["Basic"], "colors": [],
+    "rarity": "driftwood", "faction": "coral",
+    "text": "Tap: Add W.", "text_ko": "탭: W를 추가한다.",
+    "flavor": "The reef grows a handspan a year. It has been growing for two hundred.",
+    "flavor_ko": "산호초는 한 해에 한 뼘씩 자란다. 이백 년째 자라고 있다.",
+    "abilities": [{"kind": "mana", "cost": {"tap": true}, "produces": ["W"]}]
+  },
+  {
+    "id": "sunless_trench", "name": "Sunless Trench", "name_ko": "햇빛 없는 해구",
+    "cost": "0", "types": ["Land"], "supertypes": ["Basic"], "colors": [],
+    "rarity": "driftwood", "faction": "conclave",
+    "text": "Tap: Add U.", "text_ko": "탭: U를 추가한다.",
+    "flavor": "The Conclave measures depth in how long it has been since you saw the sun.",
+    "flavor_ko": "학회는 수심을 이렇게 잰다. 마지막으로 해를 본 지 얼마나 되었는가.",
+    "abilities": [{"kind": "mana", "cost": {"tap": true}, "produces": ["U"]}]
+  },
+  {
+    "id": "rotting_kelp_bed", "name": "Rotting Kelp Bed", "name_ko": "썩은 켈프 군락",
+    "cost": "0", "types": ["Land"], "supertypes": ["Basic"], "colors": [],
+    "rarity": "driftwood", "faction": "drowned",
+    "text": "Tap: Add B.", "text_ko": "탭: B를 추가한다.",
+    "flavor": "Nothing is wasted down here. Not even the dead.",
+    "flavor_ko": "이 아래에서는 무엇도 버려지지 않는다. 죽은 것들조차.",
+    "abilities": [{"kind": "mana", "cost": {"tap": true}, "produces": ["B"]}]
+  },
+  {
+    "id": "volcanic_vent", "name": "Volcanic Vent", "name_ko": "화산 분출구",
+    "cost": "0", "types": ["Land"], "supertypes": ["Basic"], "colors": [],
+    "rarity": "driftwood", "faction": "corsair",
+    "text": "Tap: Add R.", "text_ko": "탭: R을 추가한다.",
+    "flavor": "Fire that water cannot drown. The Fleet took it as a sign.",
+    "flavor_ko": "물로도 끌 수 없는 불. 선단은 그것을 계시로 받아들였다.",
+    "abilities": [{"kind": "mana", "cost": {"tap": true}, "produces": ["R"]}]
+  },
+  {
+    "id": "kelp_forest", "name": "Kelp Forest", "name_ko": "켈프 숲",
+    "cost": "0", "types": ["Land"], "supertypes": ["Basic"], "colors": [],
+    "rarity": "driftwood", "faction": "brood",
+    "text": "Tap: Add G.", "text_ko": "탭: G를 추가한다.",
+    "flavor": "Orca planted the first stalk. He does not remember why.",
+    "flavor_ko": "오르카가 첫 줄기를 심었다. 그는 왜 그랬는지 기억하지 못한다.",
+    "abilities": [{"kind": "mana", "cost": {"tap": true}, "produces": ["G"]}]
+  },
+  {
+    "id": "sunken_delta", "name": "Sunken Delta", "name_ko": "침몰한 삼각주",
+    "cost": "0", "types": ["Land"], "colors": [], "rarity": "coral",
+    "text": "Sunken Delta enters the battlefield tapped. Tap: Add U or B.",
+    "text_ko": "탭된 채로 전장에 들어온다. 탭: U 또는 B를 추가한다.",
+    "flavor": "A river still runs here, under the sea. It remembers where it was going.",
+    "flavor_ko": "바다 아래로 아직 강이 흐른다. 강은 자기가 어디로 가던 중이었는지 기억한다.",
+    "abilities": [
+      {"kind": "static", "effect": {"type": "enters_tapped"}},
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["U", "B"]}
+    ]
+  },
+  {
+    "id": "smoldering_shoal", "name": "Smoldering Shoal", "name_ko": "연기나는 모래톱",
+    "cost": "0", "types": ["Land"], "colors": [], "rarity": "coral",
+    "text": "Smoldering Shoal enters the battlefield tapped. Tap: Add R or G.",
+    "text_ko": "탭된 채로 전장에 들어온다. 탭: R 또는 G를 추가한다.",
+    "abilities": [
+      {"kind": "static", "effect": {"type": "enters_tapped"}},
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["R", "G"]}
+    ]
+  },
+  {
+    "id": "bleached_flat", "name": "Bleached Flat", "name_ko": "백화된 평원",
+    "cost": "0", "types": ["Land"], "colors": [], "rarity": "coral",
+    "text": "Bleached Flat enters the battlefield tapped. Tap: Add W or U.",
+    "text_ko": "탭된 채로 전장에 들어온다. 탭: W 또는 U를 추가한다.",
+    "flavor": "White as bone, and for the same reason.",
+    "flavor_ko": "뼈처럼 희다. 이유도 같다.",
+    "abilities": [
+      {"kind": "static", "effect": {"type": "enters_tapped"}},
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["W", "U"]}
+    ]
+  },
+  {
+    "id": "gallows_reef", "name": "Gallows Reef", "name_ko": "교수대 암초",
+    "cost": "0", "types": ["Land"], "colors": [], "rarity": "coral",
+    "text": "Gallows Reef enters the battlefield tapped. Tap: Add B or R.",
+    "text_ko": "탭된 채로 전장에 들어온다. 탭: B 또는 R을 추가한다.",
+    "abilities": [
+      {"kind": "static", "effect": {"type": "enters_tapped"}},
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["B", "R"]}
+    ]
+  },
+  {
+    "id": "spire_gardens", "name": "Spire Gardens", "name_ko": "첨탑 정원",
+    "cost": "0", "types": ["Land"], "colors": [], "rarity": "coral",
+    "text": "Spire Gardens enters the battlefield tapped. Tap: Add G or W.",
+    "text_ko": "탭된 채로 전장에 들어온다. 탭: G 또는 W를 추가한다.",
+    "abilities": [
+      {"kind": "static", "effect": {"type": "enters_tapped"}},
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["G", "W"]}
+    ]
+  },
+  {
+    "id": "the_drowned_library", "name": "The Drowned Library", "name_ko": "익사한 도서관",
+    "cost": "0", "types": ["Land"], "supertypes": ["Legendary"], "colors": [],
+    "rarity": "pearl",
+    "text": "Tap: Add C. 2, Tap: Look at the top card of your library. You may put it on the bottom.",
+    "text_ko": "탭: C를 추가한다. 2, 탭: 당신의 서고 맨 위 카드를 본다. 맨 아래로 놓을 수 있다.",
+    "flavor": "Every book survived. Nobody can read them wet.",
+    "flavor_ko": "책은 모두 살아남았다. 젖은 책을 읽을 수 있는 사람이 없을 뿐이다.",
+    "abilities": [
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["C"]},
+      {"kind": "activated", "cost": {"mana": "2", "tap": true},
+       "text": "Scry 1", "timing": "sorcery",
+       "effects": [{"op": "scry", "amount": 1}]}
+    ]
+  }
+]

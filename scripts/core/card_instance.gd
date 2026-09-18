@@ -32,6 +32,8 @@ var depth: GameEnums.Depth = GameEnums.Depth.MIDWATER
 var molt_spent: bool = false
 ## Upgrade level from the player's collection, 1 to 5.
 var star_level: int = GameEnums.MIN_STARS
+## A Champion may use one of its abilities per turn.
+var champion_ability_used: bool = false
 
 # --- Until-end-of-turn modifiers, wiped during cleanup ---
 var temp_power: int = 0
@@ -42,6 +44,11 @@ var temp_deathtouch: bool = false
 
 # --- Combat state, wiped when combat ends ---
 var attacking: bool = false
+## Which player this creature is attacking, -1 when not attacking. With more
+## than two players an attacker has to name its target.
+var attack_target: int = -1
+## The Champion being attacked instead of its controller, 0 for none.
+var attack_target_uid: int = 0
 ## uid of each creature this one is blocking, and vice versa.
 var blocking: Array[int] = []
 var blocked_by: Array[int] = []
@@ -112,6 +119,12 @@ func is_type(type_name: String) -> bool:
 
 func is_creature() -> bool:
 	return is_type(GameEnums.TYPE_CREATURE)
+
+func is_champion() -> bool:
+	return is_type(GameEnums.TYPE_CHAMPION)
+
+func fathom_count() -> int:
+	return counter_count(GameEnums.COUNTER_FATHOM)
 
 func is_land() -> bool:
 	return is_type(GameEnums.TYPE_LAND)
@@ -186,6 +199,8 @@ func can_tap_for_cost() -> bool:
 ## Clears state that only lasts through one combat.
 func reset_combat_state() -> void:
 	attacking = false
+	attack_target = -1
+	attack_target_uid = 0
 	blocking.clear()
 	blocked_by.clear()
 	was_blocked = false
@@ -199,6 +214,7 @@ func can_change_depth() -> bool:
 func reset_turn_state() -> void:
 	damage = 0
 	molt_spent = false
+	champion_ability_used = false
 	temp_power = 0
 	temp_toughness = 0
 	temp_keywords.clear()
@@ -225,9 +241,12 @@ func snapshot() -> Dictionary:
 		"counters": counters.duplicate(), "is_token": is_token,
 		"sick": summoning_sick, "entered": entered_on_turn, "depth": depth,
 		"molt": molt_spent, "stars": star_level,
+		"champ_used": champion_ability_used,
 		"tp": temp_power, "tt": temp_toughness,
 		"tk": temp_keywords.duplicate(), "td": temp_deathtouch,
-		"attacking": attacking, "blocking": blocking.duplicate(),
+		"attacking": attacking, "attack_target": attack_target,
+		"attack_target_uid": attack_target_uid,
+		"blocking": blocking.duplicate(),
 		"blocked_by": blocked_by.duplicate(), "was_blocked": was_blocked,
 		"fs": dealt_first_strike_damage, "stack_kind": stack_kind,
 		"stack_ability": stack_ability.duplicate(true),
@@ -249,11 +268,14 @@ func restore(state: Dictionary) -> void:
 	depth = state["depth"]
 	molt_spent = bool(state["molt"])
 	star_level = int(state["stars"])
+	champion_ability_used = bool(state.get("champ_used", false))
 	temp_power = int(state["tp"])
 	temp_toughness = int(state["tt"])
 	temp_keywords = _to_string_array(state["tk"])
 	temp_deathtouch = bool(state["td"])
 	attacking = bool(state["attacking"])
+	attack_target = int(state.get("attack_target", -1))
+	attack_target_uid = int(state.get("attack_target_uid", 0))
 	blocking = _to_int_array(state["blocking"])
 	blocked_by = _to_int_array(state["blocked_by"])
 	was_blocked = bool(state["was_blocked"])

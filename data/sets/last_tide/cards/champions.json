@@ -1,0 +1,110 @@
+[
+  {
+    "id": "thalassa_spire_of_coral", "name": "Thalassa, Spire of Coral",
+    "name_ko": "탈라사, 산호의 첨탑",
+    "faction": "coral", "cost": "3WW", "types": ["Champion"],
+    "supertypes": ["Legendary"], "subtypes": ["Thalassa"],
+    "fathom": 4, "rarity": "relic", "depth": "surface",
+    "text": "[+1] Create a 1/1 blue Shoal token with Swarm. [-2] Creatures you control get +2/+2 until end of turn. [-6] Each opponent skips their next turn.",
+    "text_ko": "[+1] 군체를 가진 1/1 청색 치어 떼 토큰을 만든다. [-2] 당신의 생물은 턴 종료까지 +2/+2를 받는다. [-6] 각 상대는 다음 턴을 건너뛴다.",
+    "flavor": "She has never been seen to bleed, and never been seen to leave the reef.",
+    "flavor_ko": "그녀가 피 흘리는 것을 본 사람은 없다. 암초를 떠나는 것을 본 사람도 없다.",
+    "abilities": [
+      {"kind": "champion", "cost": 1, "text": "Make a Shoal",
+       "effects": [{"op": "token", "token": "token_shoal", "amount": 1}]},
+      {"kind": "champion", "cost": -2, "text": "Rally the reef",
+       "effects": [{"op": "pump", "power": 2, "toughness": 2, "to": "creatures_you_control"}]},
+      {"kind": "champion", "cost": -6, "text": "Seal the tide",
+       "effects": [{"op": "skip_turn", "to": "each_opponent"}]}
+    ]
+  },
+  {
+    "id": "nereus_reader_of_the_deep", "name": "Nereus, Reader of the Deep",
+    "name_ko": "네레우스, 심연을 읽는 자",
+    "faction": "conclave", "cost": "3UU", "types": ["Champion"],
+    "supertypes": ["Legendary"], "subtypes": ["Nereus"],
+    "fathom": 3, "rarity": "relic", "depth": "abyss",
+    "text": "[+1] Draw a card, then discard a card. [-1] Return target creature to its owner's hand. [-5] Undo this turn.",
+    "text_ko": "[+1] 카드 한 장을 뽑고 한 장을 버린다. [-1] 목표 생물을 owner의 손으로 되돌린다. [-5] 이번 턴을 되돌린다.",
+    "flavor": "Volume one hundred begins: \"I have been here before.\"",
+    "flavor_ko": "백 번째 권은 이렇게 시작한다. \"나는 전에 여기 있었다.\"",
+    "abilities": [
+      {"kind": "champion", "cost": 1, "text": "Consult the record",
+       "effects": [{"op": "draw", "amount": 1, "to": "controller"},
+                   {"op": "discard", "amount": 1, "to": "controller"}]},
+      {"kind": "champion", "cost": -1, "text": "Send it back",
+       "targets": [{"id": "t1", "kind": "creature", "controller": "any"}],
+       "effects": [{"op": "bounce", "to": "t1"}]},
+      {"kind": "champion", "cost": -5, "text": "Read it again",
+       "effects": [{"op": "rewind"}]}
+    ]
+  },
+  {
+    "id": "morgaine_the_drowned_queen", "name": "Morgaine, the Drowned Queen",
+    "name_ko": "모르간, 익사한 여왕",
+    "faction": "drowned", "cost": "3BB", "types": ["Champion"],
+    "supertypes": ["Legendary"], "subtypes": ["Morgaine"],
+    "fathom": 4, "rarity": "relic", "depth": "abyss",
+    "text": "[+1] Each opponent loses 1 life and you gain 1 life. [-2] Return target creature card from the wreck to the battlefield under your control. [-6] Destroy all creatures your opponents control.",
+    "text_ko": "[+1] 각 상대는 생명 1점을 잃고 당신은 생명 1점을 얻는다. [-2] 난파선에서 목표 생물 카드를 당신의 조종하에 전장으로 되돌린다. [-6] 상대가 조종하는 모든 생물을 파괴한다.",
+    "flavor": "She drowned a world to keep one city breathing. The city drowned anyway.",
+    "flavor_ko": "그녀는 한 도시를 숨 쉬게 하려고 세계를 익사시켰다. 그 도시도 결국 익사했다.",
+    "abilities": [
+      {"kind": "champion", "cost": 1, "text": "Take the tithe",
+       "effects": [{"op": "lose_life", "amount": 1, "to": "each_opponent"},
+                   {"op": "gain_life", "amount": 1, "to": "controller"}]},
+      {"kind": "champion", "cost": -2, "text": "Call the drowned",
+       "effects": [{"op": "recover", "amount": 1, "zone": "battlefield",
+                    "filter": {"types": ["Creature"]}}]},
+      {"kind": "champion", "cost": -6, "text": "Let the water in",
+       "effects": [{"op": "destroy", "to": "creatures_opponent_controls"}]}
+    ]
+  },
+  {
+    "id": "captain_kai_the_last_sailor", "name": "Captain Kai, the Last Sailor",
+    "name_ko": "케이 선장, 마지막 뱃사람",
+    "faction": "corsair", "cost": "2RR", "types": ["Champion"],
+    "supertypes": ["Legendary"], "subtypes": ["Kai"],
+    "fathom": 3, "rarity": "relic", "depth": "surface",
+    "text": "[+1] Roll a d6. On 4 or more, deal 2 damage to any target. [-2] Create two 2/1 Drowned Sailor tokens with Surging. [-5] Deal damage equal to the number of creatures you control to each opponent.",
+    "text_ko": "[+1] 주사위(d6)를 굴린다. 4 이상이면 아무 목표에게 2점의 피해. [-2] 급류를 가진 2/1 익사한 선원 토큰 두 개를 만든다. [-5] 당신이 조종하는 생물 수만큼 각 상대에게 피해를 입힌다.",
+    "flavor": "He calls the roll every morning. Every name answers.",
+    "flavor_ko": "그는 매일 아침 점호를 한다. 모든 이름이 대답한다.",
+    "abilities": [
+      {"kind": "champion", "cost": 1, "text": "Take a shot",
+       "targets": [{"id": "t1", "kind": "any", "controller": "opponent"}],
+       "effects": [{"op": "roll", "sides": 6, "outcomes": [
+         {"min": 4, "label": "hit", "effects": [{"op": "damage", "amount": 2, "to": "t1"}]},
+         {"min": 1, "label": "miss", "effects": []}
+       ]}]},
+      {"kind": "champion", "cost": -2, "text": "Muster the dead",
+       "effects": [{"op": "token", "token": "token_drowned_sailor", "amount": 2}]},
+      {"kind": "champion", "cost": -5, "text": "All guns",
+       "effects": [{"op": "damage",
+                    "amount": {"dynamic": "count", "filter": {"types": ["Creature"]}},
+                    "to": "each_opponent"}]}
+    ]
+  },
+  {
+    "id": "orca_warden_of_the_heart", "name": "Orca, Warden of the Heart",
+    "name_ko": "오르카, 심장의 수호자",
+    "faction": "brood", "cost": "4GG", "types": ["Champion"],
+    "supertypes": ["Legendary"], "subtypes": ["Orca"],
+    "fathom": 5, "rarity": "leviathan", "depth": "abyss",
+    "text": "[+2] Put a +1/+1 counter on each creature you control in the Abyss. [-3] Create a 3/3 Kraken Spawn token and drag each creature your opponents control one band deeper. [-8] Creatures you control get +5/+5 and gain Breach until end of turn.",
+    "text_ko": "[+2] 심해에 있는 당신의 각 생물에 +1/+1 카운터를 놓는다. [-3] 3/3 크라켄 치어 토큰을 만들고 상대의 각 생물을 한 층 더 깊이 끌어내린다. [-8] 당신의 생물은 턴 종료까지 +5/+5와 돌파를 얻는다.",
+    "flavor": "Everyone believes he guards the Heart from us. He is the only one who knows which way the door faces.",
+    "flavor_ko": "모두가 그를 심장의 수호자라 믿는다. 그는 그 문이 어느 쪽으로 열리는지 아는 유일한 존재다.",
+    "abilities": [
+      {"kind": "champion", "cost": 2, "text": "Deepen",
+       "effects": [{"op": "counters", "kind": "+1/+1", "amount": 1, "to": "abyss_creatures"}]},
+      {"kind": "champion", "cost": -3, "text": "Drag them under",
+       "effects": [{"op": "token", "token": "token_kraken_spawn", "amount": 1},
+                   {"op": "move_depth", "delta": 1, "forced": true,
+                    "to": {"kind": "creature", "controller": "opponent"}}]},
+      {"kind": "champion", "cost": -8, "text": "Wake the brood",
+       "effects": [{"op": "pump", "power": 5, "toughness": 5,
+                    "keywords": ["Breach"], "to": "creatures_you_control"}]}
+    ]
+  }
+]

@@ -1,0 +1,71 @@
+{
+  "id": "the_drowned",
+  "name": "The Drowned",
+  "name_ko": "침몰자",
+  "faction": "drowned",
+  "colors": [
+    "B"
+  ],
+  "description": "Trade freely. Everything that dies becomes fuel you can spend.",
+  "description_ko": "교환을 두려워하지 않는다. 죽은 모든 것이 쓸 수 있는 연료가 된다.",
+  "cards": [
+    {
+      "id": "rotting_kelp_bed",
+      "count": 17
+    },
+    {
+      "id": "drowned_deckhand",
+      "count": 4
+    },
+    {
+      "id": "gravecrawler_eel",
+      "count": 4
+    },
+    {
+      "id": "anglers_lantern",
+      "count": 3
+    },
+    {
+      "id": "barnacle_horror",
+      "count": 3
+    },
+    {
+      "id": "salvage_crew",
+      "count": 3
+    },
+    {
+      "id": "depth_charmer",
+      "count": 2
+    },
+    {
+      "id": "abyssal_pact",
+      "count": 2
+    },
+    {
+      "id": "feed_the_depths",
+      "count": 2
+    }
+  ],
+  "vault": [
+    {
+      "id": "morgaine_the_drowned_queen",
+      "count": 1
+    },
+    {
+      "id": "the_drowning",
+      "count": 1
+    },
+    {
+      "id": "red_tide",
+      "count": 1
+    },
+    {
+      "id": "raise_the_wreck",
+      "count": 1
+    },
+    {
+      "id": "grave_tithe",
+      "count": 1
+    }
+  ]
+}

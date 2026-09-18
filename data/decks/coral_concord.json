@@ -1,0 +1,71 @@
+{
+  "id": "coral_concord",
+  "name": "Coral Concord",
+  "name_ko": "산호 성단",
+  "faction": "coral",
+  "colors": [
+    "W"
+  ],
+  "description": "Go wide at the Surface, wall off the other bands, and win with an anthem.",
+  "description_ko": "수면에 폭넓게 전개하고 다른 층을 막아선 뒤 성가로 끝낸다.",
+  "cards": [
+    {
+      "id": "coral_shallows",
+      "count": 17
+    },
+    {
+      "id": "coral_guardian",
+      "count": 4
+    },
+    {
+      "id": "spire_acolyte",
+      "count": 4
+    },
+    {
+      "id": "reef_warden",
+      "count": 4
+    },
+    {
+      "id": "shoal_marshal",
+      "count": 3
+    },
+    {
+      "id": "lantern_angler",
+      "count": 3
+    },
+    {
+      "id": "schools_call",
+      "count": 2
+    },
+    {
+      "id": "coral_anthem",
+      "count": 2
+    },
+    {
+      "id": "tidal_blessing",
+      "count": 1
+    }
+  ],
+  "vault": [
+    {
+      "id": "thalassa_spire_of_coral",
+      "count": 1
+    },
+    {
+      "id": "spire_of_coral",
+      "count": 1
+    },
+    {
+      "id": "bleaching",
+      "count": 1
+    },
+    {
+      "id": "the_sealing_chant",
+      "count": 1
+    },
+    {
+      "id": "breakwater_line",
+      "count": 1
+    }
+  ]
+}

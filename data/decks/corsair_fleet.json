@@ -1,0 +1,67 @@
+{
+  "id": "corsair_fleet",
+  "name": "Corsair Fleet",
+  "name_ko": "해적 선단",
+  "faction": "corsair",
+  "colors": [
+    "R"
+  ],
+  "description": "Hit the Surface fast, gamble when it matters, and never play a long game.",
+  "description_ko": "수면을 빠르게 친다. 중요할 때 도박하고, 장기전은 하지 않는다.",
+  "cards": [
+    {
+      "id": "volcanic_vent",
+      "count": 17
+    },
+    {
+      "id": "powder_monkey",
+      "count": 4
+    },
+    {
+      "id": "harpoon_gunner",
+      "count": 4
+    },
+    {
+      "id": "reef_raider",
+      "count": 4
+    },
+    {
+      "id": "corsair_captain",
+      "count": 3
+    },
+    {
+      "id": "frenzied_shark",
+      "count": 3
+    },
+    {
+      "id": "boarding_party",
+      "count": 2
+    },
+    {
+      "id": "galvanic_surge",
+      "count": 3
+    }
+  ],
+  "vault": [
+    {
+      "id": "captain_kai_the_last_sailor",
+      "count": 1
+    },
+    {
+      "id": "the_last_breath",
+      "count": 1
+    },
+    {
+      "id": "scuttle_the_fleet",
+      "count": 1
+    },
+    {
+      "id": "corsairs_gamble",
+      "count": 1
+    },
+    {
+      "id": "loaded_dice",
+      "count": 1
+    }
+  ]
+}

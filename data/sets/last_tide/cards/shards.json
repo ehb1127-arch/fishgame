@@ -1,0 +1,215 @@
+[
+  {
+    "id": "salvaged_compass",
+    "name": "Salvaged Compass",
+    "name_ko": "인양한 나침반",
+    "faction": "shard",
+    "cost": "1",
+    "types": [
+      "Artifact"
+    ],
+    "colors": [],
+    "rarity": "driftwood",
+    "text": "Tap: Add one mana of any color.",
+    "text_ko": "탭: 아무 색 마나 하나를 추가한다.",
+    "flavor": "The needle points down. It always pointed down.",
+    "flavor_ko": "바늘은 아래를 가리킨다. 처음부터 아래를 가리키고 있었다.",
+    "abilities": [
+      {
+        "kind": "mana",
+        "cost": {
+          "tap": true
+        },
+        "produces": [
+          "W",
+          "U",
+          "B",
+          "R",
+          "G"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pressure_hull",
+    "name": "Pressure Hull",
+    "name_ko": "압력 선체",
+    "faction": "shard",
+    "cost": "2",
+    "types": [
+      "Artifact"
+    ],
+    "colors": [],
+    "rarity": "coral",
+    "text": "Creatures you control in the Abyss get +0/+2.",
+    "text_ko": "심해에 있는 당신의 생물은 +0/+2를 받는다.",
+    "abilities": [
+      {
+        "kind": "static",
+        "effect": {
+          "type": "pt_boost",
+          "power": 0,
+          "toughness": 2,
+          "affects": {
+            "kind": "creature",
+            "controller": "you",
+            "filter": {
+              "depth": "abyss"
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "wreck_dredger",
+    "name": "Wreck Dredger",
+    "name_ko": "난파선 준설기",
+    "faction": "shard",
+    "cost": "3",
+    "types": [
+      "Artifact"
+    ],
+    "colors": [],
+    "rarity": "pearl",
+    "text": "2, Tap, Salvage 1: Draw a card.",
+    "text_ko": "2, 탭, 인양 1: 카드 한 장을 뽑는다.",
+    "flavor": "It does not care whose ship it is chewing.",
+    "flavor_ko": "누구의 배를 씹고 있는지는 상관하지 않는다.",
+    "abilities": [
+      {
+        "kind": "activated",
+        "cost": {
+          "mana": "2",
+          "tap": true
+        },
+        "text": "Salvage 1: draw",
+        "timing": "instant",
+        "effects": [
+          {
+            "op": "salvage",
+            "amount": 1
+          },
+          {
+            "op": "draw",
+            "amount": 1,
+            "to": "controller"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the_abyssal_vault",
+    "name": "The Abyssal Vault",
+    "name_ko": "심연의 보관고",
+    "faction": "shard",
+    "cost": "4",
+    "types": [
+      "Artifact"
+    ],
+    "supertypes": [
+      "Legendary"
+    ],
+    "colors": [],
+    "rarity": "gold",
+    "text": "When The Abyssal Vault enters the battlefield, put a card from your vault into your hand. 3, Tap: Put another card from your vault into your hand.",
+    "text_ko": "전장에 들어올 때, 보관고에서 카드 한 장을 손으로 가져온다. 3, 탭: 보관고에서 카드 한 장을 더 가져온다.",
+    "flavor": "Everything you chose not to bring, waiting where you left it.",
+    "flavor_ko": "가져오지 않기로 한 모든 것이, 두고 온 자리에서 기다리고 있다.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "self_etb",
+        "effects": [
+          {
+            "op": "vault_fetch",
+            "amount": 1,
+            "zone": "hand"
+          }
+        ]
+      },
+      {
+        "kind": "activated",
+        "cost": {
+          "mana": "3",
+          "tap": true
+        },
+        "text": "Fetch from the vault",
+        "timing": "sorcery",
+        "effects": [
+          {
+            "op": "vault_fetch",
+            "amount": 1,
+            "zone": "hand"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the_heart_of_the_vast",
+    "name": "The Heart of the Vast",
+    "name_ko": "대해의 심장",
+    "faction": "shard",
+    "cost": "7",
+    "types": [
+      "Artifact"
+    ],
+    "supertypes": [
+      "Legendary"
+    ],
+    "colors": [],
+    "rarity": "leviathan",
+    "text": "At the beginning of your upkeep, roll a d20. 18 or more: you gain 5 life and each opponent loses 5 life. Otherwise draw a card and each opponent loses 2 life.",
+    "text_ko": "당신의 유지단 시작에 주사위(d20)를 굴린다. 18 이상: 생명 5점을 얻고 각 상대는 생명 5점을 잃는다. 그 외: 카드 한 장을 뽑고 각 상대는 생명 2점을 잃는다.",
+    "flavor": "It is not a monster and it is not a god. It is an ark, and it has been waiting a very long time for someone to open it.",
+    "flavor_ko": "그것은 괴물도 신도 아니다. 그것은 방주이고, 아주 오랫동안 누군가 열어주기를 기다려 왔다.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "upkeep",
+        "effects": [
+          {
+            "op": "roll",
+            "sides": 20,
+            "outcomes": [
+              {
+                "min": 18,
+                "label": "the ark opens",
+                "effects": [
+                  {
+                    "op": "gain_life",
+                    "amount": 5,
+                    "to": "controller"
+                  },
+                  {
+                    "op": "lose_life",
+                    "amount": 5,
+                    "to": "each_opponent"
+                  }
+                ]
+              },
+              {
+                "min": 1,
+                "label": "it beats on",
+                "effects": [
+                  {
+                    "op": "draw",
+                    "amount": 1,
+                    "to": "controller"
+                  },
+                  {
+                    "op": "lose_life",
+                    "amount": 2,
+                    "to": "each_opponent"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

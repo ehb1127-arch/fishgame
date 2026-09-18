@@ -18,7 +18,7 @@ static func legal_targets(game, spec: Dictionary, controller: int, source: CardI
 
 	if kind == "player":
 		for p in game.players:
-			if _controller_matches(spec, controller, p.index) and not p.has_lost:
+			if _controller_matches(spec, controller, p.index, game) and not p.has_lost:
 				out.append(GameAction.player_target(p.index))
 		return out
 
@@ -27,14 +27,14 @@ static func legal_targets(game, spec: Dictionary, controller: int, source: CardI
 			var c: CardInstance = game.get_card(uid)
 			if c == null or c.stack_kind != "spell":
 				continue
-			if _controller_matches(spec, controller, c.controller_index) \
+			if _controller_matches(spec, controller, c.controller_index, game) \
 					and _passes_filter(game, spec, c):
 				out.append(GameAction.card_target(uid))
 		return out
 
 	if kind == "card_in_graveyard":
 		for p in game.players:
-			if not _controller_matches(spec, controller, p.index):
+			if not _controller_matches(spec, controller, p.index, game):
 				continue
 			for uid in p.graveyard:
 				var c: CardInstance = game.get_card(uid)
@@ -50,7 +50,7 @@ static func legal_targets(game, spec: Dictionary, controller: int, source: CardI
 				continue
 			if not _kind_matches(kind, c):
 				continue
-			if not _controller_matches(spec, controller, c.controller_index):
+			if not _controller_matches(spec, controller, c.controller_index, game):
 				continue
 			if not _passes_filter(game, spec, c):
 				continue
@@ -60,7 +60,7 @@ static func legal_targets(game, spec: Dictionary, controller: int, source: CardI
 
 	if kind == "any":
 		for p in game.players:
-			if _controller_matches(spec, controller, p.index) and not p.has_lost:
+			if _controller_matches(spec, controller, p.index, game) and not p.has_lost:
 				out.append(GameAction.player_target(p.index))
 
 	return out
@@ -89,7 +89,7 @@ static func is_still_legal(game, spec: Dictionary, target: Dictionary, controlle
 		return false
 	if not _kind_matches(kind, c):
 		return false
-	if not _controller_matches(spec, controller, c.controller_index):
+	if not _controller_matches(spec, controller, c.controller_index, game):
 		return false
 	if not _passes_filter(game, spec, c):
 		return false
@@ -119,12 +119,24 @@ static func _kind_matches(kind: String, card: CardInstance) -> bool:
 			return true
 
 
-static func _controller_matches(spec: Dictionary, chooser: int, subject: int) -> bool:
+## "you" includes allies in team games only when the spec says so; by default
+## it means the caster alone, and "opponent" means anyone on another team.
+static func _controller_matches(spec: Dictionary, chooser: int, subject: int, game = null) -> bool:
 	match str(spec.get("controller", "any")):
 		"you":
 			return subject == chooser
+		"ally":
+			if game == null:
+				return subject == chooser
+			return game.are_allies(chooser, subject)
+		"team":
+			if game == null:
+				return subject == chooser
+			return game.are_allies(chooser, subject)
 		"opponent":
-			return subject != chooser
+			if game == null:
+				return subject != chooser
+			return not game.are_allies(chooser, subject)
 		_:
 			return true
 
@@ -182,6 +194,8 @@ static func matches_filter(game, f: Dictionary, card: CardInstance) -> bool:
 		return false
 	if f.has("min_mana_value") and card.data.mana_value() < int(f["min_mana_value"]):
 		return false
+	if f.has("depth") and int(card.depth) != int(GameEnums.parse_depth(str(f["depth"]))):
+		return false
 	if f.has("tapped") and card.tapped != bool(f["tapped"]):
 		return false
 	if f.has("attacking") and card.attacking != bool(f["attacking"]):
@@ -197,7 +211,7 @@ static func matches_filter(game, f: Dictionary, card: CardInstance) -> bool:
 static func collect_permanents(game, f: Dictionary, chooser: int) -> Array[int]:
 	var out: Array[int] = []
 	for p in game.players:
-		if not _controller_matches(f, chooser, p.index):
+		if not _controller_matches(f, chooser, p.index, game):
 			continue
 		for uid in p.battlefield:
 			var c: CardInstance = game.get_card(uid)

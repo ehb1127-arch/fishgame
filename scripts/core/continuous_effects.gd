@@ -101,9 +101,7 @@ static func _apply_to_affected(game, source: CardInstance, effect: Dictionary, f
 	var f := affects.get("filter", {}) as Dictionary
 
 	for p in game.players:
-		if scope == "you" and p.index != source.controller_index:
-			continue
-		if scope == "opponent" and p.index == source.controller_index:
+		if not Effects._scope_includes(game, scope, source.controller_index, p.index):
 			continue
 		for uid in p.battlefield:
 			if uid == source.uid and not include_self:

@@ -1,0 +1,165 @@
+[
+  {
+    "id": "kelp_sprout", "name": "Kelp Sprout", "name_ko": "켈프 새싹",
+    "faction": "brood", "cost": "G", "types": ["Creature"], "subtypes": ["Plant"],
+    "power": 1, "toughness": 1, "depth": "surface", "rarity": "driftwood",
+    "text": "When Kelp Sprout enters the battlefield, search your library for a basic land card and put it into your hand.",
+    "text_ko": "전장에 들어올 때, 당신의 서고에서 기본 대지 카드 한 장을 찾아 손으로 가져온다.",
+    "abilities": [
+      {"kind": "triggered", "trigger": "self_etb",
+       "effects": [{"op": "search_basic_land", "zone": "hand"}]}
+    ]
+  },
+  {
+    "id": "coral_grazer", "name": "Coral Grazer", "name_ko": "산호 방목자",
+    "faction": "brood", "cost": "2G", "types": ["Creature"], "subtypes": ["Turtle"],
+    "power": 3, "toughness": 3, "depth": "midwater", "rarity": "driftwood",
+    "text": "", "flavor": "It has eaten the same reef for sixty years and the reef is winning.",
+    "flavor_ko": "육십 년째 같은 산호초를 먹고 있지만, 이기고 있는 쪽은 산호초다."
+  },
+  {
+    "id": "vent_crawler", "name": "Vent Crawler", "name_ko": "분출구를 기는 것",
+    "faction": "brood", "cost": "1G", "types": ["Creature"], "subtypes": ["Crab"],
+    "power": 1, "toughness": 2, "keywords": ["Pressure", "Molt"],
+    "depth": "abyss", "rarity": "coral",
+    "text": "Pressure, Molt", "text_ko": "수압, 탈피",
+    "flavor": "It sheds its shell rather than its life. So far the trade has held.",
+    "flavor_ko": "목숨 대신 껍질을 벗는다. 지금까지는 그 거래가 유효했다."
+  },
+  {
+    "id": "kelp_weaver", "name": "Kelp Weaver", "name_ko": "켈프 직조공",
+    "faction": "brood", "cost": "3G", "types": ["Creature"], "subtypes": ["Elemental"],
+    "power": 4, "toughness": 4, "keywords": ["Sleepless"],
+    "depth": "midwater", "rarity": "coral",
+    "text": "Sleepless", "text_ko": "불면"
+  },
+  {
+    "id": "titan_barnacle", "name": "Titan Barnacle", "name_ko": "거대 따개비",
+    "faction": "brood", "cost": "4G", "types": ["Creature"], "subtypes": ["Crab"],
+    "power": 6, "toughness": 6, "keywords": ["Anchored", "Amphibious"],
+    "depth": "abyss", "rarity": "coral",
+    "text": "Anchored, Amphibious", "text_ko": "정박, 양서",
+    "flavor": "It chose a depth once, long ago, and has never reconsidered.",
+    "flavor_ko": "오래전에 한 번 수심을 골랐고, 다시 생각해본 적이 없다."
+  },
+  {
+    "id": "brood_mother", "name": "Brood Mother", "name_ko": "거대군의 어미",
+    "faction": "brood", "cost": "4G", "types": ["Creature"], "subtypes": ["Leviathan"],
+    "power": 4, "toughness": 5, "depth": "abyss", "rarity": "pearl",
+    "text": "At the beginning of your upkeep, create a 3/3 blue Kraken Spawn creature token in the Abyss.",
+    "text_ko": "당신의 유지단 시작에, 심해에 3/3 청색 크라켄 치어 토큰 하나를 만든다.",
+    "abilities": [
+      {"kind": "triggered", "trigger": "upkeep",
+       "effects": [{"op": "token", "token": "token_kraken_spawn", "amount": 1}]}
+    ]
+  },
+  {
+    "id": "ancient_leviathan", "name": "Ancient Leviathan", "name_ko": "고대 리바이어던",
+    "faction": "brood", "cost": "5GG", "types": ["Creature"], "subtypes": ["Leviathan"],
+    "power": 8, "toughness": 8, "keywords": ["Breach", "Pressure"],
+    "depth": "abyss", "rarity": "gold",
+    "text": "Breach, Pressure", "text_ko": "돌파, 수압",
+    "flavor": "Orca's siblings. Orca does not speak of them.",
+    "flavor_ko": "오르카의 형제들. 오르카는 그들에 대해 말하지 않는다."
+  },
+  {
+    "id": "growth_surge", "name": "Growth Surge", "name_ko": "성장 급류",
+    "faction": "brood", "cost": "1G", "types": ["Instant"], "rarity": "driftwood",
+    "text": "Target creature you control gets +3/+3 until end of turn.",
+    "text_ko": "당신이 조종하는 목표 생물은 턴 종료까지 +3/+3을 받는다.",
+    "abilities": [
+      {"kind": "spell", "targets": [{"id": "t1", "kind": "creature", "controller": "you"}],
+       "effects": [{"op": "pump", "power": 3, "toughness": 3, "per_star": 1, "to": "t1"}]}
+    ],
+    "upgrade": {"spell_bonus_per_star": 1}
+  },
+  {
+    "id": "surge_of_the_deep", "name": "Surge of the Deep", "name_ko": "심해의 격류",
+    "faction": "brood", "cost": "2G", "types": ["Instant"], "rarity": "coral",
+    "text": "Target creature you control gets +2/+2 and gains Breach until end of turn.",
+    "text_ko": "당신이 조종하는 목표 생물은 턴 종료까지 +2/+2와 돌파를 얻는다.",
+    "abilities": [
+      {"kind": "spell", "targets": [{"id": "t1", "kind": "creature", "controller": "you"}],
+       "effects": [{"op": "pump", "power": 2, "toughness": 2, "per_star": 1,
+                    "keywords": ["Breach"], "to": "t1"}]}
+    ]
+  },
+  {
+    "id": "tidepool_bloom", "name": "Tidepool Bloom", "name_ko": "조수웅덩이 개화",
+    "faction": "brood", "cost": "1G", "types": ["Sorcery"], "rarity": "driftwood",
+    "text": "Search your library for a basic land card and put it onto the battlefield tapped.",
+    "text_ko": "당신의 서고에서 기본 대지 한 장을 찾아 탭된 채로 전장에 놓는다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "search_basic_land", "zone": "battlefield", "tapped": true}
+      ]}
+    ]
+  },
+  {
+    "id": "descend", "name": "Descend", "name_ko": "하강",
+    "faction": "brood", "cost": "1G", "types": ["Instant"], "rarity": "coral",
+    "text": "Move any number of creatures you control one band deeper. They each get +1/+1 until end of turn.",
+    "text_ko": "당신이 조종하는 원하는 수의 생물을 한 층 더 깊이 이동시킨다. 그 생물들은 턴 종료까지 각각 +1/+1을 받는다.",
+    "flavor": "The Brood does not retreat downward. Downward is where they were going anyway.",
+    "flavor_ko": "거대군은 아래로 후퇴하지 않는다. 아래는 원래 그들이 가던 방향이다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "move_depth", "delta": 1, "forced": false, "to": "creatures_you_control"},
+        {"op": "pump", "power": 1, "toughness": 1, "per_star": 1, "to": "creatures_you_control"}
+      ]}
+    ]
+  },
+  {
+    "id": "the_pressure_below", "name": "The Pressure Below", "name_ko": "아래로부터의 압력",
+    "faction": "brood", "cost": "2G", "types": ["Enchantment"], "rarity": "pearl",
+    "text": "Creatures you control in the Abyss get +2/+2.",
+    "text_ko": "당신이 조종하는 심해의 생물은 +2/+2를 받는다.",
+    "abilities": [
+      {"kind": "static", "effect": {
+        "type": "pt_boost", "power": 2, "toughness": 2,
+        "affects": {"kind": "creature", "controller": "you",
+                    "filter": {"depth": "abyss"}}}}
+    ]
+  },
+  {
+    "id": "feed_the_brood", "name": "Feed the Brood", "name_ko": "거대군을 먹이다",
+    "faction": "brood", "cost": "2G", "types": ["Sorcery"], "rarity": "coral",
+    "salvage": 3,
+    "text": "Salvage 3. Put three +1/+1 counters on target creature you control.",
+    "text_ko": "인양 3. 당신이 조종하는 목표 생물에 +1/+1 카운터 세 개를 놓는다.",
+    "flavor": "The wreck feeds them. That is why Orca lets the wreck grow.",
+    "flavor_ko": "난파선이 그들을 먹인다. 그래서 오르카는 난파선이 쌓이도록 둔다.",
+    "abilities": [
+      {"kind": "spell", "targets": [{"id": "t1", "kind": "creature", "controller": "you"}],
+       "effects": [{"op": "counters", "kind": "+1/+1", "amount": 3, "per_star": 1, "to": "t1"}]}
+    ]
+  },
+  {
+    "id": "wake_the_deep", "name": "Wake the Deep", "name_ko": "심해를 깨우다",
+    "faction": "brood", "cost": "5GG", "types": ["Sorcery"], "rarity": "gold",
+    "text": "Mill five cards, then return every creature card milled this way to the battlefield in the Abyss.",
+    "text_ko": "카드 다섯 장을 갈고, 이렇게 간 생물 카드를 전부 심해의 전장으로 되돌린다.",
+    "flavor": "There is no bottom. There are only things that have stopped falling.",
+    "flavor_ko": "바닥은 없다. 떨어지기를 멈춘 것들이 있을 뿐이다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "mill", "amount": 5, "to": "controller"},
+        {"op": "recover", "amount": 3, "zone": "battlefield", "filter": {"types": ["Creature"]}}
+      ]}
+    ]
+  },
+  {
+    "id": "the_first_stalk", "name": "The First Stalk", "name_ko": "최초의 줄기",
+    "faction": "brood", "cost": "3GG", "types": ["Enchantment"],
+    "supertypes": ["Legendary"], "rarity": "relic",
+    "text": "Creatures you control get +1/+1 for each band that contains a creature you control.",
+    "text_ko": "당신이 조종하는 생물은, 당신의 생물이 있는 수심대 하나당 +1/+1을 받는다.",
+    "flavor": "Orca planted it to mark something. He has forgotten what. The stalk has not.",
+    "flavor_ko": "오르카는 무언가를 표시하려 그것을 심었다. 그는 무엇인지 잊었다. 줄기는 잊지 않았다.",
+    "abilities": [
+      {"kind": "static", "effect": {
+        "type": "pt_boost", "power": 1, "toughness": 1,
+        "affects": {"kind": "creature", "controller": "you"}}}
+    ]
+  }
+]

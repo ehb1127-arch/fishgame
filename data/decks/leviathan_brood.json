@@ -1,0 +1,71 @@
+{
+  "id": "leviathan_brood",
+  "name": "Leviathan Brood",
+  "name_ko": "거대군",
+  "faction": "brood",
+  "colors": [
+    "G"
+  ],
+  "description": "Live in the Abyss where Pressure pays off, and grow past every answer.",
+  "description_ko": "수압이 이득이 되는 심해에서 산다. 모든 해답을 넘어설 때까지 자란다.",
+  "cards": [
+    {
+      "id": "kelp_forest",
+      "count": 17
+    },
+    {
+      "id": "kelp_sprout",
+      "count": 4
+    },
+    {
+      "id": "vent_crawler",
+      "count": 4
+    },
+    {
+      "id": "coral_grazer",
+      "count": 4
+    },
+    {
+      "id": "kelp_weaver",
+      "count": 3
+    },
+    {
+      "id": "titan_barnacle",
+      "count": 3
+    },
+    {
+      "id": "brood_mother",
+      "count": 2
+    },
+    {
+      "id": "ancient_leviathan",
+      "count": 1
+    },
+    {
+      "id": "growth_surge",
+      "count": 2
+    }
+  ],
+  "vault": [
+    {
+      "id": "orca_warden_of_the_heart",
+      "count": 1
+    },
+    {
+      "id": "the_first_stalk",
+      "count": 1
+    },
+    {
+      "id": "the_pressure_below",
+      "count": 1
+    },
+    {
+      "id": "wake_the_deep",
+      "count": 1
+    },
+    {
+      "id": "descend",
+      "count": 1
+    }
+  ]
+}

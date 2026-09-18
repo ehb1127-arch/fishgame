@@ -7,6 +7,12 @@ extends RefCounted
 
 var id: StringName = &""
 var name: String = "Unnamed"
+## Korean display name, shown by the UI when the language is Korean.
+var name_ko: String = ""
+## Which set this printing belongs to, e.g. "last_tide".
+var set_code: String = ""
+## Faction id: coral, conclave, drowned, corsair, brood, or shard.
+var faction: String = ""
 var mana_cost_text: String = "0"
 var cost: Mana.Cost = null
 var types: Array[String] = []
@@ -15,8 +21,11 @@ var supertypes: Array[String] = []
 var colors: Array[String] = []
 var power: int = 0
 var toughness: int = 0
+## Fathom counters a Champion enters play with.
+var fathom: int = 0
 var keywords: Array[String] = []
 var text: String = ""
+var text_ko: String = ""
 ## Rules constructs, see docs/card_schema.md for the shape of each entry.
 var abilities: Array = []
 ## The band this creature enters play in.
@@ -32,12 +41,16 @@ var star_milestones: Dictionary = {}
 var star_spell_bonus: int = 0
 var art: String = ""
 var flavor: String = ""
+var flavor_ko: String = ""
 
 
 static func from_dict(d: Dictionary) -> CardData:
 	var card := CardData.new()
 	card.id = StringName(str(d.get("id", "")))
 	card.name = str(d.get("name", "Unnamed"))
+	card.name_ko = str(d.get("name_ko", ""))
+	card.set_code = str(d.get("set", ""))
+	card.faction = str(d.get("faction", ""))
 	card.mana_cost_text = str(d.get("cost", "0"))
 	card.cost = Mana.Cost.parse(card.mana_cost_text)
 	card.types = _string_array(d.get("types", []))
@@ -45,9 +58,12 @@ static func from_dict(d: Dictionary) -> CardData:
 	card.supertypes = _string_array(d.get("supertypes", []))
 	card.power = int(d.get("power", 0))
 	card.toughness = int(d.get("toughness", 0))
+	card.fathom = int(d.get("fathom", 0))
 	card.keywords = _string_array(d.get("keywords", []))
 	card.text = str(d.get("text", ""))
+	card.text_ko = str(d.get("text_ko", ""))
 	card.flavor = str(d.get("flavor", ""))
+	card.flavor_ko = str(d.get("flavor_ko", ""))
 	card.art = str(d.get("art", ""))
 	card.abilities = d.get("abilities", []) as Array
 	card.native_depth = GameEnums.parse_depth(str(d.get("depth", "midwater")))
@@ -92,6 +108,9 @@ func is_permanent() -> bool:
 
 func is_creature() -> bool:
 	return is_type(GameEnums.TYPE_CREATURE)
+
+func is_champion() -> bool:
+	return is_type(GameEnums.TYPE_CHAMPION)
 
 func is_land() -> bool:
 	return is_type(GameEnums.TYPE_LAND)
@@ -148,6 +167,23 @@ func type_line() -> String:
 	if not subtypes.is_empty():
 		line += " - " + " ".join(subtypes)
 	return line
+
+## Name in the requested language, falling back to English.
+func display_name(korean: bool = false) -> String:
+	if korean and not name_ko.is_empty():
+		return name_ko
+	return name
+
+func display_text(korean: bool = false) -> String:
+	if korean and not text_ko.is_empty():
+		return text_ko
+	return text
+
+func display_flavor(korean: bool = false) -> String:
+	if korean and not flavor_ko.is_empty():
+		return flavor_ko
+	return flavor
+
 
 func _to_string() -> String:
 	return "%s (%s)" % [name, mana_cost_text]

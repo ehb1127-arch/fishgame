@@ -1,0 +1,489 @@
+[
+  {
+    "id": "reef_scout",
+    "name": "Reef Scout",
+    "name_ko": "암초 정찰병",
+    "faction": "conclave",
+    "cost": "1U",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Merfolk",
+      "Scout"
+    ],
+    "power": 2,
+    "toughness": 1,
+    "depth": "surface",
+    "rarity": "driftwood",
+    "text": "",
+    "flavor": "First down, last back.",
+    "flavor_ko": "가장 먼저 내려가고, 가장 늦게 돌아온다.",
+    "upgrade": {
+      "milestones": {
+        "3": {
+          "keywords": [
+            "Diver"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "tide_caller",
+    "name": "Tide Caller",
+    "name_ko": "조류를 부르는 자",
+    "faction": "conclave",
+    "cost": "U",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Merfolk",
+      "Wizard"
+    ],
+    "power": 1,
+    "toughness": 1,
+    "depth": "midwater",
+    "rarity": "coral",
+    "text": "Other Merfolk and Fish you control get +0/+1.",
+    "text_ko": "당신이 조종하는 다른 인어와 물고기는 +0/+1을 받는다.",
+    "flavor": "She does not command the tide. She asks, and it is polite.",
+    "flavor_ko": "그녀는 조류에 명령하지 않는다. 부탁할 뿐이고, 조류는 예의가 바르다.",
+    "abilities": [
+      {
+        "kind": "static",
+        "effect": {
+          "type": "pt_boost",
+          "power": 0,
+          "toughness": 1,
+          "include_self": false,
+          "affects": {
+            "kind": "creature",
+            "controller": "you",
+            "filter": {
+              "subtypes": [
+                "Merfolk",
+                "Fish"
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "upgrade": {
+      "milestones": {
+        "4": {
+          "keywords": [
+            "Amphibious"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "abyssal_drifter",
+    "name": "Abyssal Drifter",
+    "name_ko": "심연의 표류체",
+    "faction": "conclave",
+    "cost": "2U",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Jellyfish"
+    ],
+    "power": 2,
+    "toughness": 3,
+    "keywords": [
+      "Amphibious"
+    ],
+    "depth": "abyss",
+    "rarity": "driftwood",
+    "text": "Amphibious",
+    "text_ko": "양서",
+    "flavor": "It drifts between layers because it has no opinion about any of them.",
+    "flavor_ko": "층과 층 사이를 떠돈다. 어느 쪽에도 의견이 없기 때문이다."
+  },
+  {
+    "id": "trench_archivist",
+    "name": "Trench Archivist",
+    "name_ko": "해구의 기록관",
+    "faction": "conclave",
+    "cost": "2U",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Merfolk",
+      "Scholar"
+    ],
+    "power": 1,
+    "toughness": 3,
+    "depth": "abyss",
+    "rarity": "coral",
+    "text": "When Trench Archivist enters the battlefield, scry 2.",
+    "text_ko": "전장에 들어올 때, 점술 2를 한다.",
+    "flavor": "Volume ninety-nine ends mid-sentence. So does volume ninety-eight.",
+    "flavor_ko": "99권은 문장 중간에 끝난다. 98권도 그렇다.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "self_etb",
+        "effects": [
+          {
+            "op": "scry",
+            "amount": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "school_caller",
+    "name": "School Caller",
+    "name_ko": "무리를 부르는 자",
+    "faction": "conclave",
+    "cost": "3U",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Merfolk",
+      "Wizard"
+    ],
+    "power": 2,
+    "toughness": 2,
+    "depth": "midwater",
+    "rarity": "coral",
+    "text": "When School Caller enters the battlefield, create two 1/1 blue Fish creature tokens.",
+    "text_ko": "전장에 들어올 때, 1/1 청색 물고기 토큰 두 개를 만든다.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "self_etb",
+        "effects": [
+          {
+            "op": "token",
+            "token": "token_fish",
+            "amount": 2,
+            "per_star": 1
+          }
+        ]
+      }
+    ],
+    "upgrade": {
+      "spell_bonus_per_star": 1
+    }
+  },
+  {
+    "id": "glass_nautilus",
+    "name": "Glass Nautilus",
+    "name_ko": "유리 앵무조개",
+    "faction": "conclave",
+    "cost": "1U",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Nautilus"
+    ],
+    "power": 4,
+    "toughness": 1,
+    "depth": "midwater",
+    "rarity": "pearl",
+    "text": "Ink",
+    "text_ko": "먹물",
+    "keywords": [
+      "Ink"
+    ],
+    "flavor": "Beautiful, lethal, and one good knock from being sand.",
+    "flavor_ko": "아름답고, 치명적이며, 한 번만 부딪히면 모래가 된다."
+  },
+  {
+    "id": "whirlpool",
+    "name": "Whirlpool",
+    "name_ko": "소용돌이",
+    "faction": "conclave",
+    "cost": "1U",
+    "types": [
+      "Instant"
+    ],
+    "rarity": "driftwood",
+    "text": "Return target creature to its owner's hand.",
+    "text_ko": "목표 생물 하나를 owner의 손으로 되돌린다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [
+          {
+            "id": "t1",
+            "kind": "creature",
+            "controller": "any"
+          }
+        ],
+        "effects": [
+          {
+            "op": "bounce",
+            "to": "t1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "deep_current",
+    "name": "Deep Current",
+    "name_ko": "심층 해류",
+    "faction": "conclave",
+    "cost": "2U",
+    "types": [
+      "Instant"
+    ],
+    "rarity": "coral",
+    "text": "Counter target spell.",
+    "text_ko": "목표 주문 하나를 무효화한다.",
+    "flavor": "The Conclave's first lesson: the sea says no more often than yes.",
+    "flavor_ko": "학회의 첫 수업. 바다는 '그렇다'보다 '아니다'를 더 자주 말한다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [
+          {
+            "id": "t1",
+            "kind": "spell",
+            "controller": "opponent"
+          }
+        ],
+        "effects": [
+          {
+            "op": "counter_spell",
+            "to": "t1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sirens_lure",
+    "name": "Siren's Lure",
+    "name_ko": "세이렌의 유혹",
+    "faction": "conclave",
+    "cost": "1U",
+    "types": [
+      "Instant"
+    ],
+    "rarity": "driftwood",
+    "text": "Draw two cards.",
+    "text_ko": "카드 두 장을 뽑는다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [
+          {
+            "op": "draw",
+            "amount": 2,
+            "to": "controller",
+            "per_star": 1
+          }
+        ]
+      }
+    ],
+    "upgrade": {
+      "spell_bonus_per_star": 1
+    }
+  },
+  {
+    "id": "stillwater",
+    "name": "Stillwater",
+    "name_ko": "정적의 심해",
+    "faction": "conclave",
+    "cost": "2U",
+    "types": [
+      "Enchantment"
+    ],
+    "rarity": "coral",
+    "text": "You get twice as long to take your turns.",
+    "text_ko": "당신의 턴 제한 시간이 두 배가 된다.",
+    "flavor": "Down here a minute is a long time. Down here a minute is nothing.",
+    "flavor_ko": "이 아래에서 일 분은 길다. 이 아래에서 일 분은 아무것도 아니다.",
+    "abilities": [
+      {
+        "kind": "static",
+        "effect": {
+          "type": "turn_timer",
+          "target": "you",
+          "factor": 2.0
+        }
+      }
+    ]
+  },
+  {
+    "id": "time_eddy",
+    "name": "Time Eddy",
+    "name_ko": "시간의 와류",
+    "faction": "conclave",
+    "cost": "1U",
+    "types": [
+      "Instant"
+    ],
+    "rarity": "pearl",
+    "text": "Each opponent gets half as long to take their turns this turn. Draw a card.",
+    "text_ko": "이번 턴 동안 각 상대의 턴 제한 시간이 절반이 된다. 카드 한 장을 뽑는다.",
+    "flavor": "Nereus has done this before. Nereus has done everything before.",
+    "flavor_ko": "네레우스는 전에도 이렇게 했다. 네레우스는 모든 것을 전에 해봤다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [
+          {
+            "op": "scale_timer",
+            "factor": 0.5,
+            "temporary": true,
+            "to": "each_opponent"
+          },
+          {
+            "op": "draw",
+            "amount": 1,
+            "to": "controller"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "crushing_deadline",
+    "name": "Crushing Deadline",
+    "name_ko": "압박수심",
+    "faction": "conclave",
+    "cost": "3U",
+    "types": [
+      "Enchantment"
+    ],
+    "rarity": "pearl",
+    "text": "Each opponent gets only 8 seconds to take their turns, and loses 1 life whenever they run out of time.",
+    "text_ko": "각 상대의 턴 제한 시간이 8초가 된다. 상대가 시간을 초과할 때마다 생명 1점을 잃는다.",
+    "flavor": "Pressure is not a metaphor at this depth.",
+    "flavor_ko": "이 수심에서 압박은 비유가 아니다.",
+    "abilities": [
+      {
+        "kind": "static",
+        "effect": {
+          "type": "turn_timer",
+          "target": "opponent",
+          "seconds": 8
+        }
+      },
+      {
+        "kind": "triggered",
+        "trigger": "self_etb",
+        "effects": [
+          {
+            "op": "timeout_penalty",
+            "amount": 1,
+            "to": "each_opponent"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "read_the_deep",
+    "name": "Read the Deep",
+    "name_ko": "심해를 읽다",
+    "faction": "conclave",
+    "cost": "2U",
+    "types": [
+      "Sorcery"
+    ],
+    "rarity": "coral",
+    "text": "Each opponent reveals their hand. Draw two cards.",
+    "text_ko": "각 상대는 손을 공개한다. 카드 두 장을 뽑는다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [
+          {
+            "op": "reveal_hand",
+            "to": "each_opponent"
+          },
+          {
+            "op": "draw",
+            "amount": 2,
+            "to": "controller"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kraken_of_the_trench",
+    "name": "Kraken of the Trench",
+    "name_ko": "해구의 크라켄",
+    "faction": "conclave",
+    "cost": "5UU",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Kraken"
+    ],
+    "power": 7,
+    "toughness": 7,
+    "keywords": [
+      "Breach",
+      "Pressure"
+    ],
+    "depth": "abyss",
+    "rarity": "gold",
+    "text": "Breach, Pressure. When Kraken of the Trench enters the battlefield, drag each creature your opponents control one band deeper.",
+    "text_ko": "돌파, 수압. 전장에 들어올 때, 상대가 조종하는 각 생물을 한 층 더 깊은 곳으로 끌어내린다.",
+    "flavor": "It does not hunt. It simply arrives where you are.",
+    "flavor_ko": "사냥하지 않는다. 그저 네가 있는 곳에 도착할 뿐이다.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "self_etb",
+        "effects": [
+          {
+            "op": "move_depth",
+            "delta": 1,
+            "forced": true,
+            "to": {
+              "kind": "creature",
+              "controller": "opponent"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the_hundredth_life",
+    "name": "The Hundredth Life",
+    "name_ko": "백 번째 생",
+    "faction": "conclave",
+    "cost": "4UU",
+    "types": [
+      "Sorcery"
+    ],
+    "supertypes": [
+      "Legendary"
+    ],
+    "rarity": "relic",
+    "text": "Undo this turn. The board returns to how it stood when the turn began. Exile The Hundredth Life.",
+    "text_ko": "이번 턴을 되돌린다. 전장은 턴이 시작되었을 때의 상태로 돌아간다. 백 번째 생을 추방한다.",
+    "flavor": "\"I have read this page before,\" he said, and turned it anyway.",
+    "flavor_ko": "\"이 페이지는 전에 읽었다.\" 그는 그렇게 말하고도 넘겼다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [
+          {
+            "op": "rewind"
+          }
+        ]
+      }
+    ]
+  }
+]

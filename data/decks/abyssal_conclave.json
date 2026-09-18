@@ -1,0 +1,71 @@
+{
+  "id": "abyssal_conclave",
+  "name": "Abyssal Conclave",
+  "name_ko": "심연 학회",
+  "faction": "conclave",
+  "colors": [
+    "U"
+  ],
+  "description": "Answer everything, read their hand, and take the turn away from them.",
+  "description_ko": "모든 것에 응수하고, 상대의 손을 읽고, 상대의 턴을 빼앗는다.",
+  "cards": [
+    {
+      "id": "sunless_trench",
+      "count": 17
+    },
+    {
+      "id": "reef_scout",
+      "count": 4
+    },
+    {
+      "id": "tide_caller",
+      "count": 3
+    },
+    {
+      "id": "abyssal_drifter",
+      "count": 4
+    },
+    {
+      "id": "trench_archivist",
+      "count": 3
+    },
+    {
+      "id": "school_caller",
+      "count": 3
+    },
+    {
+      "id": "glass_nautilus",
+      "count": 2
+    },
+    {
+      "id": "whirlpool",
+      "count": 2
+    },
+    {
+      "id": "sirens_lure",
+      "count": 2
+    }
+  ],
+  "vault": [
+    {
+      "id": "nereus_reader_of_the_deep",
+      "count": 1
+    },
+    {
+      "id": "kraken_of_the_trench",
+      "count": 1
+    },
+    {
+      "id": "crushing_deadline",
+      "count": 1
+    },
+    {
+      "id": "time_eddy",
+      "count": 1
+    },
+    {
+      "id": "deep_current",
+      "count": 1
+    }
+  ]
+}

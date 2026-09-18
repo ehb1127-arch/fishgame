@@ -1,0 +1,190 @@
+[
+  {
+    "id": "powder_monkey", "name": "Powder Monkey", "name_ko": "화약 원숭이",
+    "faction": "corsair", "cost": "1R", "types": ["Creature"],
+    "subtypes": ["Monkey", "Pirate"], "power": 2, "toughness": 1,
+    "keywords": ["Surging"], "depth": "surface", "rarity": "driftwood",
+    "text": "Surging", "text_ko": "급류",
+    "flavor": "Kai never asks where the powder came from. There is no powder left anywhere.",
+    "flavor_ko": "케이는 화약이 어디서 났는지 묻지 않는다. 세상에 화약은 남아 있지 않다."
+  },
+  {
+    "id": "harpoon_gunner", "name": "Harpoon Gunner", "name_ko": "작살 사수",
+    "faction": "corsair", "cost": "2R", "types": ["Creature"],
+    "subtypes": ["Human", "Pirate"], "power": 2, "toughness": 2,
+    "depth": "surface", "rarity": "driftwood",
+    "text": "When Harpoon Gunner enters the battlefield, it deals 1 damage to any target.",
+    "text_ko": "전장에 들어올 때, 아무 목표에게 1점의 피해를 입힌다.",
+    "abilities": [
+      {"kind": "triggered", "trigger": "self_etb",
+       "targets": [{"id": "t1", "kind": "any", "controller": "opponent"}],
+       "effects": [{"op": "damage", "amount": 1, "per_star": 1, "to": "t1"}]}
+    ],
+    "upgrade": {"spell_bonus_per_star": 1}
+  },
+  {
+    "id": "reef_raider", "name": "Reef Raider", "name_ko": "암초 약탈자",
+    "faction": "corsair", "cost": "2R", "types": ["Creature"],
+    "subtypes": ["Orc", "Pirate"], "power": 3, "toughness": 2,
+    "keywords": ["Schooling"], "depth": "surface", "rarity": "driftwood",
+    "text": "Schooling", "text_ko": "무리"
+  },
+  {
+    "id": "corsair_captain", "name": "Corsair Captain", "name_ko": "해적 선장",
+    "faction": "corsair", "cost": "2RR", "types": ["Creature"],
+    "subtypes": ["Human", "Pirate"], "power": 3, "toughness": 3,
+    "depth": "surface", "rarity": "coral",
+    "text": "Other Pirates you control get +1/+0.",
+    "text_ko": "당신이 조종하는 다른 해적은 +1/+0을 받는다.",
+    "abilities": [
+      {"kind": "static", "effect": {
+        "type": "pt_boost", "power": 1, "toughness": 0, "include_self": false,
+        "affects": {"kind": "creature", "controller": "you",
+                    "filter": {"subtypes": ["Pirate"]}}}}
+    ],
+    "upgrade": {"milestones": {"4": {"keywords": ["Surging"]}}}
+  },
+  {
+    "id": "powder_keg_diver", "name": "Powder Keg Diver", "name_ko": "화약통 잠수부",
+    "faction": "corsair", "cost": "R", "types": ["Creature"],
+    "subtypes": ["Human", "Pirate"], "power": 5, "toughness": 5,
+    "keywords": ["Anchored"], "depth": "surface", "rarity": "pearl",
+    "text": "Anchored. At the beginning of your upkeep, you lose 2 life.",
+    "text_ko": "정박. 당신의 유지단 시작에, 당신은 생명 2점을 잃는다.",
+    "flavor": "One barrel of air, one barrel of powder, and a very short plan.",
+    "flavor_ko": "공기통 하나, 화약통 하나, 그리고 아주 짧은 계획.",
+    "abilities": [
+      {"kind": "triggered", "trigger": "upkeep",
+       "effects": [{"op": "lose_life", "amount": 2, "to": "controller"}]}
+    ]
+  },
+  {
+    "id": "boarding_party", "name": "Boarding Party", "name_ko": "승선 부대",
+    "faction": "corsair", "cost": "4R", "types": ["Creature"],
+    "subtypes": ["Orc", "Pirate"], "power": 5, "toughness": 4,
+    "keywords": ["Surging", "Breach"], "depth": "surface", "rarity": "coral",
+    "text": "Surging, Breach", "text_ko": "급류, 돌파"
+  },
+  {
+    "id": "frenzied_shark", "name": "Frenzied Shark", "name_ko": "광란의 상어",
+    "faction": "corsair", "cost": "2R", "types": ["Creature"],
+    "subtypes": ["Shark"], "power": 2, "toughness": 2,
+    "keywords": ["Frenzy"], "depth": "midwater", "rarity": "pearl",
+    "text": "Frenzy",
+    "text_ko": "광란",
+    "flavor": "Blood in the water is a rumour. The frenzy starts before the blood does.",
+    "flavor_ko": "물속의 피는 소문일 뿐이다. 광란은 피보다 먼저 시작된다.",
+    "upgrade": {"milestones": {"3": {"keywords": ["Surging"]}, "5": {"keywords": ["Breach"]}}}
+  },
+  {
+    "id": "galvanic_surge", "name": "Galvanic Surge", "name_ko": "방전",
+    "faction": "corsair", "cost": "1R", "types": ["Instant"], "rarity": "driftwood",
+    "text": "Galvanic Surge deals 3 damage to any target.",
+    "text_ko": "아무 목표에게 3점의 피해를 입힌다.",
+    "flavor": "The eels learned it first. The Fleet learned it from the eels.",
+    "flavor_ko": "뱀장어가 먼저 배웠다. 선단은 뱀장어에게서 배웠다.",
+    "abilities": [
+      {"kind": "spell", "targets": [{"id": "t1", "kind": "any", "controller": "any"}],
+       "effects": [{"op": "damage", "amount": 3, "per_star": 1, "to": "t1"}]}
+    ],
+    "upgrade": {"spell_bonus_per_star": 1}
+  },
+  {
+    "id": "boiling_vent", "name": "Boiling Vent", "name_ko": "열수 분출",
+    "faction": "corsair", "cost": "2R", "types": ["Sorcery"], "rarity": "coral",
+    "text": "Boiling Vent deals 2 damage to each creature in the Abyss.",
+    "text_ko": "심해에 있는 각 생물에게 2점의 피해를 입힌다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "damage", "amount": 2, "per_star": 1, "to": "abyss_creatures"}
+      ]}
+    ]
+  },
+  {
+    "id": "tidal_surge", "name": "Tidal Surge", "name_ko": "해일",
+    "faction": "corsair", "cost": "3R", "types": ["Sorcery"], "rarity": "pearl",
+    "text": "Tidal Surge deals 2 damage to each creature your opponents control, then drags every creature one band toward the surface.",
+    "text_ko": "상대가 조종하는 각 생물에게 2점의 피해를 입힌 후, 모든 생물을 수면 쪽으로 한 층 끌어올린다.",
+    "flavor": "A wave big enough stops being water and starts being geography.",
+    "flavor_ko": "충분히 큰 파도는 물이기를 그만두고 지형이 된다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "damage", "amount": 2, "per_star": 1, "to": "creatures_opponent_controls"},
+        {"op": "move_depth", "delta": -1, "forced": true, "to": "all_creatures"}
+      ]}
+    ]
+  },
+  {
+    "id": "corsairs_gamble", "name": "Corsair's Gamble", "name_ko": "해적의 도박",
+    "faction": "corsair", "cost": "1R", "types": ["Instant"], "rarity": "coral",
+    "text": "Roll a d6. 5 or more: deal 6 damage to any target. 3-4: deal 3 damage. 2 or less: Corsair's Gamble deals 3 damage to you.",
+    "text_ko": "주사위(d6)를 굴린다. 5 이상: 아무 목표에게 6점의 피해. 3-4: 3점의 피해. 2 이하: 당신이 3점의 피해를 받는다.",
+    "flavor": "The Fleet settles every argument this way. It is why there are so few of them left.",
+    "flavor_ko": "선단은 모든 논쟁을 이렇게 해결한다. 그래서 그렇게 몇 남지 않은 것이다.",
+    "abilities": [
+      {"kind": "spell",
+       "targets": [{"id": "t1", "kind": "any", "controller": "any"}],
+       "effects": [{"op": "roll", "sides": 6, "per_star": 1, "outcomes": [
+         {"min": 5, "label": "jackpot", "effects": [{"op": "damage", "amount": 6, "to": "t1"}]},
+         {"min": 3, "label": "hit", "effects": [{"op": "damage", "amount": 3, "to": "t1"}]},
+         {"min": 1, "label": "backfire", "effects": [{"op": "damage", "amount": 3, "to": "controller"}]}
+       ]}]}
+    ]
+  },
+  {
+    "id": "loaded_dice", "name": "Loaded Dice", "name_ko": "가짜 주사위",
+    "faction": "corsair", "cost": "1R", "types": ["Artifact"], "rarity": "pearl",
+    "text": "Your dice rolls get +2.",
+    "text_ko": "당신의 주사위 굴림에 +2를 더한다.",
+    "flavor": "Kai has never lost a wager. Kai has never won one honestly either.",
+    "flavor_ko": "케이는 내기에서 진 적이 없다. 정직하게 이긴 적도 없다.",
+    "abilities": [
+      {"kind": "static", "effect": {"type": "dice_bonus", "amount": 2}}
+    ]
+  },
+  {
+    "id": "all_hands", "name": "All Hands", "name_ko": "총원 집합",
+    "faction": "corsair", "cost": "3R", "types": ["Sorcery"], "rarity": "coral",
+    "text": "Creatures you control get +2/+0 and gain Surging until end of turn.",
+    "text_ko": "당신이 조종하는 생물은 턴 종료까지 +2/+0과 급류를 얻는다.",
+    "abilities": [
+      {"kind": "spell", "effects": [
+        {"op": "pump", "power": 2, "toughness": 0, "per_star": 1,
+         "keywords": ["Surging"], "to": "creatures_you_control"}
+      ]}
+    ]
+  },
+  {
+    "id": "scuttle_the_fleet", "name": "Scuttle the Fleet", "name_ko": "선단을 침몰시키다",
+    "faction": "corsair", "cost": "2RR", "types": ["Sorcery"], "rarity": "gold",
+    "text": "Roll a d20. 15 or more: destroy all creatures your opponents control. 6-14: destroy target creature. 5 or less: destroy all creatures you control.",
+    "text_ko": "주사위(d20)를 굴린다. 15 이상: 상대의 모든 생물을 파괴한다. 6-14: 목표 생물 하나를 파괴한다. 5 이하: 당신의 모든 생물을 파괴한다.",
+    "flavor": "\"Worst case, we all go down together.\" The crew cheered. They were already down.",
+    "flavor_ko": "\"최악이라 봐야 다 같이 가라앉는 거지.\" 선원들은 환호했다. 그들은 이미 가라앉아 있었다.",
+    "abilities": [
+      {"kind": "spell",
+       "targets": [{"id": "t1", "kind": "creature", "controller": "any", "optional": true}],
+       "effects": [{"op": "roll", "sides": 20, "per_star": 2, "outcomes": [
+         {"min": 15, "label": "glory", "effects": [{"op": "destroy", "to": "creatures_opponent_controls"}]},
+         {"min": 6, "label": "single", "effects": [{"op": "destroy", "to": "t1"}]},
+         {"min": 1, "label": "disaster", "effects": [{"op": "destroy", "to": "creatures_you_control"}]}
+       ]}]}
+    ]
+  },
+  {
+    "id": "the_last_breath", "name": "The Last Breath", "name_ko": "마지막 숨",
+    "faction": "corsair", "cost": "4RR", "types": ["Artifact"],
+    "supertypes": ["Legendary"], "rarity": "relic",
+    "text": "At the beginning of your upkeep, create a 2/1 black Drowned Sailor token. Whenever a Pirate you control dies, deal 2 damage to each opponent.",
+    "text_ko": "당신의 유지단 시작에, 2/1 흑색 익사한 선원 토큰 하나를 만든다. 당신이 조종하는 해적이 죽을 때마다, 각 상대에게 2점의 피해를 입힌다.",
+    "flavor": "The muster roll has not changed in forty years. Neither has the crew.",
+    "flavor_ko": "승선 명부는 사십 년째 그대로다. 선원들도 그대로다.",
+    "abilities": [
+      {"kind": "triggered", "trigger": "upkeep",
+       "effects": [{"op": "token", "token": "token_drowned_sailor", "amount": 1}]},
+      {"kind": "triggered", "trigger": "other_dies",
+       "trigger_filter": {"controller": "you", "subtypes": ["Pirate"]},
+       "effects": [{"op": "damage", "amount": 2, "to": "each_opponent"}]}
+    ]
+  }
+]

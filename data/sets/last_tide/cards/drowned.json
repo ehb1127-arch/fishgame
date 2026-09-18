@@ -1,0 +1,513 @@
+[
+  {
+    "id": "drowned_deckhand",
+    "name": "Drowned Deckhand",
+    "name_ko": "익사한 갑판원",
+    "faction": "drowned",
+    "cost": "1B",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Zombie",
+      "Pirate"
+    ],
+    "power": 2,
+    "toughness": 1,
+    "depth": "midwater",
+    "rarity": "driftwood",
+    "text": "",
+    "flavor": "He still coils rope. There is no rope.",
+    "flavor_ko": "그는 아직도 밧줄을 감는다. 밧줄은 없다."
+  },
+  {
+    "id": "barnacle_horror",
+    "name": "Barnacle Horror",
+    "name_ko": "따개비 공포",
+    "faction": "drowned",
+    "cost": "3B",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Horror"
+    ],
+    "power": 3,
+    "toughness": 3,
+    "keywords": [
+      "Venomous"
+    ],
+    "depth": "abyss",
+    "rarity": "coral",
+    "text": "Venomous",
+    "text_ko": "맹독",
+    "flavor": "It was a hull once. The hull is still in there somewhere.",
+    "flavor_ko": "한때는 선체였다. 선체는 아직 그 안 어딘가에 있다."
+  },
+  {
+    "id": "gravecrawler_eel",
+    "name": "Gravecrawler Eel",
+    "name_ko": "무덤을 기는 뱀장어",
+    "faction": "drowned",
+    "cost": "2B",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Eel"
+    ],
+    "power": 3,
+    "toughness": 2,
+    "depth": "abyss",
+    "rarity": "driftwood",
+    "text": "When Gravecrawler Eel dies, each opponent loses 1 life.",
+    "text_ko": "죽을 때, 각 상대는 생명 1점을 잃는다.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "self_dies",
+        "effects": [
+          {
+            "op": "lose_life",
+            "amount": 1,
+            "per_star": 1,
+            "to": "each_opponent"
+          }
+        ]
+      }
+    ],
+    "upgrade": {
+      "milestones": {
+        "4": {
+          "keywords": [
+            "Venomous"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "anglers_lantern",
+    "name": "Angler's Lantern",
+    "name_ko": "아귀의 등불",
+    "faction": "drowned",
+    "cost": "2B",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Fish"
+    ],
+    "power": 1,
+    "toughness": 4,
+    "keywords": [
+      "Lure"
+    ],
+    "depth": "abyss",
+    "rarity": "pearl",
+    "text": "Lure",
+    "text_ko": "유인",
+    "flavor": "Everything in the dark swims toward a light. That is the whole trick.",
+    "flavor_ko": "어둠 속의 모든 것은 빛을 향해 헤엄친다. 속임수는 그것뿐이다.",
+    "upgrade": {
+      "milestones": {
+        "3": {
+          "keywords": [
+            "Venomous"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "salvage_crew",
+    "name": "Salvage Crew",
+    "name_ko": "인양 작업반",
+    "faction": "drowned",
+    "cost": "3B",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Zombie",
+      "Pirate"
+    ],
+    "power": 2,
+    "toughness": 3,
+    "depth": "midwater",
+    "rarity": "coral",
+    "text": "When Salvage Crew enters the battlefield, return target creature card from the wreck to your hand.",
+    "text_ko": "전장에 들어올 때, 난파선에서 목표 생물 카드 하나를 당신의 손으로 되돌린다.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "self_etb",
+        "effects": [
+          {
+            "op": "return_from_graveyard",
+            "to": "t1",
+            "zone": "hand"
+          }
+        ],
+        "targets": [
+          {
+            "id": "t1",
+            "kind": "card_in_graveyard",
+            "controller": "any",
+            "optional": true,
+            "filter": {
+              "types": [
+                "Creature"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "flavor": "They work the wreck their own ship became.",
+    "flavor_ko": "그들은 자기 배가 되어버린 난파선에서 일한다."
+  },
+  {
+    "id": "depth_charmer",
+    "name": "Depth Charmer",
+    "name_ko": "심해의 매혹자",
+    "faction": "drowned",
+    "cost": "4B",
+    "types": [
+      "Creature"
+    ],
+    "subtypes": [
+      "Siren"
+    ],
+    "power": 4,
+    "toughness": 4,
+    "depth": "abyss",
+    "rarity": "coral",
+    "text": "When Depth Charmer enters the battlefield, return target creature card from the wreck to your hand.",
+    "text_ko": "전장에 들어올 때, 난파선에서 목표 생물 카드 하나를 당신의 손으로 되돌린다.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "self_etb",
+        "targets": [
+          {
+            "id": "t1",
+            "kind": "card_in_graveyard",
+            "controller": "any",
+            "optional": true,
+            "filter": {
+              "types": [
+                "Creature"
+              ]
+            }
+          }
+        ],
+        "effects": [
+          {
+            "op": "return_from_graveyard",
+            "to": "t1",
+            "zone": "hand"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "abyssal_pact",
+    "name": "Abyssal Pact",
+    "name_ko": "심연의 계약",
+    "faction": "drowned",
+    "cost": "B",
+    "types": [
+      "Instant"
+    ],
+    "rarity": "driftwood",
+    "text": "Target creature gets -2/-2 until end of turn.",
+    "text_ko": "목표 생물은 턴 종료까지 -2/-2를 받는다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [
+          {
+            "id": "t1",
+            "kind": "creature",
+            "controller": "any"
+          }
+        ],
+        "effects": [
+          {
+            "op": "pump",
+            "power": -2,
+            "toughness": -2,
+            "per_star": -1,
+            "to": "t1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "crush_depth",
+    "name": "Crush Depth",
+    "name_ko": "압궤 수심",
+    "faction": "drowned",
+    "cost": "1B",
+    "types": [
+      "Instant"
+    ],
+    "rarity": "coral",
+    "text": "Destroy target creature in the Abyss.",
+    "text_ko": "심해에 있는 목표 생물 하나를 파괴한다.",
+    "flavor": "The sea does not need a weapon. It only needs you to go lower.",
+    "flavor_ko": "바다에는 무기가 필요 없다. 네가 더 내려가기만 하면 된다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [
+          {
+            "id": "t1",
+            "kind": "creature",
+            "controller": "any",
+            "filter": {
+              "depth": "abyss"
+            }
+          }
+        ],
+        "effects": [
+          {
+            "op": "destroy",
+            "to": "t1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "red_tide",
+    "name": "Red Tide",
+    "name_ko": "적조",
+    "faction": "drowned",
+    "cost": "3B",
+    "types": [
+      "Sorcery"
+    ],
+    "rarity": "pearl",
+    "text": "All creatures get -2/-2 until end of turn.",
+    "text_ko": "모든 생물은 턴 종료까지 -2/-2를 받는다.",
+    "flavor": "The water turned the colour of a wound, and everything in it turned over.",
+    "flavor_ko": "물이 상처 색으로 변했고, 그 안의 모든 것이 뒤집혔다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [
+          {
+            "op": "pump",
+            "power": -2,
+            "toughness": -2,
+            "per_star": -1,
+            "to": "all_creatures"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "feed_the_depths",
+    "name": "Feed the Depths",
+    "name_ko": "심연에 바치다",
+    "faction": "drowned",
+    "cost": "2B",
+    "types": [
+      "Sorcery"
+    ],
+    "rarity": "driftwood",
+    "text": "Each opponent discards a card and loses 2 life.",
+    "text_ko": "각 상대는 카드 한 장을 버리고 생명 2점을 잃는다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [
+          {
+            "op": "discard",
+            "amount": 1,
+            "to": "each_opponent"
+          },
+          {
+            "op": "lose_life",
+            "amount": 2,
+            "per_star": 1,
+            "to": "each_opponent"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the_drowning",
+    "name": "The Drowning",
+    "name_ko": "익사",
+    "faction": "drowned",
+    "cost": "4BB",
+    "types": [
+      "Sorcery"
+    ],
+    "rarity": "gold",
+    "text": "Each opponent discards their hand and loses 3 life. You lose 3 life.",
+    "text_ko": "각 상대는 손의 카드를 모두 버리고 생명 3점을 잃는다. 당신도 생명 3점을 잃는다.",
+    "flavor": "Morgaine woke the Heart to save one kingdom. The bill came due for all of them.",
+    "flavor_ko": "모르간은 한 왕국을 구하려 심장을 깨웠다. 청구서는 모든 왕국에 날아왔다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [
+          {
+            "op": "discard_hand",
+            "to": "each_opponent"
+          },
+          {
+            "op": "lose_life",
+            "amount": 3,
+            "to": "each_opponent"
+          },
+          {
+            "op": "lose_life",
+            "amount": 3,
+            "to": "controller"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "raise_the_wreck",
+    "name": "Raise the Wreck",
+    "name_ko": "난파선을 일으키다",
+    "faction": "drowned",
+    "cost": "3B",
+    "types": [
+      "Sorcery"
+    ],
+    "rarity": "pearl",
+    "salvage": 2,
+    "text": "Salvage 2. Return target creature card from the wreck to the battlefield under your control.",
+    "text_ko": "인양 2. 난파선에서 목표 생물 카드 하나를 당신의 조종하에 전장으로 되돌린다.",
+    "flavor": "Ownership is a surface idea.",
+    "flavor_ko": "소유권이란 수면 위에서나 통하는 개념이다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [
+          {
+            "op": "recover",
+            "amount": 1,
+            "zone": "battlefield",
+            "filter": {
+              "types": [
+                "Creature"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tidal_rot",
+    "name": "Tidal Rot",
+    "name_ko": "조류 부패",
+    "faction": "drowned",
+    "cost": "3BB",
+    "types": [
+      "Sorcery"
+    ],
+    "rarity": "coral",
+    "text": "Destroy target creature.",
+    "text_ko": "목표 생물 하나를 파괴한다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [
+          {
+            "id": "t1",
+            "kind": "creature",
+            "controller": "any"
+          }
+        ],
+        "effects": [
+          {
+            "op": "destroy",
+            "to": "t1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "queens_bargain",
+    "name": "Queen's Bargain",
+    "name_ko": "여왕의 거래",
+    "faction": "drowned",
+    "cost": "2B",
+    "types": [
+      "Instant"
+    ],
+    "rarity": "pearl",
+    "text": "Pay half your life, rounded down. Draw that many cards.",
+    "text_ko": "당신의 생명 절반(내림)을 지불한다. 그만큼 카드를 뽑는다.",
+    "flavor": "She has nothing left to lose, which is exactly what makes her dangerous.",
+    "flavor_ko": "그녀는 잃을 것이 없다. 바로 그 점이 그녀를 위험하게 만든다.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [
+          {
+            "op": "draw",
+            "amount": {
+              "dynamic": "half_life"
+            },
+            "to": "controller"
+          },
+          {
+            "op": "lose_life",
+            "amount": {
+              "dynamic": "half_life"
+            },
+            "to": "controller"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "grave_tithe",
+    "name": "Grave Tithe",
+    "name_ko": "무덤의 십일조",
+    "faction": "drowned",
+    "cost": "1B",
+    "types": [
+      "Enchantment"
+    ],
+    "rarity": "coral",
+    "text": "Whenever a creature dies, each opponent loses 1 life.",
+    "text_ko": "생물이 죽을 때마다, 각 상대는 생명 1점을 잃는다.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "other_dies",
+        "trigger_filter": {
+          "controller": "any",
+          "types": [
+            "Creature"
+          ]
+        },
+        "effects": [
+          {
+            "op": "lose_life",
+            "amount": 1,
+            "to": "each_opponent"
+          }
+        ]
+      }
+    ]
+  }
+]
