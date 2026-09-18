@@ -114,12 +114,15 @@ func setup(player_names: Array, decks: Array, seed_value: int = 0,
 		p.is_ai = i < ai_flags.size() and bool(ai_flags[i])
 		players.append(p)
 		var stars := (star_levels[i] as Dictionary) if i < star_levels.size() else {}
+		# A deck is either a plain list of cards or {"main": [...], "vault": [...]}.
 		var deck_entry: Variant = decks[i]
-		var main_deck: Array = deck_entry as Array
+		var main_deck: Array = []
 		var vault_cards: Array = []
 		if deck_entry is Dictionary:
 			main_deck = (deck_entry as Dictionary).get("main", []) as Array
 			vault_cards = (deck_entry as Dictionary).get("vault", []) as Array
+		elif deck_entry is Array:
+			main_deck = deck_entry as Array
 		for card_data in main_deck:
 			var level := int(stars.get(str((card_data as CardData).id), GameEnums.MIN_STARS))
 			var inst := CardInstance.create(_next_uid, card_data, i, level)
@@ -1555,8 +1558,8 @@ func _enforce_uniqueness() -> bool:
 			var key := str(c.data.id)
 			if seen.has(key):
 				var older: int = int(seen[key])
-				var loser := older if older < uid else uid
-				seen[key] = older if older > uid else uid
+				var loser: int = older if older < int(uid) else int(uid)
+				seen[key] = older if older > int(uid) else int(uid)
 				var doomed := get_card(loser)
 				if doomed != null and doomed.zone == GameEnums.Zone.BATTLEFIELD:
 					_send_to_graveyard(doomed, "uniqueness rule")

@@ -153,7 +153,7 @@ static func execute_one(game, effect: Dictionary, ctx: Dictionary) -> void:
 
 		"add_mana":
 			var symbols := effect.get("mana", []) as Array
-			var player := game.get_player(controller)
+			var player: PlayerState = game.get_player(controller)
 			for sym in symbols:
 				player.mana_pool.add(str(sym), 1)
 			game.log_event("mana", {"player": controller, "pool": str(player.mana_pool)})
@@ -340,7 +340,7 @@ static func _execute_roll(game, effect: Dictionary, ctx: Dictionary) -> void:
 	var controller := int(ctx.get("controller", 0))
 	var sides := int(effect.get("sides", 6))
 	var count := int(effect.get("count", 1))
-	var total := game.roll_dice(controller, sides, count)
+	var total: int = game.roll_dice(controller, sides, count)
 	# Upgrading a gambling card tilts the odds in your favour.
 	total += star_bonus(effect, ctx)
 
@@ -587,7 +587,7 @@ static func check_condition(game, cond: Dictionary, ctx: Dictionary) -> bool:
 			return game.get_player(controller).hand.size() <= int(cond.get("value", 0))
 		"tide":
 			var want := str(cond.get("value", "high")).to_lower()
-			var is_high := game.tide == GameEnums.Tide.HIGH
+			var is_high: bool = game.tide == GameEnums.Tide.HIGH
 			return is_high if want == "high" else not is_high
 		"source_in_band":
 			if source == null:

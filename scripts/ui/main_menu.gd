@@ -240,7 +240,7 @@ func _show_shop() -> void:
 				continue
 			var price := Shop.price_in(entry, currency)
 			var captured_id := str(entry["id"])
-			var captured_currency := currency
+			var captured_currency: Currency.Kind = currency
 			var button := Button.new()
 			button.text = "%s — %d %s" % [name, price, Currency.label(currency, true)]
 			button.disabled = not Player.can_afford(currency, price)

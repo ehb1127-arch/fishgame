@@ -183,7 +183,7 @@ static func _attacker_assignments(game, attacker: CardInstance) -> Array:
 		# attacker deals no damage unless it has Breach.
 		if attacker.was_blocked and not attacker.has_keyword(GameEnums.KW_BREACH):
 			return out
-		var champion := game.get_card(attacker.attack_target_uid) if attacker.attack_target_uid > 0 else null
+		var champion: CardInstance = game.get_card(attacker.attack_target_uid) if attacker.attack_target_uid > 0 else null
 		if champion != null and champion.zone == GameEnums.Zone.BATTLEFIELD:
 			out.append({"source": attacker, "target": champion, "amount": attacker.eff_power})
 		else:
@@ -198,14 +198,14 @@ static func _attacker_assignments(game, attacker: CardInstance) -> Array:
 			break
 		# One damage is lethal with deathtouch; otherwise assign what is left
 		# of the blocker's toughness.
-		var lethal := 1 if deathtouch else max(1, b.eff_toughness - b.damage)
+		var lethal: int = 1 if deathtouch else maxi(1, b.eff_toughness - b.damage)
 		var assign: int = min(remaining, lethal)
 		out.append({"source": attacker, "target": b, "amount": assign})
 		remaining -= assign
 
 	if remaining > 0:
 		if attacker.has_keyword(GameEnums.KW_BREACH):
-			var champion := game.get_card(attacker.attack_target_uid) if attacker.attack_target_uid > 0 else null
+			var champion: CardInstance = game.get_card(attacker.attack_target_uid) if attacker.attack_target_uid > 0 else null
 			if champion != null and champion.zone == GameEnums.Zone.BATTLEFIELD:
 				out.append({"source": attacker, "target": champion, "amount": remaining})
 			else:

@@ -62,7 +62,7 @@ func decide(game) -> GameAction:
 ## --- Mulligan ------------------------------------------------------------
 
 func _decide_mulligan(game) -> GameAction:
-	var hand := game.get_player(player_index).hand
+	var hand: Array[int] = game.get_player(player_index).hand
 	var lands := 0
 	for uid in hand:
 		if game.get_card(uid).data.is_land():
@@ -77,7 +77,7 @@ func _decide_mulligan(game) -> GameAction:
 ## --- Priority ------------------------------------------------------------
 
 func _decide_priority(game) -> GameAction:
-	var actions := game.get_legal_actions(player_index)
+	var actions: Array[GameAction] = game.get_legal_actions(player_index)
 	if actions.is_empty():
 		return GameAction.pass_priority(player_index)
 
@@ -126,7 +126,7 @@ func _score_cast(game, action: GameAction) -> float:
 	if card == null:
 		return 0.0
 	var data := card.data
-	var sorcery_speed := game.can_act_at_sorcery_speed(player_index)
+	var sorcery_speed: bool = game.can_act_at_sorcery_speed(player_index)
 
 	# Creatures and permanents: play them on your own turn, biggest first.
 	if data.is_permanent():
@@ -148,8 +148,8 @@ func _score_cast(game, action: GameAction) -> float:
 	# Instants are held until the opponent's turn unless they are about to be
 	# wasted, which is most of what separates HARD from NORMAL.
 	if data.is_instant_speed() and skill >= Skill.HARD:
-		var opponent_turn := game.active_player_index != player_index
-		var in_combat := game.current_step == GameEnums.Step.DECLARE_BLOCKERS \
+		var opponent_turn: bool = game.active_player_index != player_index
+		var in_combat: bool = game.current_step == GameEnums.Step.DECLARE_BLOCKERS \
 			or game.current_step == GameEnums.Step.DECLARE_ATTACKERS
 		if not opponent_turn and not in_combat:
 			return value * 0.35
@@ -191,7 +191,7 @@ func _spell_value(game, action: GameAction, data: CardData) -> float:
 
 
 func _score_mass_effect(game, effect: Dictionary) -> float:
-	var selector := effect.get("to", "")
+	var selector: Variant = effect.get("to", "")
 	if not (selector is String):
 		return 0.0
 	var op := str(effect.get("op", ""))
@@ -315,8 +315,8 @@ func _is_behind(game) -> bool:
 ## --- Attacking -----------------------------------------------------------
 
 func _decide_attackers(game) -> GameAction:
-	var candidates := game.possible_attackers(player_index)
-	var enemies := game.opponents_of(player_index)
+	var candidates: Array[int] = game.possible_attackers(player_index)
+	var enemies: Array[int] = game.opponents_of(player_index)
 	if candidates.is_empty() or enemies.is_empty():
 		return GameAction.declare_attackers(player_index, {})
 
@@ -393,18 +393,18 @@ func _blockers_that_could_stop(game, attacker: CardInstance, defender: int) -> A
 ## --- Blocking ------------------------------------------------------------
 
 func _decide_blocks(game) -> GameAction:
-	var options := game.possible_blocks(player_index)
+	var options: Dictionary = game.possible_blocks(player_index)
 	var assignment := {}
 	if options.is_empty():
 		return GameAction.declare_blockers(player_index, assignment)
 
-	var life := game.get_player(player_index).life
+	var life: int = game.get_player(player_index).life
 	var incoming := 0
 	for uid in game.attacking_uids():
 		var a: CardInstance = game.get_card(uid)
 		if a != null and a.attack_target == player_index:
 			incoming += a.eff_power
-	var must_block := incoming >= life
+	var must_block: bool = incoming >= life
 
 	# Lure attackers have to be blocked if anything can, so handle them first.
 	var claimed := {}

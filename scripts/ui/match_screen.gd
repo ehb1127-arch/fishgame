@@ -11,6 +11,9 @@ const AI_THINK_DELAY := 0.35
 var game: Game = null
 var ai_players: Dictionary = {}
 var human_index: int = 0
+## Off in tests, where the screen is driven step by step and the thinking
+## pause would only make the suite slow.
+var auto_play_ai: bool = true
 
 var _turn_time_left: float = 0.0
 var _clock_running: bool = false
@@ -25,7 +28,7 @@ var _clock_label: Label
 
 
 func _ready() -> void:
-	_build_layout()
+	_ensure_layout()
 	if game == null:
 		start_match("corsair_fleet", "leviathan_brood", AIPlayer.Skill.NORMAL, MatchRules.standard())
 
@@ -36,6 +39,9 @@ func start_match(player_deck: String, opponent_deck: String,
 		ai_skill: AIPlayer.Skill = AIPlayer.Skill.NORMAL,
 		rules: MatchRules = null, seed_value: int = 0,
 		star_levels: Dictionary = {}) -> void:
+	# A caller can start a match before the node has entered the tree, so
+	# make sure the widgets exist before anything tries to draw into them.
+	_ensure_layout()
 	game = Game.new()
 	game.setup(
 		[Player.display_name, "Opponent"],
@@ -53,6 +59,12 @@ func start_match(player_deck: String, opponent_deck: String,
 
 
 ## --- Layout --------------------------------------------------------------
+
+## Builds the widgets once, whoever asks first.
+func _ensure_layout() -> void:
+	if _status == null:
+		_build_layout()
+
 
 func _build_layout() -> void:
 	if _root == null:
@@ -120,6 +132,8 @@ func _on_state_changed() -> void:
 	var index := game.awaiting_player()
 	if ai_players.has(index):
 		_clock_running = false
+		if not auto_play_ai:
+			return
 		await get_tree().create_timer(AI_THINK_DELAY).timeout
 		_take_ai_turn(index)
 	else:
@@ -138,6 +152,8 @@ func _take_ai_turn(index: int) -> void:
 
 
 func _refresh_status() -> void:
+	if _status == null:
+		return
 	var me := game.get_player(human_index)
 	var them := game.get_player(game.opponent_of(human_index))
 	_status.text = "턴 %d · %s · %s | %s %d점 (손 %d) vs %s %d점 (손 %d) | 난파선 %d장" % [
@@ -151,6 +167,8 @@ func _refresh_status() -> void:
 
 
 func _refresh_board() -> void:
+	if _board == null:
+		return
 	var lines: Array[String] = []
 	for index in [game.opponent_of(human_index), human_index]:
 		var p := game.get_player(index)
@@ -218,7 +236,10 @@ func _describe_permanent(c: CardInstance) -> String:
 ## --- Actions -------------------------------------------------------------
 
 func _refresh_actions() -> void:
+	if _actions == null:
+		return
 	for child in _actions.get_children():
+		_actions.remove_child(child)
 		child.queue_free()
 
 	if game.is_over():
@@ -340,6 +361,8 @@ func _add_label(text: String) -> void:
 ## --- Log -----------------------------------------------------------------
 
 func _refresh_log() -> void:
+	if _log == null:
+		return
 	var lines: Array[String] = []
 	var start: int = maxi(0, game.event_log.size() - 24)
 	for i in range(start, game.event_log.size()):
@@ -395,6 +418,8 @@ func _card_name(uid: int) -> String:
 ## --- The clock -----------------------------------------------------------
 
 func _start_clock() -> void:
+	if _clock_bar == null or _clock_label == null:
+		return
 	if game == null or not game.rules.has_clock():
 		_clock_label.text = ""
 		_clock_bar.value = 0

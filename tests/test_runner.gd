@@ -19,6 +19,7 @@ func _ready() -> void:
 	TestRules.run(t)
 	TestMeta.run(t)
 	TestAI.run(t)
+	TestUI.run(t, get_tree())
 
 	print(t.report())
 	get_tree().quit(0 if t.failed == 0 else 1)
