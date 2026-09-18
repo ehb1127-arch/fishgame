@@ -1,0 +1,103 @@
+[
+  {
+    "id": "kelp_sprout",
+    "name": "Kelp Sprout",
+    "cost": "G",
+    "types": ["Creature"],
+    "subtypes": ["Plant"],
+    "power": 1,
+    "toughness": 1,
+    "text": "When Kelp Sprout enters the battlefield, search your library for a basic land card and put it into your hand.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "self_etb",
+        "effects": [{"op": "search_basic_land", "zone": "hand"}]
+      }
+    ]
+  },
+  {
+    "id": "coral_grazer",
+    "name": "Coral Grazer",
+    "cost": "2G",
+    "types": ["Creature"],
+    "subtypes": ["Turtle"],
+    "power": 3,
+    "toughness": 3,
+    "text": ""
+  },
+  {
+    "id": "kelp_weaver",
+    "name": "Kelp Weaver",
+    "cost": "3G",
+    "types": ["Creature"],
+    "subtypes": ["Elemental"],
+    "power": 4,
+    "toughness": 4,
+    "keywords": ["Vigilance"],
+    "text": "Vigilance"
+  },
+  {
+    "id": "titan_barnacle",
+    "name": "Titan Barnacle",
+    "cost": "4G",
+    "types": ["Creature"],
+    "subtypes": ["Crab"],
+    "power": 6,
+    "toughness": 6,
+    "keywords": ["Reach"],
+    "text": "Reach"
+  },
+  {
+    "id": "ancient_leviathan",
+    "name": "Ancient Leviathan",
+    "cost": "5GG",
+    "types": ["Creature"],
+    "subtypes": ["Leviathan"],
+    "power": 8,
+    "toughness": 8,
+    "keywords": ["Trample"],
+    "text": "Trample"
+  },
+  {
+    "id": "growth_surge",
+    "name": "Growth Surge",
+    "cost": "1G",
+    "types": ["Instant"],
+    "text": "Target creature gets +3/+3 until end of turn.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [{"id": "t1", "kind": "creature", "controller": "you"}],
+        "effects": [{"op": "pump", "power": 3, "toughness": 3, "to": "t1"}]
+      }
+    ]
+  },
+  {
+    "id": "surge_of_the_deep",
+    "name": "Surge of the Deep",
+    "cost": "2G",
+    "types": ["Instant"],
+    "text": "Target creature gets +2/+2 and gains trample until end of turn.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [{"id": "t1", "kind": "creature", "controller": "you"}],
+        "effects": [{"op": "pump", "power": 2, "toughness": 2, "keywords": ["Trample"], "to": "t1"}]
+      }
+    ]
+  },
+  {
+    "id": "tidepool_bloom",
+    "name": "Tidepool Bloom",
+    "cost": "1G",
+    "types": ["Sorcery"],
+    "text": "Search your library for a basic land card and put it onto the battlefield tapped.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [{"op": "search_basic_land", "zone": "battlefield", "tapped": true}]
+      }
+    ]
+  }
+]

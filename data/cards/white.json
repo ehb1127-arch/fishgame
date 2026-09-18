@@ -1,0 +1,97 @@
+[
+  {
+    "id": "coral_guardian",
+    "name": "Coral Guardian",
+    "cost": "1W",
+    "types": ["Creature"],
+    "subtypes": ["Soldier"],
+    "power": 1,
+    "toughness": 3,
+    "keywords": ["Vigilance"],
+    "text": "Vigilance"
+  },
+  {
+    "id": "reef_warden",
+    "name": "Reef Warden",
+    "cost": "2W",
+    "types": ["Creature"],
+    "subtypes": ["Bird", "Soldier"],
+    "power": 2,
+    "toughness": 2,
+    "keywords": ["Flying", "Lifelink"],
+    "text": "Flying, lifelink"
+  },
+  {
+    "id": "lantern_angler",
+    "name": "Lantern Angler",
+    "cost": "3W",
+    "types": ["Creature"],
+    "subtypes": ["Fish"],
+    "power": 3,
+    "toughness": 3,
+    "keywords": ["Flying"],
+    "text": "Flying"
+  },
+  {
+    "id": "coral_anthem",
+    "name": "Coral Anthem",
+    "cost": "2W",
+    "types": ["Enchantment"],
+    "text": "Creatures you control get +1/+1.",
+    "abilities": [
+      {
+        "kind": "static",
+        "effect": {
+          "type": "pt_boost",
+          "power": 1,
+          "toughness": 1,
+          "affects": {"kind": "creature", "controller": "you"}
+        }
+      }
+    ]
+  },
+  {
+    "id": "tidal_blessing",
+    "name": "Tidal Blessing",
+    "cost": "W",
+    "types": ["Instant"],
+    "text": "Target creature gets +2/+2 and gains lifelink until end of turn.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [{"id": "t1", "kind": "creature", "controller": "you"}],
+        "effects": [{"op": "pump", "power": 2, "toughness": 2, "keywords": ["Lifelink"], "to": "t1"}]
+      }
+    ]
+  },
+  {
+    "id": "purify_the_shoals",
+    "name": "Purify the Shoals",
+    "cost": "2W",
+    "types": ["Sorcery"],
+    "text": "Destroy target creature with power 4 or greater.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [{
+          "id": "t1", "kind": "creature", "controller": "any",
+          "filter": {"min_power": 4}
+        }],
+        "effects": [{"op": "destroy", "to": "t1"}]
+      }
+    ]
+  },
+  {
+    "id": "schools_call",
+    "name": "School's Call",
+    "cost": "3W",
+    "types": ["Sorcery"],
+    "text": "Create two 1/1 blue Fish creature tokens.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [{"op": "token", "token": "fish_token", "amount": 2}]
+      }
+    ]
+  }
+]

@@ -1,0 +1,119 @@
+[
+  {
+    "id": "reef_scout",
+    "name": "Reef Scout",
+    "cost": "1U",
+    "types": ["Creature"],
+    "subtypes": ["Merfolk", "Scout"],
+    "power": 2,
+    "toughness": 1,
+    "text": "",
+    "flavor": "First down, last back."
+  },
+  {
+    "id": "tide_caller",
+    "name": "Tide Caller",
+    "cost": "U",
+    "types": ["Creature"],
+    "subtypes": ["Merfolk", "Wizard"],
+    "power": 1,
+    "toughness": 1,
+    "text": "Other Merfolk and Fish you control get +0/+1.",
+    "abilities": [
+      {
+        "kind": "static",
+        "effect": {
+          "type": "pt_boost",
+          "power": 0,
+          "toughness": 1,
+          "include_self": false,
+          "affects": {
+            "kind": "creature",
+            "controller": "you",
+            "filter": {"subtypes": ["Merfolk", "Fish"]}
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "abyssal_drifter",
+    "name": "Abyssal Drifter",
+    "cost": "2U",
+    "types": ["Creature"],
+    "subtypes": ["Jellyfish"],
+    "power": 2,
+    "toughness": 3,
+    "keywords": ["Flying"],
+    "text": "Flying"
+  },
+  {
+    "id": "school_caller",
+    "name": "School Caller",
+    "cost": "3U",
+    "types": ["Creature"],
+    "subtypes": ["Merfolk", "Wizard"],
+    "power": 2,
+    "toughness": 2,
+    "text": "When School Caller enters the battlefield, create two 1/1 blue Fish creature tokens.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "self_etb",
+        "effects": [{"op": "token", "token": "fish_token", "amount": 2}]
+      }
+    ]
+  },
+  {
+    "id": "kraken_of_the_trench",
+    "name": "Kraken of the Trench",
+    "cost": "5UU",
+    "types": ["Creature"],
+    "subtypes": ["Kraken"],
+    "power": 7,
+    "toughness": 7,
+    "keywords": ["Trample"],
+    "text": "Trample"
+  },
+  {
+    "id": "undertow",
+    "name": "Undertow",
+    "cost": "1U",
+    "types": ["Instant"],
+    "text": "Return target creature to its owner's hand.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [{"id": "t1", "kind": "creature", "controller": "any"}],
+        "effects": [{"op": "bounce", "to": "t1"}]
+      }
+    ]
+  },
+  {
+    "id": "deep_current",
+    "name": "Deep Current",
+    "cost": "2U",
+    "types": ["Instant"],
+    "text": "Counter target spell.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [{"id": "t1", "kind": "spell", "controller": "opponent"}],
+        "effects": [{"op": "counter_spell", "to": "t1"}]
+      }
+    ]
+  },
+  {
+    "id": "sirens_lure",
+    "name": "Siren's Lure",
+    "cost": "1U",
+    "types": ["Instant"],
+    "text": "Draw two cards.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [{"op": "draw", "amount": 2, "to": "controller"}]
+      }
+    ]
+  }
+]

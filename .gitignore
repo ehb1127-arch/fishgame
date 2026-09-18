@@ -1,0 +1,19 @@
+# Godot 4+
+.godot/
+/android/
+export_presets.cfg.local
+!export_presets.cfg
+
+# Exports
+/builds/
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

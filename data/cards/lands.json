@@ -1,0 +1,86 @@
+[
+  {
+    "id": "coral_shallows",
+    "name": "Coral Shallows",
+    "cost": "0",
+    "types": ["Land"],
+    "supertypes": ["Basic"],
+    "colors": [],
+    "text": "Tap: Add W.",
+    "abilities": [
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["W"]}
+    ]
+  },
+  {
+    "id": "sunless_trench",
+    "name": "Sunless Trench",
+    "cost": "0",
+    "types": ["Land"],
+    "supertypes": ["Basic"],
+    "colors": [],
+    "text": "Tap: Add U.",
+    "abilities": [
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["U"]}
+    ]
+  },
+  {
+    "id": "rotting_kelp_bed",
+    "name": "Rotting Kelp Bed",
+    "cost": "0",
+    "types": ["Land"],
+    "supertypes": ["Basic"],
+    "colors": [],
+    "text": "Tap: Add B.",
+    "abilities": [
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["B"]}
+    ]
+  },
+  {
+    "id": "volcanic_vent",
+    "name": "Volcanic Vent",
+    "cost": "0",
+    "types": ["Land"],
+    "supertypes": ["Basic"],
+    "colors": [],
+    "text": "Tap: Add R.",
+    "abilities": [
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["R"]}
+    ]
+  },
+  {
+    "id": "kelp_forest",
+    "name": "Kelp Forest",
+    "cost": "0",
+    "types": ["Land"],
+    "supertypes": ["Basic"],
+    "colors": [],
+    "text": "Tap: Add G.",
+    "abilities": [
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["G"]}
+    ]
+  },
+  {
+    "id": "sunken_delta",
+    "name": "Sunken Delta",
+    "cost": "0",
+    "types": ["Land"],
+    "colors": [],
+    "text": "Sunken Delta enters the battlefield tapped. Tap: Add U or B.",
+    "abilities": [
+      {"kind": "static", "effect": {"type": "enters_tapped"}},
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["U", "B"]}
+    ]
+  },
+  {
+    "id": "smoldering_shoal",
+    "name": "Smoldering Shoal",
+    "cost": "0",
+    "types": ["Land"],
+    "colors": [],
+    "text": "Smoldering Shoal enters the battlefield tapped. Tap: Add R or G.",
+    "abilities": [
+      {"kind": "static", "effect": {"type": "enters_tapped"}},
+      {"kind": "mana", "cost": {"tap": true}, "produces": ["R", "G"]}
+    ]
+  }
+]

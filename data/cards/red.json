@@ -1,0 +1,120 @@
+[
+  {
+    "id": "powder_monkey",
+    "name": "Powder Monkey",
+    "cost": "1R",
+    "types": ["Creature"],
+    "subtypes": ["Monkey", "Pirate"],
+    "power": 2,
+    "toughness": 1,
+    "keywords": ["Haste"],
+    "text": "Haste"
+  },
+  {
+    "id": "harpoon_gunner",
+    "name": "Harpoon Gunner",
+    "cost": "2R",
+    "types": ["Creature"],
+    "subtypes": ["Human", "Pirate"],
+    "power": 2,
+    "toughness": 2,
+    "text": "When Harpoon Gunner enters the battlefield, it deals 1 damage to any target.",
+    "abilities": [
+      {
+        "kind": "triggered",
+        "trigger": "self_etb",
+        "targets": [{"id": "t1", "kind": "any", "controller": "opponent"}],
+        "effects": [{"op": "damage", "amount": 1, "to": "t1"}]
+      }
+    ]
+  },
+  {
+    "id": "reef_raider",
+    "name": "Reef Raider",
+    "cost": "2R",
+    "types": ["Creature"],
+    "subtypes": ["Orc", "Pirate"],
+    "power": 3,
+    "toughness": 2,
+    "keywords": ["Menace"],
+    "text": "Menace"
+  },
+  {
+    "id": "corsair_captain",
+    "name": "Corsair Captain",
+    "cost": "2RR",
+    "types": ["Creature"],
+    "subtypes": ["Human", "Pirate"],
+    "power": 3,
+    "toughness": 3,
+    "text": "Other Pirates you control get +1/+0.",
+    "abilities": [
+      {
+        "kind": "static",
+        "effect": {
+          "type": "pt_boost",
+          "power": 1,
+          "toughness": 0,
+          "include_self": false,
+          "affects": {
+            "kind": "creature",
+            "controller": "you",
+            "filter": {"subtypes": ["Pirate"]}
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "boarding_party",
+    "name": "Boarding Party",
+    "cost": "4R",
+    "types": ["Creature"],
+    "subtypes": ["Orc", "Pirate"],
+    "power": 5,
+    "toughness": 4,
+    "keywords": ["Haste", "Trample"],
+    "text": "Haste, trample"
+  },
+  {
+    "id": "cannon_volley",
+    "name": "Cannon Volley",
+    "cost": "1R",
+    "types": ["Instant"],
+    "text": "Cannon Volley deals 3 damage to any target.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [{"id": "t1", "kind": "any", "controller": "any"}],
+        "effects": [{"op": "damage", "amount": 3, "to": "t1"}]
+      }
+    ]
+  },
+  {
+    "id": "powder_keg_blast",
+    "name": "Powder Keg Blast",
+    "cost": "R",
+    "types": ["Instant"],
+    "text": "Powder Keg Blast deals 2 damage to target creature.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "targets": [{"id": "t1", "kind": "creature", "controller": "any"}],
+        "effects": [{"op": "damage", "amount": 2, "to": "t1"}]
+      }
+    ]
+  },
+  {
+    "id": "burning_tide",
+    "name": "Burning Tide",
+    "cost": "3R",
+    "types": ["Sorcery"],
+    "text": "Burning Tide deals 2 damage to each creature your opponents control.",
+    "abilities": [
+      {
+        "kind": "spell",
+        "effects": [{"op": "damage", "amount": 2, "to": "creatures_opponent_controls"}]
+      }
+    ]
+  }
+]
