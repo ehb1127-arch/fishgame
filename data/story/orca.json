@@ -1,0 +1,59 @@
+{
+  "id": "orca",
+  "faction": "brood",
+  "champion": "orca_warden_of_the_heart",
+  "name": "Orca, Warden of the Heart",
+  "name_ko": "오르카, 심장의 수호자",
+  "chapters": [
+    {
+      "title": "The First Stalk",
+      "title_ko": "최초의 줄기",
+      "unlock": {
+        "type": "own_faction_cards",
+        "count": 1
+      },
+      "text_ko": "거대군은 심장이 낳았다. 오르카가 첫째다. 그는 켈프 숲의 첫 줄기를 심었고, 왜 심었는지 기억하지 못한다.\n\n그는 심장을 지킨다. 누구도 그 이유를 물어본 적이 없다.",
+      "text": "The Brood came from the Heart. Orca was first. He planted the first stalk of the kelp forest and does not remember why."
+    },
+    {
+      "title": "The Siblings",
+      "title_ko": "형제들",
+      "unlock": {
+        "type": "clear_region",
+        "region": 1
+      },
+      "text_ko": "고대 리바이어던들은 오르카의 형제다. 그는 그들에 대해 말하지 않는다.\n\n그들은 전부 심장을 등지고 바깥을 향해 있다. 지키는 자의 자세가 아니다. 가두는 자의 자세다.",
+      "text": "The ancient leviathans are Orca's siblings. He does not speak of them. They all face outward, backs to the Heart — the posture of a jailer, not a guard."
+    },
+    {
+      "title": "Which Way the Door Faces",
+      "title_ko": "문이 열리는 방향",
+      "unlock": {
+        "type": "own_faction_cards",
+        "count": 10
+      },
+      "text_ko": "심장 주위의 산호와 켈프와 뼈는 무작위로 자란 것이 아니다. 위에서 보면 그것은 격자다. 봉쇄선이다.\n\n그리고 압력은 바깥에서 안으로가 아니라, 안에서 바깥으로 밀고 있다.",
+      "text": "The coral and kelp and bone around the Heart did not grow at random. From above it is a lattice. A containment. And the pressure pushes outward, not in."
+    },
+    {
+      "title": "It Wants to Wake",
+      "title_ko": "그것은 깨어나고 싶어 한다",
+      "unlock": {
+        "type": "clear_voyage",
+        "champion": true
+      },
+      "text_ko": "오르카는 심장을 지키는 것이 아니다. 가두고 있다.\n\n심장은 깨어나고 싶어 한다. 오르카는 그것이 깨어나면 무슨 일이 일어나는지 아는 유일한 존재다 — 그것이 그를 만들었을 때 보여주었기 때문이다. 그는 적이 아니다. 마지막 방벽이다.",
+      "text": "Orca does not guard the Heart. He contains it. It wants to wake, and he is the only one who knows what happens when it does, because it showed him while it was making him."
+    },
+    {
+      "title": "The Ark",
+      "title_ko": "방주",
+      "unlock": {
+        "type": "all_arcs",
+        "chapter": 4
+      },
+      "text_ko": "방주가 깨어난다는 것은 저장된 모든 것을 내보낸다는 뜻이다. 범람 이전의 세계 전부를. 사람, 도시, 대륙, 하늘.\n\n그것들이 나올 자리는 없다. 이 바다에는 이미 다른 것들이 살고 있다.\n\n오르카는 이백 년 동안 그 사실을 혼자 알고 있었다. 그리고 다섯 진영 중 누구도 완전히 옳지 않다는 것도.",
+      "text": "For the ark to wake is for it to release what it stored: the world before the flood, all of it. There is no room. Something else lives here now. Orca has known this alone for two hundred years."
+    }
+  ]
+}

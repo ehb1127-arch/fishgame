@@ -1,0 +1,85 @@
+{
+  "id": "descent",
+  "name": "The Descent",
+  "name_ko": "하강",
+  "description": "Five regions, each deeper than the last. Your life carries over; only some of it comes back between fights.",
+  "description_ko": "다섯 구역, 갈수록 깊어진다. 생명은 이월되며, 전투 사이에 일부만 회복된다.",
+  "starting_life": 25,
+  "heal_between_stages": 6,
+  "heal_after_boss": 12,
+  "regions": [
+    {
+      "id": "upper_reach", "name": "Upper Reach", "name_ko": "상해",
+      "flavor": "Sunlight, and everything that still wants it.",
+      "flavor_ko": "햇빛, 그리고 아직 그것을 원하는 모든 것.",
+      "stages": [
+        {"name": "Shoal Patrol", "name_ko": "여울 순찰대", "deck": "coral_concord",
+         "ai": "easy", "life": 18, "stars": 1},
+        {"name": "Scavenger Crew", "name_ko": "고물 수집단", "deck": "corsair_fleet",
+         "ai": "easy", "life": 20, "stars": 1}
+      ]
+    },
+    {
+      "id": "wreckline", "name": "The Wreckline", "name_ko": "난파선 지대",
+      "flavor": "Everything that sank is still down here, and some of it still works.",
+      "flavor_ko": "가라앉은 모든 것이 아직 여기 있고, 그중 일부는 아직 작동한다.",
+      "stages": [
+        {"name": "Salvage Gang", "name_ko": "인양 패거리", "deck": "the_drowned",
+         "ai": "normal", "life": 22, "stars": 2},
+        {"name": "Hull Breakers", "name_ko": "선체 파괴자", "deck": "corsair_fleet",
+         "ai": "normal", "life": 24, "stars": 2},
+        {"name": "The Dredger", "name_ko": "준설자", "deck": "the_drowned",
+         "ai": "normal", "life": 26, "stars": 2,
+         "gimmick": {"type": "wreck_start", "amount": 6,
+                     "text": "The wreck starts six cards deep.",
+                     "text_ko": "난파선이 여섯 장 쌓인 채로 시작한다."}}
+      ]
+    },
+    {
+      "id": "the_vents", "name": "The Vents", "name_ko": "열수 지대",
+      "flavor": "Life without sunlight. It does not look like yours.",
+      "flavor_ko": "햇빛 없는 생명. 당신의 것과는 닮지 않았다.",
+      "stages": [
+        {"name": "Vent Crawlers", "name_ko": "분출구를 기는 것들", "deck": "leviathan_brood",
+         "ai": "normal", "life": 26, "stars": 2},
+        {"name": "Boiling Front", "name_ko": "비등 전선", "deck": "corsair_fleet",
+         "ai": "hard", "life": 28, "stars": 3,
+         "gimmick": {"type": "burn_each_upkeep", "amount": 1,
+                     "text": "Both players lose 1 life each upkeep.",
+                     "text_ko": "양쪽 모두 매 유지단마다 생명 1점을 잃는다."}},
+        {"name": "Conclave Survey", "name_ko": "학회 조사대", "deck": "abyssal_conclave",
+         "ai": "hard", "life": 28, "stars": 3}
+      ]
+    },
+    {
+      "id": "the_abyss", "name": "The Abyss", "name_ko": "심연",
+      "flavor": "Pressure stops being weather and starts being an opinion about you.",
+      "flavor_ko": "수압은 날씨이기를 그만두고 당신에 대한 의견이 된다.",
+      "stages": [
+        {"name": "Trench Wardens", "name_ko": "해구 파수대", "deck": "leviathan_brood",
+         "ai": "hard", "life": 30, "stars": 3,
+         "gimmick": {"type": "abyss_bonus", "amount": 1,
+                     "text": "Abyss creatures get +1/+1.",
+                     "text_ko": "심해의 생물은 +1/+1을 받는다."}},
+        {"name": "The Reader's Circle", "name_ko": "독서회", "deck": "abyssal_conclave",
+         "ai": "hard", "life": 30, "stars": 4,
+         "gimmick": {"type": "turn_clock", "seconds": 15,
+                     "text": "You get 15 seconds a turn.",
+                     "text_ko": "당신의 턴 제한 시간은 15초다."}}
+      ]
+    },
+    {
+      "id": "the_heart", "name": "Before the Heart", "name_ko": "심장 앞",
+      "flavor": "It is beating. It has been beating the whole way down.",
+      "flavor_ko": "뛰고 있다. 내려오는 내내 뛰고 있었다.",
+      "stages": [
+        {"name": "Orca, Warden of the Heart", "name_ko": "오르카, 심장의 수호자",
+         "deck": "leviathan_brood", "ai": "boss", "life": 40, "stars": 5,
+         "boss": true, "champion": "orca_warden_of_the_heart",
+         "gimmick": {"type": "abyss_bonus", "amount": 2,
+                     "text": "Orca's creatures in the Abyss get +2/+2, and he begins with his Champion in play.",
+                     "text_ko": "오르카의 심해 생물은 +2/+2를 받으며, 영웅을 전장에 둔 채로 시작한다."}}
+      ]
+    }
+  ]
+}

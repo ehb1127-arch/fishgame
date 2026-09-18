@@ -1,0 +1,59 @@
+{
+  "id": "kai",
+  "faction": "corsair",
+  "champion": "captain_kai_the_last_sailor",
+  "name": "Captain Kai, the Last Sailor",
+  "name_ko": "케이 선장, 마지막 뱃사람",
+  "chapters": [
+    {
+      "title": "Muster",
+      "title_ko": "점호",
+      "unlock": {
+        "type": "own_faction_cards",
+        "count": 1
+      },
+      "text_ko": "선단은 배 열두 척으로 시작했다. 지금은 한 척이다. 「마지막 숨」. 케이 선장은 매일 아침 점호를 하고, 모든 이름이 대답한다.\n\n그의 계획은 간단하다. 심장을 부순다. 물이 빠진다. 육지가 돌아온다.",
+      "text": "The Fleet began with twelve ships. It has one. Kai calls the roll every morning and every name answers."
+    },
+    {
+      "title": "Forty Years",
+      "title_ko": "사십 년",
+      "unlock": {
+        "type": "clear_region",
+        "region": 1
+      },
+      "text_ko": "승선 명부는 사십 년째 바뀌지 않았다. 아무도 죽지 않았고 아무도 떠나지 않았다. 선원들은 그것을 행운이라 부른다.\n\n다른 배의 생존자가 「마지막 숨」에 올랐다가, 갑판에 사람이 없다고 보고했다.",
+      "text": "The muster roll has not changed in forty years. A survivor from another ship came aboard once and reported the deck was empty."
+    },
+    {
+      "title": "No Rope",
+      "title_ko": "밧줄은 없다",
+      "unlock": {
+        "type": "own_faction_cards",
+        "count": 10
+      },
+      "text_ko": "갑판원은 아직도 밧줄을 감는다. 밧줄은 없다. 조리장은 여섯 끼를 차린다. 식량은 없다.\n\n케이는 이것을 보지 못한다. 그가 보는 것은 사십 년 전의 갑판이다.",
+      "text": "The deckhand still coils rope. There is no rope. The cook sets six places. There is no food. Kai does not see this."
+    },
+    {
+      "title": "The Ship That Sank",
+      "title_ko": "가라앉은 배",
+      "unlock": {
+        "type": "clear_voyage",
+        "champion": true
+      },
+      "text_ko": "「마지막 숨」은 사십 년 전에 침몰했다. 전원이 사망했다. 케이를 포함해서.\n\n심장이 그들을 붙들고 있다 — 기억처럼, 저장된 파일처럼. 심장을 부수면 바다는 빠지고, 케이와 그의 선원 전부도 함께 사라진다. 그는 그것을 모른다. 그리고 안다고 해도 계획을 바꾸지 않을 것이다.",
+      "text": "The Last Breath sank forty years ago with all hands, Kai among them. The Heart holds them the way a file is held. Breaking it ends the sea, and ends them."
+    },
+    {
+      "title": "The Ark",
+      "title_ko": "방주",
+      "unlock": {
+        "type": "all_arcs",
+        "chapter": 4
+      },
+      "text_ko": "방주는 그들을 보존했다. 그것이 방주의 일이다. 케이가 매일 아침 부르는 이름들은 전부 안에 저장되어 있고, 매일 아침 대답한다.\n\n방주를 부수는 것은 바다를 없애는 일이 아니다. 저장된 모든 것을 지우는 일이다. 케이는 세계를 구하려고 세계에 남은 마지막 사람들을 죽이려 하고 있다.",
+      "text": "The ark preserved them. Breaking it does not drain the sea; it deletes everything stored. Kai is trying to save the world by killing the last people left in it."
+    }
+  ]
+}

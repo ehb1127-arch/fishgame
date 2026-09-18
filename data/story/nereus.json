@@ -1,0 +1,59 @@
+{
+  "id": "nereus",
+  "faction": "conclave",
+  "champion": "nereus_reader_of_the_deep",
+  "name": "Nereus, Reader of the Deep",
+  "name_ko": "네레우스, 심연을 읽는 자",
+  "chapters": [
+    {
+      "title": "The Record",
+      "title_ko": "기록",
+      "unlock": {
+        "type": "own_faction_cards",
+        "count": 1
+      },
+      "text_ko": "심연 학회는 아무것도 믿지 않는다. 기록할 뿐이다. 수석 기록자 네레우스는 「심해 기록」을 쓴다. 현재 99권까지 나왔고, 전부 그의 필체다.\n\n학회의 누구도 그가 언제 입회했는지 모른다.",
+      "text": "The Conclave believes nothing. It records. Ninety-nine volumes so far, all in the same hand. Nobody remembers him joining."
+    },
+    {
+      "title": "Mid-Sentence",
+      "title_ko": "문장 중간에",
+      "unlock": {
+        "type": "clear_region",
+        "region": 1
+      },
+      "text_ko": "99권은 문장 중간에서 끝난다. 98권도 그렇다. 97권도. 확인 가능한 모든 권이 같은 방식으로 끝난다. 마치 쓰던 사람이 매번 같은 지점에서 사라진 것처럼.\n\n끝나는 문장은 항상 같다. \"그리고 그때 나는—\"",
+      "text": "Volume ninety-nine ends mid-sentence. So does ninety-eight. So does every volume anyone has checked. Always the same words: \"and then I—\""
+    },
+    {
+      "title": "Handwriting",
+      "title_ko": "필체",
+      "unlock": {
+        "type": "own_faction_cards",
+        "count": 10
+      },
+      "text_ko": "한 기록관이 1권과 99권의 필체를 대조했다. 동일했다. 종이의 나이는 이백 년 차이가 났다.\n\n그녀는 그 사실을 보고서에 적었다. 다음 날 보고서는 없었고, 그녀도 없었다. 100권의 첫 장에는 그녀의 이름이 적혀 있었다. 저자가 아니라, 목록에.",
+      "text": "An archivist compared the hand in volume one and volume ninety-nine. Identical. The paper was two hundred years apart."
+    },
+    {
+      "title": "I Have Been Here Before",
+      "title_ko": "나는 전에 여기 있었다",
+      "unlock": {
+        "type": "clear_voyage",
+        "champion": true
+      },
+      "text_ko": "네레우스는 백 번 넘게 죽었다. 심장은 그를 매번 되돌린다. 그가 읽는 기록은 자기 자신의 이전 생들이고, 매번 같은 지점에서 끝난다. 심장에 닿는 순간이다.\n\n그는 이제 그것을 안다. 그리고 여전히 내려간다. 그것이 백 번째마다 그가 내리는 결론이기 때문이다.",
+      "text": "Nereus has died more than a hundred times. The Heart returns him each time. The record he reads is his own previous lives, and every volume ends where he reaches the Heart."
+    },
+    {
+      "title": "The Ark",
+      "title_ko": "방주",
+      "unlock": {
+        "type": "all_arcs",
+        "chapter": 4
+      },
+      "text_ko": "방주는 사람을 보존하지 않았다. 방주는 사람을 반복했다. 네레우스는 실패한 저장본이 아니라, 성공한 저장본이다 — 백 번 복원되었고, 백 번 같은 결론에 도달했다.\n\n100권의 마지막 줄은 이렇게 쓰여 있다. \"이번에는 아무것도 하지 않기로 한다.\" 그리고 101권이 시작된다.",
+      "text": "The ark did not preserve people. It repeated them. Nereus is not a failed copy; he is a successful one — restored a hundred times, reaching the same conclusion each time."
+    }
+  ]
+}

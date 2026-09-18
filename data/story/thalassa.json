@@ -1,0 +1,59 @@
+{
+  "id": "thalassa",
+  "faction": "coral",
+  "champion": "thalassa_spire_of_coral",
+  "name": "Thalassa, Spire of Coral",
+  "name_ko": "탈라사, 산호의 첨탑",
+  "chapters": [
+    {
+      "title": "The Spire Stands",
+      "title_ko": "첨탑은 서 있다",
+      "unlock": {
+        "type": "own_faction_cards",
+        "count": 1
+      },
+      "text_ko": "산호 성단의 도시는 하나의 산호초 위에 지어졌고, 그 산호초는 아직 자라고 있다. 탈라사는 이백 년 전에 첫 돌을 놓았다고 전해진다. 그것을 반박하는 사람은 아무도 없다. 반박할 만큼 오래 산 사람이 없기 때문이다.\n\n그녀의 주장은 단순하다. 심장을 봉인하라. 마지막 조류가 오지 않으면 세계는 계속된다.",
+      "text": "The Concord's city is built on a single reef, and the reef is still growing. Thalassa is said to have laid the first stone two hundred years ago. Nobody contradicts this, because nobody has lived long enough to."
+    },
+    {
+      "title": "What Grows Does Not Stop",
+      "title_ko": "자라는 것은 멈추지 않는다",
+      "unlock": {
+        "type": "clear_region",
+        "region": 1
+      },
+      "text_ko": "성단의 기록에 따르면 첨탑은 매년 한 뼘씩 높아진다. 그런데 도시 지도를 백 년 전 것과 겹쳐 보면, 높아진 것은 첨탑만이 아니다. 거리가 좁아졌다. 광장이 사라졌다.\n\n산호는 도시를 지은 것이 아니라, 도시를 먹고 있었다.",
+      "text": "The spire grows a handspan a year. Overlay the city map on one from a century ago and the spire is not the only thing that changed: the streets are narrower. The squares are gone."
+    },
+    {
+      "title": "She Does Not Bleed",
+      "title_ko": "그녀는 피 흘리지 않는다",
+      "unlock": {
+        "type": "own_faction_cards",
+        "count": 10
+      },
+      "text_ko": "한 시종이 의식 중에 탈라사의 손을 베었다. 상처에서 나온 것은 피가 아니었다. 하얗고, 단단하고, 천천히 스스로를 메웠다.\n\n시종은 그날 밤 승진했다. 그리고 다시는 말하지 않았다.",
+      "text": "An acolyte once cut Thalassa's hand during a rite. What came out was not blood. It was white, and hard, and it closed itself slowly."
+    },
+    {
+      "title": "The Order She Means",
+      "title_ko": "그녀가 말하는 질서",
+      "unlock": {
+        "type": "clear_voyage",
+        "champion": true
+      },
+      "text_ko": "탈라사는 인간이 아니다. 산호가 인간의 형상을 빌린 것이다. 그녀가 심장을 봉인하려는 이유는 세계를 구하기 위해서가 아니다.\n\n마지막 조류가 오면 산호도 함께 쓸려간다. 그녀가 지키려는 '질서'란, 산호가 바다 전체를 덮은 상태다. 그 안에 사람이 있든 없든.",
+      "text": "Thalassa is not a woman. She is coral wearing the shape of one. The order she preserves is the reef covering everything — with or without anyone inside it."
+    },
+    {
+      "title": "The Ark",
+      "title_ko": "방주",
+      "unlock": {
+        "type": "all_arcs",
+        "chapter": 4
+      },
+      "text_ko": "심장은 괴물이 아니었다. 범람 이전의 사람들이 만든 방주였다. 물을 채운 것은 죽이기 위해서가 아니라 살리기 위해서였다.\n\n탈라사는 처음부터 알고 있었다. 산호는 방주의 일부였다. 그녀는 봉인을 원한 것이 아니라, 문이 다시 열리지 않기를 원했다. 안에 무엇이 남아 있는지 알기 때문에.",
+      "text": "The Heart was never a monster. It was an ark. Thalassa knew from the beginning — the coral was part of it. She did not want it sealed. She wanted the door to stay shut, because she knows what is still inside."
+    }
+  ]
+}
