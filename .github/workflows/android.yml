@@ -3,6 +3,9 @@ name: Android build
 on:
   push:
     tags: ["v*"]
+    # Pushing a build/* branch produces an APK without cutting a release,
+    # which is also the way to get one when tag pushes are unavailable.
+    branches: ["build/**"]
   workflow_dispatch:
     inputs:
       build_type:
