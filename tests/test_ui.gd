@@ -23,6 +23,7 @@ static func run(t: TestFramework, tree: SceneTree) -> void:
 	var screen := scene.instantiate()
 	screen.auto_play_ai = false
 	tree.root.add_child(screen)
+	t.check(screen.is_inside_tree(), "screen entered the scene tree")
 	screen.start_match("corsair_fleet", "leviathan_brood",
 		AIPlayer.Skill.NORMAL, MatchRules.standard(), 4242)
 

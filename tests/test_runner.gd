@@ -8,6 +8,11 @@ extends Node
 
 
 func _ready() -> void:
+	# Wait one frame before running anything. A node is still "setting up
+	# children" during its own _ready, so add_child would be refused there,
+	# and the UI test needs to attach a real screen to the tree.
+	await get_tree().process_frame
+
 	# Cards autoloads before us, but be explicit so a reordering cannot make
 	# the suite quietly test an empty database.
 	if Cards.all_cards().is_empty():
