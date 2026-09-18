@@ -64,8 +64,16 @@ godot --headless --path . res://tests/test_runner.tscn
 AI끼리 실제 덱으로 풀게임을 여러 판 돌려서 엔진 전체를 검증한다.
 
 ### 안드로이드 APK
-GitHub Actions의 **Android build** 워크플로우를 수동 실행하면 디버그 APK가
-아티팩트로 나온다. 로컬에서 빌드하려면:
+GitHub Actions의 **Android build** 워크플로우가 디버그 APK를 아티팩트로 뽑는다.
+실행 방법은 두 가지다.
+
+- **수동 실행** (Actions 탭 → Android build → Run workflow).
+  GitHub은 `workflow_dispatch` 워크플로우를 **기본 브랜치에 있을 때만** 목록에
+  보여준다. 이 브랜치를 기본 브랜치에 머지하기 전에는 버튼이 나타나지 않는다
+- **태그 푸시**. 어느 브랜치에서든 `v` 로 시작하는 태그를 밀면 그 커밋으로
+  빌드된다: `git tag v0.1.0 && git push origin v0.1.0`
+
+로컬에서 빌드하려면:
 
 1. Godot 에디터 → 편집기 설정 → 내보내기 → Android에서 SDK 경로 지정
 2. 프로젝트 → 내보내기 → Android 프리셋 선택 → 내보내기
