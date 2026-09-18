@@ -1,0 +1,331 @@
+## Plain front-end for everything outside a match.
+##
+## One screen with swappable panels rather than a scene per feature: the art
+## pass will restructure this anyway, and this way every system is reachable
+## and testable by hand today.
+extends Control
+
+const MATCH_SCENE := "res://scenes/match.tscn"
+
+var _content: VBoxContainer
+var _header: Label
+var _voyage: Voyage = null
+
+
+func _ready() -> void:
+	_build_layout()
+	_show_home()
+
+
+func _build_layout() -> void:
+	var root := VBoxContainer.new()
+	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(root)
+
+	_header = Label.new()
+	root.add_child(_header)
+
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	root.add_child(scroll)
+
+	_content = VBoxContainer.new()
+	_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(_content)
+
+
+func _clear() -> void:
+	for child in _content.get_children():
+		child.queue_free()
+
+
+func _refresh_header() -> void:
+	_header.text = "%s · %s (%d) · 코인 %d · 가루 %d · 보석 %d" % [
+		Player.display_name,
+		Rating.tier_name(Player.rating, true), Player.rating,
+		Player.coins, Player.dust, Player.gems,
+	]
+
+
+## --- Home ----------------------------------------------------------------
+
+func _show_home() -> void:
+	_clear()
+	_refresh_header()
+	_button("빠른 대전", _show_quick_match)
+	_button("항해 (스테이지 모드)", _show_voyage)
+	_button("컬렉션 / 강화", _show_collection)
+	_button("상점", _show_shop)
+	_button("코덱스", _show_codex)
+	_label("")
+	_label("전적 %d승 %d패" % [Player.wins, Player.losses])
+
+
+## --- Quick match ---------------------------------------------------------
+
+func _show_quick_match() -> void:
+	_clear()
+	_label("덱과 모드를 고르세요")
+	var mode_index := 0
+	var modes := MatchRules.all_modes()
+
+	var mode_row := HBoxContainer.new()
+	_content.add_child(mode_row)
+	var mode_label := Label.new()
+	mode_label.text = "모드: " + modes[mode_index].display_name
+	mode_row.add_child(mode_label)
+	var cycle := Button.new()
+	cycle.text = "모드 변경"
+	cycle.pressed.connect(func() -> void:
+		mode_index = (mode_index + 1) % modes.size()
+		mode_label.text = "모드: %s (턴 %.0f초)" % [
+			modes[mode_index].display_name, modes[mode_index].turn_seconds])
+	mode_row.add_child(cycle)
+
+	for deck_id in Cards.deck_ids():
+		var deck := Cards.get_deck_definition(str(deck_id))
+		var captured := str(deck_id)
+		_button("%s 로 대전" % str(deck.get("name_ko", deck_id)), func() -> void:
+			_launch_match(captured, _random_other_deck(captured), AIPlayer.Skill.NORMAL,
+					modes[mode_index]))
+	_button("< 뒤로", _show_home)
+
+
+func _random_other_deck(exclude: String) -> String:
+	var ids: Array = []
+	for id in Cards.deck_ids():
+		if str(id) != exclude:
+			ids.append(str(id))
+	if ids.is_empty():
+		return exclude
+	return str(ids[randi() % ids.size()])
+
+
+func _launch_match(player_deck: String, opponent_deck: String,
+		skill: AIPlayer.Skill, rules: MatchRules) -> void:
+	var scene: PackedScene = load(MATCH_SCENE)
+	if scene == null:
+		push_error("Cannot load %s" % MATCH_SCENE)
+		return
+	var screen := scene.instantiate()
+	get_tree().root.add_child(screen)
+	screen.start_match(player_deck, opponent_deck, skill, rules, 0,
+			Player.collection.star_map())
+	hide()
+
+
+## --- Voyage --------------------------------------------------------------
+
+func _show_voyage() -> void:
+	_clear()
+	if not Player.voyage_state.is_empty() and not bool(Player.voyage_state.get("finished", true)):
+		_voyage = Voyage.from_dict(Player.voyage_state)
+	if _voyage == null or _voyage.finished:
+		_label("항해를 시작할 덱을 고르세요")
+		for deck_id in Cards.deck_ids():
+			var deck := Cards.get_deck_definition(str(deck_id))
+			var captured := str(deck_id)
+			_button(str(deck.get("name_ko", deck_id)), func() -> void:
+				_voyage = Voyage.start(captured)
+				Player.voyage_state = _voyage.to_dict()
+				Player.save_profile()
+				_show_voyage())
+		_button("< 뒤로", _show_home)
+		return
+
+	var stage := _voyage.current_stage()
+	_label("%s — %s" % [str(stage.get("region_ko", "")), str(stage.get("name_ko", ""))])
+	_label("생명 %d/%d · 클리어 %d/%d · 덱 %d장" % [
+		_voyage.life, _voyage.max_life, _voyage.stages_cleared,
+		_voyage.total_stages(), _voyage.deck_ids.size()])
+	var gimmick := stage.get("gimmick", {}) as Dictionary
+	if not gimmick.is_empty():
+		_label("특수 규칙: " + str(gimmick.get("text_ko", "")))
+
+	if not _voyage.pending_rewards.is_empty():
+		_label("보상 선택")
+		for i in _voyage.pending_rewards.size():
+			var card: CardData = Cards.get_card(_voyage.pending_rewards[i])
+			if card == null:
+				continue
+			var captured := i
+			_button("%s [%s] %s" % [
+				card.display_name(true), GameEnums.rarity_name_ko(card.rarity),
+				card.mana_cost_text,
+			], func() -> void:
+				_voyage.take_reward(captured)
+				Player.voyage_state = _voyage.to_dict()
+				Player.save_profile()
+				_show_voyage())
+		_button("보상 받지 않기 (덱을 얇게 유지)", func() -> void:
+			_voyage.skip_reward()
+			Player.voyage_state = _voyage.to_dict()
+			Player.save_profile()
+			_show_voyage())
+		_button("< 뒤로", _show_home)
+		return
+
+	_button("전투 시작", func() -> void:
+		var rules := MatchRules.standard()
+		rules.starting_life = _voyage.life
+		var built := Cards.build_from_list(_voyage.deck_ids, _voyage.vault_ids)
+		_launch_voyage_match(stage, rules, built))
+	_button("항해 포기", func() -> void:
+		Player.add_coins(_voyage.coins_earned())
+		_voyage = null
+		Player.voyage_state = {}
+		Player.save_profile()
+		_show_home())
+	_button("< 뒤로", _show_home)
+
+
+func _launch_voyage_match(stage: Dictionary, rules: MatchRules, built: Dictionary) -> void:
+	var scene: PackedScene = load(MATCH_SCENE)
+	if scene == null:
+		return
+	var screen := scene.instantiate()
+	get_tree().root.add_child(screen)
+	screen.start_match(
+		str(stage.get("deck", "corsair_fleet")),
+		str(stage.get("deck", "corsair_fleet")),
+		AIPlayer.skill_from_name(str(stage.get("ai", "normal"))),
+		rules, 0, Player.collection.star_map())
+	hide()
+
+
+## --- Collection ----------------------------------------------------------
+
+func _show_collection() -> void:
+	_clear()
+	var completion := Player.collection.completion()
+	_label("도감 %d/%d종" % [int(completion["owned"]), int(completion["total"])])
+
+	for card in Cards.collectible_cards():
+		var c := card as CardData
+		var id := str(c.id)
+		if not Player.collection.has_card(id):
+			continue
+		var stars := Player.collection.stars_of(id)
+		var copies := Player.collection.copies_of(id)
+		var cost := Currency.upgrade_cost(c.rarity, stars)
+		var can := Player.collection.can_upgrade(c, Player.dust)
+		var line := "%s %s ×%d [%s]" % [
+			c.display_name(true), "★".repeat(stars), copies,
+			GameEnums.rarity_name_ko(c.rarity)]
+		if cost.is_empty():
+			_label(line + " (최대)")
+		else:
+			var captured := id
+			var label := "%s — 강화: 가루 %d, 사본 %d" % [line, int(cost["dust"]), int(cost["copies"])]
+			var button := Button.new()
+			button.text = label
+			button.disabled = not can
+			button.pressed.connect(func() -> void:
+				Player.upgrade_card(captured)
+				_show_collection())
+			_content.add_child(button)
+	_button("< 뒤로", _show_home)
+
+
+## --- Shop ----------------------------------------------------------------
+
+func _show_shop() -> void:
+	_clear()
+	_refresh_header()
+	for item in Shop.catalogue():
+		var entry := item as Dictionary
+		var name := str(entry.get("name_ko", entry.get("name", "")))
+		for currency in [Currency.Kind.PEARL_COIN, Currency.Kind.ABYSS_GEM]:
+			if not Shop.is_purchasable_with(entry, currency):
+				continue
+			var price := Shop.price_in(entry, currency)
+			var captured_id := str(entry["id"])
+			var captured_currency := currency
+			var button := Button.new()
+			button.text = "%s — %d %s" % [name, price, Currency.label(currency, true)]
+			button.disabled = not Player.can_afford(currency, price)
+			button.pressed.connect(func() -> void:
+				var result := Player.purchase(captured_id, captured_currency)
+				if bool(result.get("ok", false)):
+					_show_purchase_result(result.get("result"))
+				else:
+					_label(str(result.get("reason", ""))))
+			_content.add_child(button)
+
+	_label("")
+	_label(PackOdds.disclosure_text(true))
+	_button("< 뒤로", _show_home)
+
+
+func _show_purchase_result(result: Variant) -> void:
+	_clear()
+	if result is Array:
+		_label("개봉 결과")
+		for entry in result as Array:
+			var e := entry as Dictionary
+			var card: CardData = e["card"]
+			var tag := ""
+			if bool(e.get("inscribed", false)):
+				tag = " ★각인★"
+			if bool(e.get("new", false)):
+				tag += " (NEW)"
+			elif int(e.get("dust", 0)) > 0:
+				tag += " (+%d 가루)" % int(e["dust"])
+			_label("%s [%s]%s" % [card.display_name(true),
+					GameEnums.rarity_name_ko(card.rarity), tag])
+	else:
+		_label("구매 완료: %s" % str(result))
+	Codex.refresh()
+	_button("< 상점으로", _show_shop)
+
+
+## --- Codex ---------------------------------------------------------------
+
+func _show_codex() -> void:
+	_clear()
+	Codex.refresh()
+	for entry in Codex.overview():
+		var row := entry as Dictionary
+		var arc := row["arc"] as Dictionary
+		var unlocked := int(row["unlocked"])
+		var chapters := arc.get("chapters", []) as Array
+		_label("[%d/%d] %s" % [unlocked, chapters.size(), str(arc.get("name_ko", ""))])
+
+		for i in unlocked:
+			var chapter := chapters[i] as Dictionary
+			var captured := chapter
+			_button("  %d. %s" % [i + 1, str(chapter.get("title_ko", ""))], func() -> void:
+				_show_chapter(captured))
+
+		var next := row["next"] as Dictionary
+		if not next.is_empty():
+			_label("  다음: " + str(next.get("description_ko", "")))
+	_button("< 뒤로", _show_home)
+
+
+func _show_chapter(chapter: Dictionary) -> void:
+	_clear()
+	_label(str(chapter.get("title_ko", "")))
+	var body := Label.new()
+	body.text = str(chapter.get("text_ko", ""))
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.custom_minimum_size = Vector2(600, 0)
+	_content.add_child(body)
+	_button("< 코덱스로", _show_codex)
+
+
+## --- Widgets -------------------------------------------------------------
+
+func _button(text: String, handler: Callable) -> void:
+	var button := Button.new()
+	button.text = text
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.pressed.connect(handler)
+	_content.add_child(button)
+
+
+func _label(text: String) -> void:
+	var label := Label.new()
+	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_content.add_child(label)
