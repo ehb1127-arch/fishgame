@@ -5,9 +5,9 @@ const CardTile := preload("res://scripts/ui/card_tile.gd")
 const CARD_BACK := preload("res://assets/ui/card_back_heart.png")
 
 const DEPTH_NAMES := {
-	GameEnums.Depth.SURFACE: "����  SURFACE",
-	GameEnums.Depth.MIDWATER: "����  MIDWATER",
-	GameEnums.Depth.ABYSS: "����  ABYSS",
+	GameEnums.Depth.SURFACE: "수면  SURFACE",
+	GameEnums.Depth.MIDWATER: "중층  MIDWATER",
+	GameEnums.Depth.ABYSS: "심해  ABYSS",
 }
 
 const DEPTH_COLORS := {
@@ -41,7 +41,7 @@ func render(game: Game, human_index: int, chosen_attackers: Array[int] = [],
 		for uid in game.stack:
 			names.append(game.get_card(uid).data.display_name(true))
 		var stack_label := Label.new()
-		stack_label.text = "�ĵ� ���� �ֹ�  ?  " + "  ��  ".join(names)
+		stack_label.text = "파도 위의 주문  ›  " + "  ·  ".join(names)
 		stack_label.add_theme_color_override("font_color", Color("ffd58d"))
 		stack_label.add_theme_font_size_override("font_size", 14)
 		add_child(stack_label)
@@ -60,7 +60,7 @@ func _add_player_header(game: Game, index: int, show_backs: bool) -> void:
 	add_child(row)
 
 	var identity := Label.new()
-	identity.text = "%s   �� %d" % [player.name, player.life]
+	identity.text = "%s   ♥ %d" % [player.name, player.life]
 	identity.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	identity.add_theme_color_override("font_color", Color("e2fbf6"))
 	identity.add_theme_font_size_override("font_size", 18)
@@ -80,7 +80,7 @@ func _add_player_header(game: Game, index: int, show_backs: bool) -> void:
 		row.add_child(backs)
 
 	var resources := Label.new()
-	resources.text = "�� %d   ���� %d/%d" % [player.hand.size(), _untapped_lands(game, player), _land_count(game, player)]
+	resources.text = "손 %d   대지 %d/%d" % [player.hand.size(), _untapped_lands(game, player), _land_count(game, player)]
 	resources.add_theme_color_override("font_color", Color("8fb9b8"))
 	resources.add_theme_font_size_override("font_size", 13)
 	row.add_child(resources)
@@ -108,7 +108,7 @@ func _add_depth_lane(game: Game, human_index: int, opponent_index: int,
 	var row := HBoxContainer.new()
 	panel.add_child(row)
 	var band_label := Label.new()
-	band_label.text = ("? " if favoured else "") + DEPTH_NAMES[band]
+	band_label.text = ("≈ " if favoured else "") + DEPTH_NAMES[band]
 	band_label.custom_minimum_size.x = 108
 	band_label.add_theme_color_override("font_color", Color("f4d884") if favoured else Color("8fc5c7"))
 	band_label.add_theme_font_size_override("font_size", 13)
@@ -118,9 +118,9 @@ func _add_depth_lane(game: Game, human_index: int, opponent_index: int,
 	sides.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	sides.add_theme_constant_override("separation", 4)
 	row.add_child(sides)
-	_add_card_row(sides, game, game.get_player(opponent_index), band, "���",
+	_add_card_row(sides, game, game.get_player(opponent_index), band, "상대",
 		[], {}, [], {}, Callable())
-	_add_card_row(sides, game, game.get_player(human_index), band, "��",
+	_add_card_row(sides, game, game.get_player(human_index), band, "나",
 		possible_attackers, possible_blocks, chosen_attackers, chosen_blocks, on_card_action)
 
 
@@ -150,7 +150,7 @@ func _add_card_row(parent: VBoxContainer, game: Game, player, band: GameEnums.De
 		flow.add_child(tile)
 	if not found:
 		var empty := Label.new()
-		empty.text = "%s �� ��� ����" % prefix
+		empty.text = "%s · 비어 있음" % prefix
 		empty.add_theme_color_override("font_color", Color("54787d"))
 		empty.add_theme_font_size_override("font_size", 12)
 		flow.add_child(empty)

@@ -61,7 +61,7 @@ func setup(card: CardInstance, actionable: bool = false, selected: bool = false,
 	add_child(column)
 	if actionable:
 		var action_badge := Label.new()
-		action_badge.text = "���õ�" if selected else "���Ͽ� ����"
+		action_badge.text = "선택됨" if selected else "탭하여 선택"
 		action_badge.add_theme_color_override("font_color", Color("ffd166") if selected else Color("8ff4e7"))
 		action_badge.add_theme_font_size_override("font_size", 11)
 		column.add_child(action_badge)
@@ -102,13 +102,13 @@ func setup(card: CardInstance, actionable: bool = false, selected: bool = false,
 		footer.add_child(stats)
 	elif card.is_champion():
 		var fathom := Label.new()
-		fathom.text = "? %d" % card.fathom_count()
+		fathom.text = "◉ %d" % card.fathom_count()
 		fathom.add_theme_color_override("font_color", Color("7ce6e1"))
 		footer.add_child(fathom)
 
 
 func _detail_line(card: CardInstance) -> String:
-	var type_name := " �� ".join(card.data.types)
+	var type_name := " · ".join(card.data.types)
 	var rarity := GameEnums.rarity_name_ko(card.data.rarity)
 	return "%s  |  %s" % [type_name, rarity]
 
@@ -116,21 +116,21 @@ func _detail_line(card: CardInstance) -> String:
 func _state_text(card: CardInstance) -> String:
 	var states: Array[String] = []
 	if card.attacking:
-		states.append("����")
+		states.append("공격")
 	if not card.blocking.is_empty():
-		states.append("���")
+		states.append("방어")
 	if card.tapped:
-		states.append("����")
+		states.append("소진")
 	if card.star_level > 1:
-		states.append("��".repeat(card.star_level))
-	return " �� ".join(states) if not states.is_empty() else "�غ�"
+		states.append("★".repeat(card.star_level))
+	return " · ".join(states) if not states.is_empty() else "준비"
 
 
 func _tooltip(card: CardInstance) -> String:
 	var lines := [card.data.display_name(true), card.data.type_line(), card.data.display_text(true)]
 	var flavor := card.data.display_flavor(true)
 	if not flavor.is_empty():
-		lines.append("��%s��" % flavor)
+		lines.append("“%s”" % flavor)
 	return "\n".join(lines)
 
 
@@ -184,7 +184,7 @@ func _show_detail() -> void:
 	content.add_child(title)
 
 	var type_line := Label.new()
-	type_line.text = "%s �� %s" % [_card.data.type_line(), GameEnums.rarity_name_ko(_card.data.rarity)]
+	type_line.text = "%s · %s" % [_card.data.type_line(), GameEnums.rarity_name_ko(_card.data.rarity)]
 	type_line.add_theme_color_override("font_color", Color("9fc6c5"))
 	content.add_child(type_line)
 
@@ -195,13 +195,13 @@ func _show_detail() -> void:
 	content.add_child(rules)
 
 	var flavor := Label.new()
-	flavor.text = "��%s��" % _card.data.display_flavor(true)
+	flavor.text = "“%s”" % _card.data.display_flavor(true)
 	flavor.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	flavor.add_theme_color_override("font_color", Color("789a9d"))
 	content.add_child(flavor)
 
 	var close := Button.new()
-	close.text = "�ݱ�"
+	close.text = "닫기"
 	close.custom_minimum_size.y = 52
 	close.pressed.connect(popup.queue_free)
 	content.add_child(close)

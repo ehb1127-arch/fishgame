@@ -64,29 +64,29 @@ func _refresh() -> void:
 		return
 	var game: Game = _host.game
 	if game.is_over():
-		_phase.text = "���� ����"
-		_hint.text = "����� Ȯ���ϼ���."
+		_phase.text = "전투 종료"
+		_hint.text = "결과를 확인하세요."
 		return
 	if game.awaiting_player() != _host.human_index:
-		_phase.text = "��� �ൿ ��"
-		_hint.text = "����� ������ ��ٸ��� �ֽ��ϴ�."
+		_phase.text = "상대 행동 중"
+		_hint.text = "상대의 선택을 기다리고 있습니다."
 		return
 	match game.awaiting:
 		"mulligan":
-			_phase.text = "���� ����"
-			_hint.text = "���и� �����ϰų� �� �� �ٽ� ��������."
+			_phase.text = "시작 손패"
+			_hint.text = "손패를 유지하거나 한 번 다시 뽑으세요."
 		"attackers":
-			_phase.text = "���� ����"
-			_hint.text = "������ �� ī�带 ���� ���ݿ� �����ϰų� �����ϼ���."
+			_phase.text = "공격 선택"
+			_hint.text = "빛나는 내 카드를 탭해 공격에 포함하거나 제외하세요."
 		"blockers":
-			_phase.text = "��� ��ġ"
-			_hint.text = "������ ��� ī�带 �ݺ��ؼ� ���ϸ� ���� �����ڰ� �ٲ�ϴ�."
+			_phase.text = "방어 배치"
+			_hint.text = "빛나는 방어 카드를 반복해서 탭하면 막을 공격자가 바뀝니다."
 		"priority":
-			_phase.text = "�ൿ ����"
-			_hint.text = "���� ����� �� �ִ� �ൿ�� ǥ�õ˴ϴ�."
+			_phase.text = "행동 선택"
+			_hint.text = "현재 사용할 수 있는 행동만 표시됩니다."
 		_:
-			_phase.text = "���� ����"
-			_hint.text = "���� ������ �ൿ�� �����ϼ���."
+			_phase.text = "전투 진행"
+			_hint.text = "현재 가능한 행동을 선택하세요."
 
 
 func _on_action_added(child: Node) -> void:
