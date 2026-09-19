@@ -35,22 +35,41 @@ func _refresh_tree() -> void:
 func _style_branch(node: Node) -> void:
 	if node is Button:
 		var button := node as Button
-		button.custom_minimum_size.y = 56.0
-		button.add_theme_font_size_override("font_size", 18)
+		button.custom_minimum_size.y = 60.0
+		button.add_theme_font_size_override("font_size", 21)
+		# An outline keeps the label readable wherever the art behind the
+		# translucent panel happens to be bright.
+		button.add_theme_color_override("font_outline_color", INK)
+		button.add_theme_constant_override("outline_size", 5)
 		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		button.focus_mode = Control.FOCUS_ALL
 	elif node is Label:
 		var label := node as Label
-		label.add_theme_color_override("font_color", PEARL)
-		label.add_theme_color_override("font_shadow_color", INK)
-		label.add_theme_constant_override("shadow_offset_x", 2)
-		label.add_theme_constant_override("shadow_offset_y", 2)
-		label.add_theme_font_size_override("font_size", 18 if screen_kind == "menu" else 16)
+		# Labels the screen already coloured on purpose are left alone; only
+		# the plain ones get the default treatment.
+		if not label.has_theme_color_override("font_color"):
+			label.add_theme_color_override("font_color", PEARL)
+		label.add_theme_color_override("font_outline_color", INK)
+		label.add_theme_constant_override("outline_size", 6)
+		if not label.has_theme_font_size_override("font_size"):
+			label.add_theme_font_size_override("font_size", 20 if screen_kind == "menu" else 18)
 	elif node is RichTextLabel:
 		var rich := node as RichTextLabel
 		rich.add_theme_color_override("default_color", PEARL)
-		rich.add_theme_font_size_override("normal_font_size", 16)
-		rich.add_theme_font_size_override("bold_font_size", 18)
+		rich.add_theme_color_override("font_outline_color", INK)
+		rich.add_theme_constant_override("outline_size", 5)
+		rich.add_theme_font_size_override("normal_font_size", 18)
+		rich.add_theme_font_size_override("bold_font_size", 20)
+	elif node is LineEdit:
+		var edit := node as LineEdit
+		edit.custom_minimum_size.y = 52.0
+		edit.add_theme_font_size_override("font_size", 19)
+		edit.add_theme_color_override("font_color", PEARL)
+		edit.add_theme_color_override("font_placeholder_color", MUTED)
+	elif node is OptionButton:
+		var option := node as OptionButton
+		option.custom_minimum_size.y = 52.0
+		option.add_theme_font_size_override("font_size", 19)
 	elif node is ProgressBar:
 		(node as ProgressBar).add_theme_color_override("font_color", PEARL)
 

@@ -117,20 +117,37 @@ func _build_layout() -> void:
 		_root.name = "Root"
 		_root.set_anchors_preset(Control.PRESET_FULL_RECT)
 		add_child(_root)
+	_root.add_theme_constant_override("separation", 10)
+	# Keep the board off the very edge of the screen.
+	_root.offset_left = 14
+	_root.offset_top = 10
+	_root.offset_right = -14
+	_root.offset_bottom = -10
+
+	# The turn state and the clock go on a panel; they sit over the artwork
+	# and were the hardest things to read without one.
+	var header := PanelContainer.new()
+	_root.add_child(header)
+	var header_box := VBoxContainer.new()
+	header_box.add_theme_constant_override("separation", 6)
+	header.add_child(header_box)
 
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_root.add_child(_status)
+	_status.add_theme_font_size_override("font_size", 19)
+	header_box.add_child(_status)
 
 	var clock_row := HBoxContainer.new()
 	_clock_label = Label.new()
-	_clock_label.custom_minimum_size = Vector2(90, 0)
+	_clock_label.custom_minimum_size = Vector2(96, 0)
+	_clock_label.add_theme_font_size_override("font_size", 19)
 	_clock_bar = ProgressBar.new()
 	_clock_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_clock_bar.custom_minimum_size.y = 12
 	_clock_bar.show_percentage = false
 	clock_row.add_child(_clock_label)
 	clock_row.add_child(_clock_bar)
-	_root.add_child(clock_row)
+	header_box.add_child(clock_row)
 
 	var split := HSplitContainer.new()
 	split.size_flags_vertical = Control.SIZE_EXPAND_FILL

@@ -28,7 +28,7 @@ mouse_filter = 2
 texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
-modulate = Color(0.63, 0.78, 0.82, 1)
+modulate = Color(0.40, 0.52, 0.58, 1)
 
 [node name="Veil" type="ColorRect" parent="."]
 show_behind_parent = true
@@ -39,7 +39,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.01, 0.07, 0.10, 0.18)
+color = Color(0.008, 0.045, 0.075, 0.66)
 
 [node name="AbyssSkin" type="Node" parent="."]
 script = ExtResource("4_skin")

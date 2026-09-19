@@ -19,21 +19,75 @@ func _ready() -> void:
 	_show_home()
 
 
-func _build_layout() -> void:
-	var root := VBoxContainer.new()
-	root.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(root)
+## Screens are built into a panel rather than straight onto the artwork, and
+## the column is capped and centred so a wide screen does not stretch every
+## button across the whole display.
+const CONTENT_MAX_WIDTH := 900.0
+const SCREEN_MARGIN := 20
 
+
+func _build_layout() -> void:
+	var margin := MarginContainer.new()
+	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
+	for side in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + side, SCREEN_MARGIN)
+	add_child(margin)
+
+	var centre := HBoxContainer.new()
+	margin.add_child(centre)
+	centre.add_spacer(false)
+
+	var column := VBoxContainer.new()
+	column.custom_minimum_size.x = 520.0
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.size_flags_stretch_ratio = 1.0
+	column.add_theme_constant_override("separation", 12)
+	centre.add_child(column)
+	centre.add_spacer(false)
+
+	# The header sits on its own panel so the currency line never has to be
+	# read against whatever the background art is doing.
+	var header_panel := PanelContainer.new()
+	column.add_child(header_panel)
 	_header = Label.new()
-	root.add_child(_header)
+	_header.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_header.add_theme_font_size_override("font_size", 20)
+	header_panel.add_child(_header)
+
+	var body := PanelContainer.new()
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(body)
 
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	root.add_child(scroll)
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	body.add_child(scroll)
 
 	_content = VBoxContainer.new()
 	_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_content.add_theme_constant_override("separation", 10)
 	scroll.add_child(_content)
+
+
+func _notification(what: int) -> void:
+	# Keep the column from growing past a comfortable reading width.
+	if what == NOTIFICATION_RESIZED and is_inside_tree():
+		_apply_column_width()
+
+
+func _apply_column_width() -> void:
+	var margin := get_child(0) if get_child_count() > 0 else null
+	if margin == null or margin.get_child_count() == 0:
+		return
+	var centre := margin.get_child(0) as HBoxContainer
+	if centre == null or centre.get_child_count() < 2:
+		return
+	var column := centre.get_child(1) as Control
+	if column == null:
+		return
+	var available := size.x - SCREEN_MARGIN * 2
+	column.custom_minimum_size.x = minf(CONTENT_MAX_WIDTH, maxf(available, 320.0))
 
 
 func _clear() -> void:

@@ -86,6 +86,10 @@ static func open(host, requested_deck: String = "") -> void:
 	list.add_theme_constant_override("separation", 8)
 	host._content.add_child(list)
 
+	# A lambda cannot call itself: it captures by value, and the variable does
+	# not exist yet while its own body is being built. This array holds the
+	# finished callable so the row buttons can reach it.
+	var rerender: Array = []
 	var render := func() -> void:
 		for child in list.get_children():
 			child.queue_free()
@@ -140,10 +144,12 @@ static func open(host, requested_deck: String = "") -> void:
 			var captured_id := id
 			minus.pressed.connect(func() -> void:
 				draft.erase(captured_id)
-				render.call())
+				(rerender[0] as Callable).call())
 			plus.pressed.connect(func() -> void:
 				draft.append(captured_id)
-				render.call())
+				(rerender[0] as Callable).call())
+
+	rerender.append(render)
 
 	search.text_changed.connect(func(_value: String) -> void: render.call())
 	faction.item_selected.connect(func(_index: int) -> void: render.call())

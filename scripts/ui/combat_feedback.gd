@@ -118,7 +118,7 @@ func _flash_screen(color: Color) -> void:
 
 func _shake() -> void:
 	var origin: Vector2 = _host._root.position
-	var tween := _host._root.create_tween()
+	var tween: Tween = _host._root.create_tween()
 	tween.tween_property(_host._root, "position", origin + Vector2(8, 0), 0.045)
 	tween.tween_property(_host._root, "position", origin + Vector2(-7, 2), 0.045)
 	tween.tween_property(_host._root, "position", origin + Vector2(4, -1), 0.045)

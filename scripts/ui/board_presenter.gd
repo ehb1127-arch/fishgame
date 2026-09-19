@@ -59,7 +59,7 @@ func _on_card_action(uid: int) -> void:
 			else:
 				_host._chosen_attackers.append(uid)
 		"blockers":
-			var options := _host.game.possible_blocks(_host.human_index)
+			var options: Dictionary = _host.game.possible_blocks(_host.human_index)
 			if not options.has(uid):
 				return
 			var attackers := (options[uid] as Array).duplicate()

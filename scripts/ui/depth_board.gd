@@ -47,7 +47,7 @@ func render(game: Game, human_index: int, chosen_attackers: Array[int] = [],
 		var stack_label := Label.new()
 		stack_label.text = "파도 위의 주문  ›  " + "  ·  ".join(names)
 		stack_label.add_theme_color_override("font_color", Color("ffd58d"))
-		stack_label.add_theme_font_size_override("font_size", 14)
+		stack_label.add_theme_font_size_override("font_size", 17)
 		add_child(stack_label)
 
 
@@ -67,7 +67,7 @@ func _add_player_header(game: Game, index: int, show_backs: bool) -> void:
 	identity.text = "%s   ♥ %d" % [player.name, player.life]
 	identity.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	identity.add_theme_color_override("font_color", Color("e2fbf6"))
-	identity.add_theme_font_size_override("font_size", 18)
+	identity.add_theme_font_size_override("font_size", 21)
 	row.add_child(identity)
 
 	if show_backs:
@@ -85,8 +85,8 @@ func _add_player_header(game: Game, index: int, show_backs: bool) -> void:
 
 	var resources := Label.new()
 	resources.text = "손 %d   대지 %d/%d" % [player.hand.size(), _untapped_lands(game, player), _land_count(game, player)]
-	resources.add_theme_color_override("font_color", Color("8fb9b8"))
-	resources.add_theme_font_size_override("font_size", 13)
+	resources.add_theme_color_override("font_color", Color("b6dedd"))
+	resources.add_theme_font_size_override("font_size", 16)
 	row.add_child(resources)
 
 
@@ -114,8 +114,8 @@ func _add_depth_lane(game: Game, human_index: int, other_indices: Array[int],
 	var band_label := Label.new()
 	band_label.text = ("≈ " if favoured else "") + DEPTH_NAMES[band]
 	band_label.custom_minimum_size.x = 108
-	band_label.add_theme_color_override("font_color", Color("f4d884") if favoured else Color("8fc5c7"))
-	band_label.add_theme_font_size_override("font_size", 13)
+	band_label.add_theme_color_override("font_color", Color("ffdf95") if favoured else Color("b3dcde"))
+	band_label.add_theme_font_size_override("font_size", 16)
 	row.add_child(band_label)
 
 	var sides := VBoxContainer.new()
@@ -147,8 +147,8 @@ func _add_card_row(parent: VBoxContainer, game: Game, player, band: GameEnums.De
 			continue
 		found = true
 		var tile := CardTile.new()
-		var actionable := uid in possible_attackers or possible_blocks.has(uid)
-		var selected := uid in chosen_attackers or chosen_blocks.has(uid)
+		var actionable: bool = uid in possible_attackers or possible_blocks.has(uid)
+		var selected: bool = uid in chosen_attackers or chosen_blocks.has(uid)
 		var captured_uid := int(uid)
 		tile.setup(card, actionable, selected,
 			func() -> void:
@@ -158,8 +158,8 @@ func _add_card_row(parent: VBoxContainer, game: Game, player, band: GameEnums.De
 	if not found:
 		var empty := Label.new()
 		empty.text = "%s · 비어 있음" % prefix
-		empty.add_theme_color_override("font_color", Color("54787d"))
-		empty.add_theme_font_size_override("font_size", 12)
+		empty.add_theme_color_override("font_color", Color("8fb0b4"))
+		empty.add_theme_font_size_override("font_size", 15)
 		flow.add_child(empty)
 
 

@@ -36,9 +36,14 @@ jobs:
 
       - name: Import project
         run: |
-          # The first run generates .godot/ and reports any script that fails
-          # to parse. It exits non-zero on a hard error, which is what we want.
-          ~/godot-bin/godot --headless --path . --import
+          set -euo pipefail
+          ~/godot-bin/godot --headless --path . --import 2>&1 | tee /tmp/import.txt
+          # Godot logs a script that fails to parse and carries on with a zero
+          # exit code, so check for it rather than trusting the status.
+          if grep -qE "SCRIPT ERROR|Failed to load script" /tmp/import.txt; then
+            echo "::error::one or more scripts failed to parse"
+            exit 1
+          fi
 
       - name: Run engine tests
         run: |
@@ -46,6 +51,12 @@ jobs:
           ~/godot-bin/godot --headless --path . res://tests/test_runner.tscn 2>&1 | tee /tmp/test-output.txt
           # The runner prints this line only when every assertion passed.
           grep -q "ALL TESTS PASSED" /tmp/test-output.txt
+          # A screen whose script fails to load does not fail an assertion, so
+          # the run has to be clean of engine errors as well.
+          if grep -qE "SCRIPT ERROR|Failed to load script" /tmp/test-output.txt; then
+            echo "::error::script errors during the test run"
+            exit 1
+          fi
 
       - name: Upload test log
         if: always()
@@ -53,4 +64,62 @@ jobs:
         with:
           name: test-log
           path: /tmp/test-output.txt
+          if-no-files-found: ignore
+
+  screens:
+    name: Screen smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Godot
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: ~/godot-bin
+          key: godot-${{ env.GODOT_VERSION }}-linux
+
+      - name: Download Godot
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p ~/godot-bin
+          url="https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          curl -fsSL -o /tmp/godot.zip "$url"
+          unzip -q /tmp/godot.zip -d ~/godot-bin
+          mv ~/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64 ~/godot-bin/godot
+          chmod +x ~/godot-bin/godot
+
+      - name: Import project
+        run: ~/godot-bin/godot --headless --path . --import
+
+      - name: Render every screen
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/shots
+          failed=0
+          for screen in menu collection shop voyage match; do
+            echo "--- $screen ---"
+            out="$(xvfb-run -a -s '-screen 0 1280x720x24' \
+              ~/godot-bin/godot --path . --resolution 1280x720 \
+              --rendering-driver opengl3 res://tools/screenshot.tscn \
+              -- "$screen" "/tmp/shots/$screen.png" 2>&1)" || true
+            echo "$out" | tail -n 5
+            if echo "$out" | grep -qE "SCRIPT ERROR|Failed to load script"; then
+              echo "::error::$screen produced script errors"
+              failed=1
+            fi
+            if [ ! -s "/tmp/shots/$screen.png" ]; then
+              echo "::error::$screen produced no screenshot"
+              failed=1
+            fi
+          done
+          exit $failed
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screen-smoke
+          path: /tmp/shots/*.png
           if-no-files-found: ignore
