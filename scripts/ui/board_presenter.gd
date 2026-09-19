@@ -43,5 +43,34 @@ func _bind_game() -> void:
 
 func _render() -> void:
 	if _view != null and _host != null and _host.game != null:
-		_view.render(_host.game, _host.human_index)
+		_view.render(_host.game, _host.human_index, _host._chosen_attackers,
+			_host._chosen_blocks, _on_card_action)
+
+
+func _on_card_action(uid: int) -> void:
+	if _host == null or _host.game == null:
+		return
+	match _host.game.awaiting:
+		"attackers":
+			if uid not in _host.game.possible_attackers(_host.human_index):
+				return
+			if uid in _host._chosen_attackers:
+				_host._chosen_attackers.erase(uid)
+			else:
+				_host._chosen_attackers.append(uid)
+		"blockers":
+			var options := _host.game.possible_blocks(_host.human_index)
+			if not options.has(uid):
+				return
+			var attackers := (options[uid] as Array).duplicate()
+			var current := int(_host._chosen_blocks.get(uid, -1))
+			var position := attackers.find(current)
+			if position + 1 >= attackers.size():
+				_host._chosen_blocks.erase(uid)
+			else:
+				_host._chosen_blocks[uid] = attackers[position + 1]
+		_:
+			return
+	_host._refresh_actions()
+	_render()
 

@@ -14,10 +14,13 @@ const FACTION_COLORS := {
 
 var _card: CardInstance
 var _art: Texture2D
+var _on_action := Callable()
 
 
-func setup(card: CardInstance) -> void:
+func setup(card: CardInstance, actionable: bool = false, selected: bool = false,
+		on_action: Callable = Callable()) -> void:
 	_card = card
+	_on_action = on_action
 	_art = ArtRegistry.texture_for(card.data.id)
 	custom_minimum_size = Vector2(132, 88)
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -27,8 +30,8 @@ func setup(card: CardInstance) -> void:
 	var frame := StyleBoxFlat.new()
 	var faction_color: Color = FACTION_COLORS.get(card.data.faction, Color("78949b"))
 	frame.bg_color = Color("0b1d28") if not card.tapped else Color("14202a")
-	frame.border_color = GameEnums.rarity_color(card.data.rarity).lerp(faction_color, 0.35)
-	frame.set_border_width_all(2 if not card.attacking else 4)
+	frame.border_color = Color("ffd166") if selected else (Color("70e1d4") if actionable else GameEnums.rarity_color(card.data.rarity).lerp(faction_color, 0.35))
+	frame.set_border_width_all(4 if selected or card.attacking else (3 if actionable else 2))
 	frame.set_corner_radius_all(10)
 	frame.content_margin_left = 9
 	frame.content_margin_right = 9
@@ -36,6 +39,8 @@ func setup(card: CardInstance) -> void:
 	frame.content_margin_bottom = 7
 	add_theme_stylebox_override("panel", frame)
 	modulate = Color(0.72, 0.78, 0.82, 1.0) if card.tapped else Color.WHITE
+	if actionable:
+		mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 	if _art != null:
 		var art := TextureRect.new()
@@ -54,6 +59,12 @@ func setup(card: CardInstance) -> void:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 2)
 	add_child(column)
+	if actionable:
+		var action_badge := Label.new()
+		action_badge.text = "선택됨" if selected else "탭하여 선택"
+		action_badge.add_theme_color_override("font_color", Color("ffd166") if selected else Color("8ff4e7"))
+		action_badge.add_theme_font_size_override("font_size", 11)
+		column.add_child(action_badge)
 
 	var title_row := HBoxContainer.new()
 	column.add_child(title_row)
@@ -125,9 +136,17 @@ func _tooltip(card: CardInstance) -> String:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_show_detail()
+		if _on_action.is_valid():
+			_on_action.call()
+		else:
+			_show_detail()
+		accept_event()
 	elif event is InputEventScreenTouch and event.pressed:
-		_show_detail()
+		if _on_action.is_valid():
+			_on_action.call()
+		else:
+			_show_detail()
+		accept_event()
 
 
 func _show_detail() -> void:

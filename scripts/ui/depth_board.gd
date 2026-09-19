@@ -17,7 +17,8 @@ const DEPTH_COLORS := {
 }
 
 
-func render(game: Game, human_index: int) -> void:
+func render(game: Game, human_index: int, chosen_attackers: Array[int] = [],
+		chosen_blocks: Dictionary = {}, on_card_action: Callable = Callable()) -> void:
 	_clear_now()
 	if game == null:
 		return
@@ -27,9 +28,12 @@ func render(game: Game, human_index: int) -> void:
 	add_theme_constant_override("separation", 6)
 
 	var opponent_index := game.opponent_of(human_index)
+	var possible_attackers: Array = game.possible_attackers(human_index) if game.awaiting == "attackers" else []
+	var possible_blocks: Dictionary = game.possible_blocks(human_index) if game.awaiting == "blockers" else {}
 	_add_player_header(game, opponent_index, true)
 	for band in GameEnums.DEPTH_ORDER:
-		_add_depth_lane(game, human_index, opponent_index, band)
+		_add_depth_lane(game, human_index, opponent_index, band, possible_attackers,
+			possible_blocks, chosen_attackers, chosen_blocks, on_card_action)
 	_add_player_header(game, human_index, false)
 
 	if not game.stack.is_empty():
@@ -83,7 +87,9 @@ func _add_player_header(game: Game, index: int, show_backs: bool) -> void:
 
 
 func _add_depth_lane(game: Game, human_index: int, opponent_index: int,
-		band: GameEnums.Depth) -> void:
+		band: GameEnums.Depth, possible_attackers: Array, possible_blocks: Dictionary,
+		chosen_attackers: Array[int], chosen_blocks: Dictionary,
+		on_card_action: Callable) -> void:
 	var panel := PanelContainer.new()
 	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var style := StyleBoxFlat.new()
@@ -112,12 +118,16 @@ func _add_depth_lane(game: Game, human_index: int, opponent_index: int,
 	sides.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	sides.add_theme_constant_override("separation", 4)
 	row.add_child(sides)
-	_add_card_row(sides, game, game.get_player(opponent_index), band, "상대")
-	_add_card_row(sides, game, game.get_player(human_index), band, "나")
+	_add_card_row(sides, game, game.get_player(opponent_index), band, "상대",
+		[], {}, [], {}, Callable())
+	_add_card_row(sides, game, game.get_player(human_index), band, "나",
+		possible_attackers, possible_blocks, chosen_attackers, chosen_blocks, on_card_action)
 
 
 func _add_card_row(parent: VBoxContainer, game: Game, player, band: GameEnums.Depth,
-		prefix: String) -> void:
+		prefix: String, possible_attackers: Array, possible_blocks: Dictionary,
+		chosen_attackers: Array[int], chosen_blocks: Dictionary,
+		on_card_action: Callable) -> void:
 	var flow := HFlowContainer.new()
 	flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	flow.add_theme_constant_override("h_separation", 6)
@@ -130,7 +140,13 @@ func _add_card_row(parent: VBoxContainer, game: Game, player, band: GameEnums.De
 			continue
 		found = true
 		var tile := CardTile.new()
-		tile.setup(card)
+		var actionable := uid in possible_attackers or possible_blocks.has(uid)
+		var selected := uid in chosen_attackers or chosen_blocks.has(uid)
+		var captured_uid := int(uid)
+		tile.setup(card, actionable, selected,
+			func() -> void:
+				if on_card_action.is_valid():
+					on_card_action.call(captured_uid))
 		flow.add_child(tile)
 	if not found:
 		var empty := Label.new()
