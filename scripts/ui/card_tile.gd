@@ -22,7 +22,7 @@ func setup(card: CardInstance, actionable: bool = false, selected: bool = false,
 	_card = card
 	_on_action = on_action
 	_art = ArtRegistry.texture_for(card.data.id)
-	custom_minimum_size = Vector2(144, 94)
+	custom_minimum_size = Vector2(158, 92)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	tooltip_text = _tooltip(card)
 	gui_input.connect(_on_gui_input)

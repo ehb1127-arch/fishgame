@@ -117,16 +117,17 @@ func _build_layout() -> void:
 		_root.name = "Root"
 		_root.set_anchors_preset(Control.PRESET_FULL_RECT)
 		add_child(_root)
-	_root.add_theme_constant_override("separation", 10)
+	_root.add_theme_constant_override("separation", 6)
 	# Keep the board off the very edge of the screen.
-	_root.offset_left = 14
-	_root.offset_top = 10
-	_root.offset_right = -14
-	_root.offset_bottom = -10
+	_root.offset_left = 10
+	_root.offset_top = 8
+	_root.offset_right = -10
+	_root.offset_bottom = -8
 
 	# The turn state and the clock go on a panel; they sit over the artwork
 	# and were the hardest things to read without one.
 	var header := PanelContainer.new()
+	header.custom_minimum_size.y = 64
 	_root.add_child(header)
 	var header_box := VBoxContainer.new()
 	header_box.add_theme_constant_override("separation", 6)
@@ -134,13 +135,14 @@ func _build_layout() -> void:
 
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_status.add_theme_font_size_override("font_size", 19)
+	_status.add_theme_font_size_override("font_size", 16)
+	_status.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	header_box.add_child(_status)
 
 	var clock_row := HBoxContainer.new()
 	_clock_label = Label.new()
-	_clock_label.custom_minimum_size = Vector2(96, 0)
-	_clock_label.add_theme_font_size_override("font_size", 19)
+	_clock_label.custom_minimum_size = Vector2(70, 0)
+	_clock_label.add_theme_font_size_override("font_size", 15)
 	_clock_bar = ProgressBar.new()
 	_clock_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_clock_bar.custom_minimum_size.y = 12
@@ -151,20 +153,32 @@ func _build_layout() -> void:
 
 	var split := HSplitContainer.new()
 	split.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	split.split_offset = 930
 	_root.add_child(split)
 
 	_board = RichTextLabel.new()
 	_board.bbcode_enabled = true
 	_board.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_board.custom_minimum_size = Vector2(420, 0)
+	_board.size_flags_stretch_ratio = 3.4
+	_board.custom_minimum_size = Vector2(760, 0)
 	split.add_child(_board)
 
+	var command_panel := PanelContainer.new()
+	command_panel.custom_minimum_size.x = 285
+	command_panel.size_flags_horizontal = Control.SIZE_FILL
+	split.add_child(command_panel)
 	var right := VBoxContainer.new()
-	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	split.add_child(right)
+	right.add_theme_constant_override("separation", 6)
+	command_panel.add_child(right)
+	var command_title := Label.new()
+	command_title.text = "행동"
+	command_title.add_theme_font_size_override("font_size", 18)
+	command_title.add_theme_color_override("font_color", Color("fff0b0"))
+	right.add_child(command_title)
 
 	var actions_scroll := ScrollContainer.new()
 	actions_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	actions_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	right.add_child(actions_scroll)
 	_actions = VBoxContainer.new()
 	_actions.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -172,7 +186,8 @@ func _build_layout() -> void:
 
 	_log = RichTextLabel.new()
 	_log.bbcode_enabled = true
-	_log.custom_minimum_size = Vector2(0, 160)
+	_log.custom_minimum_size = Vector2(0, 112)
+	_log.add_theme_font_size_override("normal_font_size", 14)
 	right.add_child(_log)
 
 
@@ -422,6 +437,8 @@ func _build_block_controls() -> void:
 func _add_button(text: String, handler: Callable) -> void:
 	var button := Button.new()
 	button.text = text
+	button.custom_minimum_size.y = 52
+	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.pressed.connect(handler)
 	_actions.add_child(button)
