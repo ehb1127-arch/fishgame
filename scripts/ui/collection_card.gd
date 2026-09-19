@@ -14,8 +14,24 @@ const FACTION_COLORS := {
 
 
 func setup(card: CardData, copies: int, stars: int, dust: int,
-		on_upgrade: Callable) -> void:
+		on_upgrade: Callable, on_view: Callable = Callable()) -> void:
 	custom_minimum_size = Vector2(250, 340)
+	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	mouse_entered.connect(func() -> void:
+		var tween := create_tween()
+		tween.tween_property(self, "modulate", Color("f6ffff"), 0.12))
+	mouse_exited.connect(func() -> void:
+		var tween := create_tween()
+		tween.tween_property(self, "modulate", Color.WHITE, 0.12))
+	if on_view.is_valid():
+		gui_input.connect(func(event: InputEvent) -> void:
+			if event is InputEventMouseButton and event.pressed \
+					and event.button_index == MOUSE_BUTTON_LEFT:
+				on_view.call()
+				accept_event()
+			elif event is InputEventScreenTouch and event.pressed:
+				on_view.call()
+				accept_event())
 	var faction: Color = FACTION_COLORS.get(card.faction, Color("78949b"))
 	var frame := StyleBoxFlat.new()
 	frame.bg_color = Color("091923")
@@ -58,6 +74,7 @@ func setup(card: CardData, copies: int, stars: int, dust: int,
 	# Printed cards always reserve a readable parchment area for both the
 	# mechanical rules and the worldbuilding line. Art never consumes it.
 	var text_panel := PanelContainer.new()
+	text_panel.custom_minimum_size.y = 92
 	text_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var parchment := StyleBoxFlat.new()
 	parchment.bg_color = Color("f4ecd7")
@@ -75,29 +92,30 @@ func setup(card: CardData, copies: int, stars: int, dust: int,
 	text_column.add_theme_constant_override("separation", 5)
 	text_panel.add_child(text_column)
 	var rules := Label.new()
-	rules.text = card.display_text(true)
+	var printed_rules := card.display_text(true)
+	rules.text = printed_rules if not printed_rules.is_empty() else "효과 문구를 입력하세요"
 	rules.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rules.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	rules.max_lines_visible = 4
 	rules.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	rules.add_theme_color_override("font_color", Color("18313a"))
+	rules.add_theme_color_override("font_color", Color("18313a") if not printed_rules.is_empty() else Color("87949a"))
 	rules.add_theme_font_size_override("font_size", 13)
 	text_column.add_child(rules)
 
 	var flavor_text := card.display_flavor(true)
-	if not flavor_text.is_empty():
-		var flavor := Label.new()
-		flavor.text = "“%s”" % flavor_text
-		flavor.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		flavor.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		flavor.max_lines_visible = 2
-		flavor.add_theme_color_override("font_color", Color("65747a"))
-		flavor.add_theme_font_size_override("font_size", 11)
-		text_column.add_child(flavor)
+	var flavor := Label.new()
+	flavor.text = "“%s”" % flavor_text if not flavor_text.is_empty() else "세계관 문구를 입력하세요"
+	flavor.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	flavor.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	flavor.max_lines_visible = 2
+	flavor.add_theme_color_override("font_color", Color("65747a") if not flavor_text.is_empty() else Color("9a9d98"))
+	flavor.add_theme_font_size_override("font_size", 11)
+	text_column.add_child(flavor)
 
 	var cost := Currency.upgrade_cost(card.rarity, stars)
 	var upgrade := Button.new()
 	upgrade.custom_minimum_size.y = 48
+	upgrade.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	if cost.is_empty():
 		upgrade.text = "최대 등급"
 		upgrade.disabled = true
