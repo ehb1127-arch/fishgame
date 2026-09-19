@@ -22,8 +22,8 @@ func _ready() -> void:
 ## Screens are built into a panel rather than straight onto the artwork, and
 ## the column is capped and centred so a wide screen does not stretch every
 ## button across the whole display.
-const CONTENT_MAX_WIDTH := 900.0
-const SCREEN_MARGIN := 20
+const CONTENT_MAX_WIDTH := 1180.0
+const SCREEN_MARGIN := 24
 
 
 func _build_layout() -> void:
@@ -38,7 +38,7 @@ func _build_layout() -> void:
 	centre.add_spacer(false)
 
 	var column := VBoxContainer.new()
-	column.custom_minimum_size.x = 520.0
+	column.custom_minimum_size.x = 720.0
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	column.size_flags_stretch_ratio = 1.0
 	column.add_theme_constant_override("separation", 12)
@@ -108,16 +108,64 @@ func _refresh_header() -> void:
 func _show_home() -> void:
 	_clear()
 	_refresh_header()
-	_button("첫 항해 튜토리얼" if not Player.tutorial_completed else "튜토리얼 다시 보기", _start_tutorial)
-	_button("빠른 대전", _show_quick_match)
-	_button("다인전 로비", func() -> void: MultiplayerLobby.open(self))
-	_button("항해 (스테이지 모드)", _show_voyage)
-	_button("컬렉션 / 강화", _show_collection)
-	_button("덱 편집", func() -> void: DeckEditor.open(self))
-	_button("상점", _show_shop)
-	_button("코덱스", _show_codex)
-	_label("")
-	_label("전적 %d승 %d패" % [Player.wins, Player.losses])
+	var hero := PanelContainer.new()
+	hero.custom_minimum_size.y = 104
+	_content.add_child(hero)
+	var hero_column := VBoxContainer.new()
+	hero_column.add_theme_constant_override("separation", 4)
+	hero.add_child(hero_column)
+	var title := Label.new()
+	title.text = "심해의 심장이 다시 뛰기 시작합니다"
+	title.add_theme_font_size_override("font_size", 27)
+	title.add_theme_color_override("font_color", Color("fff1bd"))
+	hero_column.add_child(title)
+	var subtitle := Label.new()
+	subtitle.text = "덱을 준비하고 세 수심의 전장을 지배하세요."
+	subtitle.add_theme_color_override("font_color", Color("bfe5df"))
+	hero_column.add_child(subtitle)
+
+	var primary := HBoxContainer.new()
+	primary.add_theme_constant_override("separation", 14)
+	_content.add_child(primary)
+	_home_button(primary, "빠른 대전\n덱을 선택해 바로 1대1 전투", _show_quick_match, true)
+	_home_button(primary, "항해\n스테이지를 돌파하는 모험", _show_voyage, true)
+
+	var section := Label.new()
+	section.text = "게임 메뉴"
+	section.add_theme_font_size_override("font_size", 20)
+	section.add_theme_color_override("font_color", Color("dffbf5"))
+	_content.add_child(section)
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.add_theme_constant_override("h_separation", 12)
+	grid.add_theme_constant_override("v_separation", 12)
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_content.add_child(grid)
+	_home_button(grid, "다인전\n2대2 · 3인 난투", func() -> void: MultiplayerLobby.open(self))
+	_home_button(grid, "컬렉션\n카드 확인과 강화", _show_collection)
+	_home_button(grid, "덱 편집\n40장 덱 구성", func() -> void: DeckEditor.open(self))
+	_home_button(grid, "상점\n팩과 상품", _show_shop)
+	_home_button(grid, "코덱스\n세계관 기록", _show_codex)
+	_home_button(grid, "튜토리얼\n기본 전투 다시 보기", _start_tutorial)
+
+	var record := Label.new()
+	record.text = "이번 항해 기록   %d승 %d패" % [Player.wins, Player.losses]
+	record.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	record.add_theme_color_override("font_color", Color("a9cfcb"))
+	_content.add_child(record)
+
+
+func _home_button(parent: Control, text: String, handler: Callable,
+		featured: bool = false) -> void:
+	var button := Button.new()
+	button.text = text
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	button.custom_minimum_size = Vector2(0, 88 if featured else 72)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.add_theme_font_size_override("font_size", 20 if featured else 18)
+	button.pressed.connect(handler)
+	parent.add_child(button)
 
 
 func _start_tutorial() -> void:
