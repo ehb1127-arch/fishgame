@@ -2,6 +2,7 @@ class_name AbyssDepthBoard
 extends VBoxContainer
 
 const CardTile := preload("res://scripts/ui/card_tile.gd")
+const ArtRegistry := preload("res://scripts/ui/card_art_registry.gd")
 const CARD_BACK := preload("res://assets/ui/card_back_heart.png")
 
 const DEPTH_NAMES := {
@@ -60,11 +61,23 @@ func _clear_now() -> void:
 func _add_player_header(game: Game, index: int, show_backs: bool) -> void:
 	var player := game.get_player(index)
 	var row := HBoxContainer.new()
-	row.custom_minimum_size.y = 36
+	row.custom_minimum_size.y = 52
 	add_child(row)
+	var champion := _champion_for(game, player)
+	if champion != null:
+		var portrait_texture := ArtRegistry.texture_for(champion.data.id)
+		if portrait_texture != null:
+			var portrait := TextureRect.new()
+			portrait.custom_minimum_size = Vector2(48, 48)
+			portrait.texture = portrait_texture
+			portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+			portrait.tooltip_text = champion.data.display_name(true)
+			row.add_child(portrait)
 
 	var identity := Label.new()
-	identity.text = "%s   ♥ %d" % [player.name, player.life]
+	identity.text = "%s   ♥ %d\n%s" % [player.name, player.life,
+		champion.data.display_name(true) if champion != null else "챔피언 대기"]
 	identity.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	identity.add_theme_color_override("font_color", Color("e2fbf6"))
 	identity.add_theme_font_size_override("font_size", 18)
@@ -187,5 +200,14 @@ func _untapped_lands(game: Game, player) -> int:
 		if card != null and card.is_land() and not card.tapped:
 			count += 1
 	return count
+
+
+func _champion_for(game: Game, player) -> CardInstance:
+	for zone in [player.battlefield, player.vault, player.hand, player.library]:
+		for uid in zone:
+			var card: CardInstance = game.get_card(uid)
+			if card != null and card.is_champion():
+				return card
+	return null
 
 
