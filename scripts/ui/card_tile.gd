@@ -55,6 +55,19 @@ func setup(card: CardInstance, actionable: bool = false, selected: bool = false,
 		shade.color = Color(0.01, 0.04, 0.07, 0.54)
 		shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(shade)
+	else:
+		var faction_wash := ColorRect.new()
+		faction_wash.color = Color(faction_color.r, faction_color.g, faction_color.b, 0.34)
+		faction_wash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(faction_wash)
+		var crest := Label.new()
+		crest.text = "◈"
+		crest.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		crest.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		crest.add_theme_font_size_override("font_size", 34)
+		crest.add_theme_color_override("font_color", Color(1, 1, 1, 0.18))
+		crest.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(crest)
 
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 2)

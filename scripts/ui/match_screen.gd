@@ -7,6 +7,7 @@
 extends Control
 
 const AI_THINK_DELAY := 0.35
+const CardTile := preload("res://scripts/ui/card_tile.gd")
 
 var game: Game = null
 var ai_players: Dictionary = {}
@@ -26,6 +27,8 @@ var _log: RichTextLabel
 var _actions: VBoxContainer
 var _clock_bar: ProgressBar
 var _clock_label: Label
+var _hand_row: HBoxContainer
+var _hand_count: Label
 
 
 func _ready() -> void:
@@ -156,12 +159,45 @@ func _build_layout() -> void:
 	split.split_offset = 930
 	_root.add_child(split)
 
+	var arena_column := VBoxContainer.new()
+	arena_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	arena_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	arena_column.size_flags_stretch_ratio = 3.4
+	arena_column.add_theme_constant_override("separation", 5)
+	split.add_child(arena_column)
+
 	_board = RichTextLabel.new()
 	_board.bbcode_enabled = true
 	_board.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_board.size_flags_stretch_ratio = 3.4
+	_board.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_board.custom_minimum_size = Vector2(760, 0)
-	split.add_child(_board)
+	arena_column.add_child(_board)
+
+	var hand_panel := PanelContainer.new()
+	hand_panel.custom_minimum_size.y = 126
+	arena_column.add_child(hand_panel)
+	var hand_column := VBoxContainer.new()
+	hand_column.add_theme_constant_override("separation", 3)
+	hand_panel.add_child(hand_column)
+	var hand_header := HBoxContainer.new()
+	hand_column.add_child(hand_header)
+	var hand_title := Label.new()
+	hand_title.text = "내 손패"
+	hand_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hand_title.add_theme_font_size_override("font_size", 16)
+	hand_title.add_theme_color_override("font_color", Color("fff0b0"))
+	hand_header.add_child(hand_title)
+	_hand_count = Label.new()
+	_hand_count.add_theme_font_size_override("font_size", 14)
+	hand_header.add_child(_hand_count)
+	var hand_scroll := ScrollContainer.new()
+	hand_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	hand_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	hand_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hand_column.add_child(hand_scroll)
+	_hand_row = HBoxContainer.new()
+	_hand_row.add_theme_constant_override("separation", 8)
+	hand_scroll.add_child(_hand_row)
 
 	var command_panel := PanelContainer.new()
 	command_panel.custom_minimum_size.x = 285
@@ -199,6 +235,7 @@ func _on_state_changed() -> void:
 	_refresh_status()
 	_refresh_board()
 	_refresh_actions()
+	_refresh_hand()
 	_refresh_log()
 
 	if game.is_over():
@@ -361,6 +398,37 @@ func _build_priority_controls() -> void:
 			label = str(action)
 		var captured := action
 		_add_button(label, func() -> void: game.perform(captured))
+
+
+func _refresh_hand() -> void:
+	if _hand_row == null or game == null:
+		return
+	for child in _hand_row.get_children():
+		_hand_row.remove_child(child)
+		child.queue_free()
+	var player := game.get_player(human_index)
+	_hand_count.text = "%d장 · 덱 %d" % [player.hand.size(), player.library.size()]
+	var actions_by_card: Dictionary = {}
+	if game.awaiting_player() == human_index:
+		for action in game.get_legal_actions(human_index):
+			if action.card_uid <= 0:
+				continue
+			if not actions_by_card.has(action.card_uid):
+				actions_by_card[action.card_uid] = []
+			(actions_by_card[action.card_uid] as Array).append(action)
+	for uid in player.hand:
+		var card: CardInstance = game.get_card(uid)
+		if card == null:
+			continue
+		var card_actions: Array = actions_by_card.get(uid, []) as Array
+		var tile := CardTile.new()
+		var captured_actions: Array = card_actions.duplicate()
+		var on_play := Callable()
+		if captured_actions.size() == 1:
+			on_play = func() -> void: game.perform(captured_actions[0])
+		tile.setup(card, not card_actions.is_empty(), false, on_play)
+		tile.custom_minimum_size = Vector2(172, 82)
+		_hand_row.add_child(tile)
 
 
 ## Attacking is picked one creature at a time, then confirmed, so the button
