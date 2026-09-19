@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bmatchscreen001"]
+[gd_scene load_steps=8 format=3 uid="uid://bmatchscreen001"]
 
 [ext_resource type="Script" path="res://scripts/ui/match_screen.gd" id="1_match"]
 [ext_resource type="Texture2D" path="res://assets/ui/the_vast_menu.png" id="2_bg"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/ui/abyss_skin.gd" id="4_skin"]
 [ext_resource type="Script" path="res://scripts/ui/board_presenter.gd" id="5_board"]
 [ext_resource type="Script" path="res://scripts/ui/battle_ux.gd" id="6_battle_ux"]
+[ext_resource type="Script" path="res://scripts/ui/tutorial_overlay.gd" id="7_tutorial"]
 
 [node name="MatchScreen" type="Control"]
 layout_mode = 3
@@ -63,3 +64,6 @@ script = ExtResource("5_board")
 
 [node name="BattleUX" type="Node" parent="."]
 script = ExtResource("6_battle_ux")
+
+[node name="TutorialOverlay" type="Node" parent="."]
+script = ExtResource("7_tutorial")

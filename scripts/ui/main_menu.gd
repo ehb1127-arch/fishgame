@@ -53,6 +53,7 @@ func _refresh_header() -> void:
 func _show_home() -> void:
 	_clear()
 	_refresh_header()
+	_button("첫 항해 튜토리얼" if not Player.tutorial_completed else "튜토리얼 다시 보기", _start_tutorial)
 	_button("빠른 대전", _show_quick_match)
 	_button("항해 (스테이지 모드)", _show_voyage)
 	_button("컬렉션 / 강화", _show_collection)
@@ -61,6 +62,17 @@ func _show_home() -> void:
 	_button("코덱스", _show_codex)
 	_label("")
 	_label("전적 %d승 %d패" % [Player.wins, Player.losses])
+
+
+func _start_tutorial() -> void:
+	var scene: PackedScene = load(MATCH_SCENE)
+	if scene == null:
+		return
+	var screen := scene.instantiate()
+	get_tree().root.add_child(screen)
+	screen.start_match("corsair_fleet", "leviathan_brood", AIPlayer.Skill.EASY,
+		MatchRules.standard(), 1127, Player.collection.star_map(), false, true)
+	hide()
 
 
 ## --- Quick match ---------------------------------------------------------

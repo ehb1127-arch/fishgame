@@ -31,6 +31,8 @@ var voyage_state: Dictionary = {}
 ## Deck lists the player has built: name -> {"cards": [...], "vault": [...]}.
 var decks: Dictionary = {}
 var last_daily_win_day: int = -1
+var tutorial_completed: bool = false
+var tutorial_reward_claimed: bool = false
 
 var rng := RandomNumberGenerator.new()
 
@@ -232,6 +234,19 @@ func unlock_codex(arc_id: String, chapter: int) -> bool:
 	return true
 
 
+## --- Tutorial -----------------------------------------------------------
+
+func complete_tutorial(grant_reward: bool = true) -> bool:
+	tutorial_completed = true
+	var rewarded := false
+	if grant_reward and not tutorial_reward_claimed:
+		tutorial_reward_claimed = true
+		add_coins(100)
+		rewarded = true
+	save_profile()
+	return rewarded
+
+
 ## --- Starter ------------------------------------------------------------
 
 ## A new player gets one full deck so they can play immediately.
@@ -259,6 +274,8 @@ func to_dict() -> Dictionary:
 		"voyage": voyage_state,
 		"decks": decks,
 		"daily": last_daily_win_day,
+		"tutorial_completed": tutorial_completed,
+		"tutorial_reward_claimed": tutorial_reward_claimed,
 	}
 
 
@@ -297,6 +314,8 @@ func load_profile() -> bool:
 	voyage_state = (d.get("voyage", {}) as Dictionary).duplicate(true)
 	decks = (d.get("decks", {}) as Dictionary).duplicate(true)
 	last_daily_win_day = int(d.get("daily", -1))
+	tutorial_completed = bool(d.get("tutorial_completed", false))
+	tutorial_reward_claimed = bool(d.get("tutorial_reward_claimed", false))
 	return true
 
 
@@ -316,6 +335,8 @@ func reset_profile() -> void:
 	voyage_state = {}
 	decks = {}
 	last_daily_win_day = -1
+	tutorial_completed = false
+	tutorial_reward_claimed = false
 	_grant_starter()
 	currency_changed.emit()
 	collection_changed.emit()
