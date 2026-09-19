@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmainmenu00001"]
+[gd_scene load_steps=6 format=3 uid="uid://bmainmenu00001"]
 
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
 [ext_resource type="Texture2D" path="res://assets/ui/the_vast_menu.png" id="2_bg"]
 [ext_resource type="Theme" path="res://ui/abyss_theme.tres" id="3_theme"]
 [ext_resource type="Script" path="res://scripts/ui/abyss_skin.gd" id="4_skin"]
+[ext_resource type="Script" path="res://scripts/ui/menu_presenter.gd" id="5_presenter"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -44,4 +45,6 @@ color = Color(0.01, 0.04, 0.075, 0.54)
 script = ExtResource("4_skin")
 screen_kind = "menu"
 
+[node name="MenuPresenter" type="Node" parent="."]
+script = ExtResource("5_presenter")
 
