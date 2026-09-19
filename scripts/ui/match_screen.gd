@@ -14,6 +14,7 @@ var human_index: int = 0
 ## Off in tests, where the screen is driven step by step and the thinking
 ## pause would only make the suite slow.
 var auto_play_ai: bool = true
+var tutorial_mode: bool = false
 
 var _turn_time_left: float = 0.0
 var _clock_running: bool = false
@@ -38,10 +39,12 @@ func _ready() -> void:
 func start_match(player_deck: String, opponent_deck: String,
 		ai_skill: AIPlayer.Skill = AIPlayer.Skill.NORMAL,
 		rules: MatchRules = null, seed_value: int = 0,
-		star_levels: Dictionary = {}, use_saved_player_deck: bool = true) -> void:
+		star_levels: Dictionary = {}, use_saved_player_deck: bool = true,
+		is_tutorial: bool = false) -> void:
 	# A caller can start a match before the node has entered the tree, so
 	# make sure the widgets exist before anything tries to draw into them.
 	_ensure_layout()
+	tutorial_mode = is_tutorial
 	game = Game.new()
 	var player_build := Cards.build_deck(player_deck)
 	if use_saved_player_deck and Player.decks.has(player_deck):
