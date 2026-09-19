@@ -9,9 +9,20 @@ const ART := {
 	&"orca_warden_of_the_heart": "res://assets/card_art/champions/orca.png",
 }
 
+const FACTION_ART := {
+	"coral": "res://assets/card_art/factions/coral.webp",
+	"conclave": "res://assets/card_art/factions/conclave.webp",
+	"drowned": "res://assets/card_art/factions/drowned.webp",
+	"corsair": "res://assets/card_art/factions/corsair.webp",
+	"brood": "res://assets/card_art/factions/brood.webp",
+	"shard": "res://assets/card_art/factions/shard.webp",
+}
 
-static func texture_for(card_id: StringName) -> Texture2D:
-	var path := str(ART.get(card_id, ""))
+
+static func texture_for(card_id: StringName, faction: String = "") -> Texture2D:
+	# Named champions keep their portrait. Every other card inherits the key art
+	# of its faction so a deck never falls back to an empty placeholder.
+	var path := str(ART.get(card_id, FACTION_ART.get(faction, "")))
 	if path.is_empty() or not ResourceLoader.exists(path):
 		return null
 	return load(path) as Texture2D

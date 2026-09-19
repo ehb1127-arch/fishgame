@@ -21,8 +21,8 @@ func setup(card: CardInstance, actionable: bool = false, selected: bool = false,
 		on_action: Callable = Callable()) -> void:
 	_card = card
 	_on_action = on_action
-	_art = ArtRegistry.texture_for(card.data.id)
-	custom_minimum_size = Vector2(158, 92)
+	_art = ArtRegistry.texture_for(card.data.id, card.data.faction)
+	custom_minimum_size = Vector2(166, 104)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	tooltip_text = _tooltip(card)
 	gui_input.connect(_on_gui_input)
@@ -47,12 +47,12 @@ func setup(card: CardInstance, actionable: bool = false, selected: bool = false,
 		art.texture = _art
 		art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		art.modulate = Color(1, 1, 1, 0.34)
+		art.modulate = Color(1, 1, 1, 0.78)
 		art.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(art)
 
 		var shade := ColorRect.new()
-		shade.color = Color(0.01, 0.04, 0.07, 0.54)
+		shade.color = Color(0.01, 0.04, 0.07, 0.38)
 		shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(shade)
 	else:
