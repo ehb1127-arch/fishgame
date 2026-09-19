@@ -23,6 +23,8 @@ jobs:
   build:
     name: Export APK
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -119,9 +121,28 @@ jobs:
           fi
           ls -lh builds/
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.EXPORT_NAME }}-apk
-          path: builds/*.apk
-          if-no-files-found: error
+      - name: Publish the APK to a release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          apk="$(ls builds/*.apk | head -n1)"
+          [ -n "$apk" ] || { echo "no APK to publish" >&2; exit 1; }
+
+          subject="$(git log -1 --pretty=%s)"
+          notes="$(printf '%s\n\n커밋: %s\n빌드: %s' \
+            "$subject" "$GITHUB_SHA" "$(date -u '+%Y-%m-%d %H:%M UTC')")"
+
+          if [ "${GITHUB_REF_TYPE:-}" = "tag" ]; then
+            # A version tag gets its own release, kept for good.
+            gh release create "$GITHUB_REF_NAME" "$apk" \
+              --title "$GITHUB_REF_NAME" --notes "$notes"
+          else
+            # Development builds all share one rolling release, so only the
+            # newest APK is ever on offer. Deleting first keeps it to one.
+            gh release delete latest --yes --cleanup-tag 2>/dev/null || true
+            gh release create latest "$apk" \
+              --title "Latest build" --notes "$notes" \
+              --prerelease --target "$GITHUB_SHA"
+          fi
+          echo "published $(basename "$apk")"

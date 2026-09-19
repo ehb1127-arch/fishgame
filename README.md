@@ -64,13 +64,16 @@ godot --headless --path . res://tests/test_runner.tscn
 AI끼리 실제 덱으로 풀게임을 여러 판 돌려서 엔진 전체를 검증한다.
 
 ### 안드로이드 APK
-GitHub Actions의 **Android build** 워크플로우가 디버그 APK를 아티팩트로 뽑는다.
-실제로 돌려서 24MB짜리 APK가 나오는 것까지 확인했다. 방법은 세 가지다.
+GitHub Actions의 **Android build** 워크플로우가 APK를 만들어 **릴리스에 올린다.**
+받는 곳은 저장소의 [Releases](../../releases) 한 곳뿐이고, 개발 빌드는 항상
+`latest` 릴리스 하나를 덮어쓰므로 **최신 APK만 남는다.**
+
+빌드를 돌리는 방법은 세 가지다.
 
 - **수동 실행** — Actions 탭 → Android build → Run workflow
-- **빌드 브랜치** — `build/` 로 시작하는 브랜치를 밀면 릴리스를 끊지 않고 APK가 나온다.
+- **빌드 브랜치** — `build/` 로 시작하는 브랜치를 밀면 `latest` 릴리스가 갱신된다.
   `git push -f origin HEAD:refs/heads/build/apk-check`
-- **태그** — `v` 로 시작하는 태그를 밀면 그 커밋으로 빌드된다.
+- **태그** — `v` 로 시작하는 태그를 밀면 그 버전의 릴리스가 따로 생기고 계속 보존된다.
   `git tag v0.1.0 && git push origin v0.1.0`
 
 릴리스 빌드는 저장소 시크릿 `ANDROID_KEYSTORE_BASE64`가 필요하다. 없으면
