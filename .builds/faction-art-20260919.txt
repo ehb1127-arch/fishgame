@@ -1,0 +1,1 @@
+Android debug build for faction card art pass.
