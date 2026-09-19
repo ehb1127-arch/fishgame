@@ -25,7 +25,7 @@ func render(game: Game, human_index: int, chosen_attackers: Array[int] = [],
 
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
-	add_theme_constant_override("separation", 6)
+	add_theme_constant_override("separation", 4)
 
 	var other_indices: Array[int] = []
 	for player in game.players:
@@ -60,14 +60,14 @@ func _clear_now() -> void:
 func _add_player_header(game: Game, index: int, show_backs: bool) -> void:
 	var player := game.get_player(index)
 	var row := HBoxContainer.new()
-	row.custom_minimum_size.y = 46
+	row.custom_minimum_size.y = 36
 	add_child(row)
 
 	var identity := Label.new()
 	identity.text = "%s   ♥ %d" % [player.name, player.life]
 	identity.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	identity.add_theme_color_override("font_color", Color("e2fbf6"))
-	identity.add_theme_font_size_override("font_size", 21)
+	identity.add_theme_font_size_override("font_size", 18)
 	row.add_child(identity)
 
 	if show_backs:
@@ -75,7 +75,7 @@ func _add_player_header(game: Game, index: int, show_backs: bool) -> void:
 		backs.add_theme_constant_override("separation", -18)
 		for i in mini(player.hand.size(), 7):
 			var back := TextureRect.new()
-			back.custom_minimum_size = Vector2(32, 44)
+			back.custom_minimum_size = Vector2(28, 36)
 			back.texture = CARD_BACK
 			back.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			back.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -86,7 +86,7 @@ func _add_player_header(game: Game, index: int, show_backs: bool) -> void:
 	var resources := Label.new()
 	resources.text = "손 %d   대지 %d/%d" % [player.hand.size(), _untapped_lands(game, player), _land_count(game, player)]
 	resources.add_theme_color_override("font_color", Color("b6dedd"))
-	resources.add_theme_font_size_override("font_size", 16)
+	resources.add_theme_font_size_override("font_size", 14)
 	row.add_child(resources)
 
 
@@ -96,16 +96,17 @@ func _add_depth_lane(game: Game, human_index: int, other_indices: Array[int],
 		on_card_action: Callable) -> void:
 	var panel := PanelContainer.new()
 	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.custom_minimum_size.y = 116
 	var style := StyleBoxFlat.new()
 	style.bg_color = DEPTH_COLORS[band]
 	var favoured := int(band) == GameEnums.favoured_band(game.tide)
 	style.border_color = Color("ffd978") if favoured else Color("9fe8df")
 	style.set_border_width_all(2 if favoured else 1)
 	style.set_corner_radius_all(16)
-	style.content_margin_left = 10
-	style.content_margin_right = 10
-	style.content_margin_top = 6
-	style.content_margin_bottom = 6
+	style.content_margin_left = 8
+	style.content_margin_right = 8
+	style.content_margin_top = 5
+	style.content_margin_bottom = 5
 	panel.add_theme_stylebox_override("panel", style)
 	add_child(panel)
 
@@ -113,9 +114,9 @@ func _add_depth_lane(game: Game, human_index: int, other_indices: Array[int],
 	panel.add_child(row)
 	var band_label := Label.new()
 	band_label.text = ("≈ " if favoured else "") + DEPTH_NAMES[band]
-	band_label.custom_minimum_size.x = 108
+	band_label.custom_minimum_size.x = 92
 	band_label.add_theme_color_override("font_color", Color("ffdf95") if favoured else Color("b3dcde"))
-	band_label.add_theme_font_size_override("font_size", 16)
+	band_label.add_theme_font_size_override("font_size", 14)
 	row.add_child(band_label)
 
 	var sides := VBoxContainer.new()
@@ -137,9 +138,16 @@ func _add_card_row(parent: VBoxContainer, game: Game, player, band: GameEnums.De
 		on_card_action: Callable) -> void:
 	var flow := HFlowContainer.new()
 	flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	flow.custom_minimum_size.y = 46
 	flow.add_theme_constant_override("h_separation", 6)
 	flow.add_theme_constant_override("v_separation", 4)
 	parent.add_child(flow)
+	var side_label := Label.new()
+	side_label.text = prefix
+	side_label.custom_minimum_size.x = 76
+	side_label.add_theme_color_override("font_color", Color("d8f6f0"))
+	side_label.add_theme_font_size_override("font_size", 13)
+	flow.add_child(side_label)
 	var found := false
 	for uid in player.battlefield:
 		var card: CardInstance = game.get_card(uid)
@@ -157,9 +165,9 @@ func _add_card_row(parent: VBoxContainer, game: Game, player, band: GameEnums.De
 		flow.add_child(tile)
 	if not found:
 		var empty := Label.new()
-		empty.text = "%s · 비어 있음" % prefix
+		empty.text = "비어 있음"
 		empty.add_theme_color_override("font_color", Color("8fb0b4"))
-		empty.add_theme_font_size_override("font_size", 15)
+		empty.add_theme_font_size_override("font_size", 13)
 		flow.add_child(empty)
 
 
