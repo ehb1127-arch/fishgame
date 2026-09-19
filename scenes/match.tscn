@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bmatchscreen001"]
 
 [ext_resource type="Script" path="res://scripts/ui/match_screen.gd" id="1_match"]
-[ext_resource type="Texture2D" path="res://assets/ui/the_vast_menu.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/ui/pearl_duel_board.webp" id="2_bg"]
 [ext_resource type="Theme" path="res://ui/abyss_theme.tres" id="3_theme"]
 [ext_resource type="Script" path="res://scripts/ui/abyss_skin.gd" id="4_skin"]
 [ext_resource type="Script" path="res://scripts/ui/board_presenter.gd" id="5_board"]
@@ -31,7 +31,7 @@ mouse_filter = 2
 texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
-modulate = Color(0.26, 0.38, 0.45, 1)
+modulate = Color(0.88, 0.96, 1, 1)
 
 [node name="Veil" type="ColorRect" parent="."]
 show_behind_parent = true
@@ -42,7 +42,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.005, 0.035, 0.065, 0.72)
+color = Color(0.01, 0.10, 0.16, 0.18)
 
 [node name="Root" type="VBoxContainer" parent="."]
 layout_mode = 1

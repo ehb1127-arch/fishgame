@@ -85,7 +85,7 @@ func _build_collection_gallery() -> void:
 	_content.add_child(count_label)
 
 	var grid := GridContainer.new()
-	var viewport_width := _host.get_viewport_rect().size.x
+	var viewport_width: float = _host.get_viewport_rect().size.x
 	grid.columns = 2 if viewport_width < 900 else (3 if viewport_width < 1180 else 4)
 	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	grid.add_theme_constant_override("h_separation", 12)

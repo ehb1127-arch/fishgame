@@ -34,10 +34,10 @@ func setup(card: CardData, copies: int, stars: int, dust: int,
 				accept_event())
 	var faction: Color = FACTION_COLORS.get(card.faction, Color("78949b"))
 	var frame := StyleBoxFlat.new()
-	frame.bg_color = Color("091923")
+	frame.bg_color = Color(0.025, 0.13, 0.17, 0.96)
 	frame.border_color = GameEnums.rarity_color(card.rarity).lerp(faction, 0.35)
 	frame.set_border_width_all(2)
-	frame.set_corner_radius_all(14)
+	frame.set_corner_radius_all(18)
 	frame.content_margin_left = 12
 	frame.content_margin_right = 12
 	frame.content_margin_top = 12

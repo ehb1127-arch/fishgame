@@ -11,9 +11,9 @@ const DEPTH_NAMES := {
 }
 
 const DEPTH_COLORS := {
-	GameEnums.Depth.SURFACE: Color("174c5c"),
-	GameEnums.Depth.MIDWATER: Color("102f46"),
-	GameEnums.Depth.ABYSS: Color("160f31"),
+	GameEnums.Depth.SURFACE: Color(0.08, 0.48, 0.58, 0.82),
+	GameEnums.Depth.MIDWATER: Color(0.04, 0.33, 0.50, 0.84),
+	GameEnums.Depth.ABYSS: Color(0.20, 0.16, 0.43, 0.86),
 }
 
 
@@ -99,9 +99,9 @@ func _add_depth_lane(game: Game, human_index: int, other_indices: Array[int],
 	var style := StyleBoxFlat.new()
 	style.bg_color = DEPTH_COLORS[band]
 	var favoured := int(band) == GameEnums.favoured_band(game.tide)
-	style.border_color = Color("e8c872") if favoured else Color("3d777c")
+	style.border_color = Color("ffd978") if favoured else Color("9fe8df")
 	style.set_border_width_all(2 if favoured else 1)
-	style.set_corner_radius_all(10)
+	style.set_corner_radius_all(16)
 	style.content_margin_left = 10
 	style.content_margin_right = 10
 	style.content_margin_top = 6
