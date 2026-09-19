@@ -68,6 +68,41 @@ func start_match(player_deck: String, opponent_deck: String,
 	_on_state_changed()
 
 
+func start_multiplayer(player_deck: String, ai_decks: Array[String], teams: Array[int],
+		ai_skill: AIPlayer.Skill = AIPlayer.Skill.NORMAL,
+		rules: MatchRules = null, seed_value: int = 0,
+		star_levels: Dictionary = {}) -> void:
+	_ensure_layout()
+	tutorial_mode = false
+	game = Game.new()
+	var names: Array[String] = [Player.display_name]
+	var decks: Array = [_saved_or_default_deck(player_deck)]
+	var ai_flags: Array[bool] = [false]
+	var stars: Array = [star_levels]
+	ai_players.clear()
+	for i in ai_decks.size():
+		var seat := i + 1
+		names.append("AI 잠수부 %d" % seat)
+		decks.append(Cards.build_deck(ai_decks[i]))
+		ai_flags.append(true)
+		stars.append({})
+		ai_players[seat] = AIPlayer.create(seat, ai_skill, seed_value + seat)
+	game.setup(names, decks, seed_value, ai_flags,
+		rules if rules != null else MatchRules.standard(), stars, teams)
+	game.state_changed.connect(_on_state_changed)
+	game.game_ended.connect(_on_game_ended)
+	_on_state_changed()
+
+
+func _saved_or_default_deck(deck_id: String) -> Dictionary:
+	if Player.decks.has(deck_id):
+		var saved := Player.decks[deck_id] as Dictionary
+		var card_ids := saved.get("cards", []) as Array
+		if Player.collection.validate_deck(card_ids).is_empty():
+			return Cards.build_from_list(card_ids, saved.get("vault", []) as Array)
+	return Cards.build_deck(deck_id)
+
+
 ## --- Layout --------------------------------------------------------------
 
 ## Builds the widgets once, whoever asks first.
@@ -164,14 +199,15 @@ func _take_ai_turn(index: int) -> void:
 func _refresh_status() -> void:
 	if _status == null:
 		return
-	var me := game.get_player(human_index)
-	var them := game.get_player(game.opponent_of(human_index))
-	_status.text = "턴 %d · %s · %s | %s %d점 (손 %d) vs %s %d점 (손 %d) | 난파선 %d장" % [
+	var seats: Array[String] = []
+	for player in game.players:
+		var team_text := " · 팀 %d" % (player.team + 1) if game.players.size() == 4 else ""
+		seats.append("%s %d점 (손 %d%s)" % [player.name, player.life, player.hand.size(), team_text])
+	_status.text = "턴 %d · %s · %s | %s | 난파선 %d장" % [
 		game.turn_number,
 		GameEnums.step_name(game.current_step),
 		GameEnums.tide_name(game.tide),
-		me.name, me.life, me.hand.size(),
-		them.name, them.life, them.hand.size(),
+		"  vs  ".join(seats),
 		game.wreck_size(),
 	]
 
@@ -180,7 +216,12 @@ func _refresh_board() -> void:
 	if _board == null:
 		return
 	var lines: Array[String] = []
-	for index in [game.opponent_of(human_index), human_index]:
+	var display_order: Array[int] = []
+	for player in game.players:
+		if player.index != human_index:
+			display_order.append(player.index)
+	display_order.append(human_index)
+	for index in display_order:
 		var p := game.get_player(index)
 		lines.append("[b]%s[/b]" % p.name)
 		for band in GameEnums.DEPTH_ORDER:
@@ -293,12 +334,19 @@ func _build_priority_controls() -> void:
 ## Attacking is picked one creature at a time, then confirmed, so the button
 ## list stays short instead of enumerating every subset.
 var _chosen_attackers: Array[int] = []
+var _attack_target_index: int = 0
 
 func _build_attack_controls() -> void:
 	_add_label("공격자 선택 (선택: %d)" % _chosen_attackers.size())
 	var defender := game.opponents_of(human_index)
 	if defender.is_empty():
 		return
+	_attack_target_index = clampi(_attack_target_index, 0, defender.size() - 1)
+	if defender.size() > 1:
+		var target := game.get_player(defender[_attack_target_index])
+		_add_button("공격 대상: %s (탭하여 변경)" % target.name, func() -> void:
+			_attack_target_index = (_attack_target_index + 1) % defender.size()
+			_refresh_actions())
 	for uid in game.possible_attackers(human_index):
 		var c := game.get_card(uid)
 		var chosen := uid in _chosen_attackers
@@ -317,7 +365,7 @@ func _build_attack_controls() -> void:
 	_add_button("공격 확정", func() -> void:
 		var assignment := {}
 		for uid in _chosen_attackers:
-			assignment[uid] = defender[0]
+			assignment[uid] = defender[_attack_target_index]
 		_chosen_attackers.clear()
 		game.perform(GameAction.declare_attackers(human_index, assignment)))
 
@@ -456,7 +504,7 @@ func _process(delta: float) -> void:
 
 func _on_game_ended(winner_index: int) -> void:
 	_clock_running = false
-	if winner_index < 0:
-		return
 	var won := winner_index == human_index
+	if winner_index < 0 and game != null and game.winning_team >= 0:
+		won = game.get_player(human_index).team == game.winning_team
 	Player.record_match(won, Rating.STARTING_RATING)
