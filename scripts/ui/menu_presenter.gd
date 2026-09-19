@@ -151,7 +151,7 @@ func _show_card_detail(card: CardData) -> void:
 	column.add_theme_constant_override("separation", 10)
 	scroll.add_child(column)
 
-	var art := ArtRegistry.texture_for(card.id)
+	var art := ArtRegistry.texture_for(card.id, card.faction)
 	if art != null:
 		var portrait := TextureRect.new()
 		portrait.custom_minimum_size = Vector2(0, 260)

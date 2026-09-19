@@ -15,7 +15,7 @@ const FACTION_COLORS := {
 
 func setup(card: CardData, copies: int, stars: int, dust: int,
 		on_upgrade: Callable, on_view: Callable = Callable()) -> void:
-	custom_minimum_size = Vector2(260, 326)
+	custom_minimum_size = Vector2(260, 344)
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	mouse_entered.connect(func() -> void:
 		var tween := create_tween()
@@ -48,10 +48,10 @@ func setup(card: CardData, copies: int, stars: int, dust: int,
 	column.add_theme_constant_override("separation", 6)
 	add_child(column)
 
-	var art := ArtRegistry.texture_for(card.id)
+	var art := ArtRegistry.texture_for(card.id, card.faction)
 	if art != null:
 		var portrait := TextureRect.new()
-		portrait.custom_minimum_size = Vector2(0, 118)
+		portrait.custom_minimum_size = Vector2(0, 136)
 		portrait.texture = art
 		portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
