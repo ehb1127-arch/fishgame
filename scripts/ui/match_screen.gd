@@ -38,14 +38,21 @@ func _ready() -> void:
 func start_match(player_deck: String, opponent_deck: String,
 		ai_skill: AIPlayer.Skill = AIPlayer.Skill.NORMAL,
 		rules: MatchRules = null, seed_value: int = 0,
-		star_levels: Dictionary = {}) -> void:
+		star_levels: Dictionary = {}, use_saved_player_deck: bool = true) -> void:
 	# A caller can start a match before the node has entered the tree, so
 	# make sure the widgets exist before anything tries to draw into them.
 	_ensure_layout()
 	game = Game.new()
+	var player_build := Cards.build_deck(player_deck)
+	if use_saved_player_deck and Player.decks.has(player_deck):
+		var saved := Player.decks[player_deck] as Dictionary
+		var card_ids := saved.get("cards", []) as Array
+		var vault_ids := saved.get("vault", []) as Array
+		if Player.collection.validate_deck(card_ids).is_empty():
+			player_build = Cards.build_from_list(card_ids, vault_ids)
 	game.setup(
 		[Player.display_name, "Opponent"],
-		[Cards.build_deck(player_deck), Cards.build_deck(opponent_deck)],
+		[player_build, Cards.build_deck(opponent_deck)],
 		seed_value,
 		[false, true],
 		rules if rules != null else MatchRules.standard(),

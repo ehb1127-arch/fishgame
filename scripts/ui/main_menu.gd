@@ -6,6 +6,7 @@
 extends Control
 
 const MATCH_SCENE := "res://scenes/match.tscn"
+const DeckEditor := preload("res://scripts/ui/deck_editor.gd")
 
 var _content: VBoxContainer
 var _header: Label
@@ -55,6 +56,7 @@ func _show_home() -> void:
 	_button("빠른 대전", _show_quick_match)
 	_button("항해 (스테이지 모드)", _show_voyage)
 	_button("컬렉션 / 강화", _show_collection)
+	_button("덱 편집", func() -> void: DeckEditor.open(self))
 	_button("상점", _show_shop)
 	_button("코덱스", _show_codex)
 	_label("")
