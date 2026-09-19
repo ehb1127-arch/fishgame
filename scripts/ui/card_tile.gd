@@ -22,17 +22,17 @@ func setup(card: CardInstance, actionable: bool = false, selected: bool = false,
 	_card = card
 	_on_action = on_action
 	_art = ArtRegistry.texture_for(card.data.id)
-	custom_minimum_size = Vector2(132, 88)
+	custom_minimum_size = Vector2(144, 94)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	tooltip_text = _tooltip(card)
 	gui_input.connect(_on_gui_input)
 
 	var frame := StyleBoxFlat.new()
 	var faction_color: Color = FACTION_COLORS.get(card.data.faction, Color("78949b"))
-	frame.bg_color = Color("0b1d28") if not card.tapped else Color("14202a")
+	frame.bg_color = Color(0.02, 0.12, 0.17, 0.94) if not card.tapped else Color(0.08, 0.14, 0.18, 0.86)
 	frame.border_color = Color("ffd166") if selected else (Color("70e1d4") if actionable else GameEnums.rarity_color(card.data.rarity).lerp(faction_color, 0.35))
 	frame.set_border_width_all(4 if selected or card.attacking else (3 if actionable else 2))
-	frame.set_corner_radius_all(10)
+	frame.set_corner_radius_all(14)
 	frame.content_margin_left = 9
 	frame.content_margin_right = 9
 	frame.content_margin_top = 7

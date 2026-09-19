@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bmainmenu00001"]
 
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
-[ext_resource type="Texture2D" path="res://assets/ui/the_vast_menu.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/ui/pearl_harbor_hub.webp" id="2_bg"]
 [ext_resource type="Theme" path="res://ui/abyss_theme.tres" id="3_theme"]
 [ext_resource type="Script" path="res://scripts/ui/abyss_skin.gd" id="4_skin"]
 [ext_resource type="Script" path="res://scripts/ui/menu_presenter.gd" id="5_presenter"]
@@ -28,7 +28,7 @@ mouse_filter = 2
 texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
-modulate = Color(0.40, 0.52, 0.58, 1)
+modulate = Color(0.92, 0.98, 1, 1)
 
 [node name="Veil" type="ColorRect" parent="."]
 show_behind_parent = true
@@ -39,7 +39,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.008, 0.045, 0.075, 0.66)
+color = Color(0.01, 0.13, 0.18, 0.16)
 
 [node name="AbyssSkin" type="Node" parent="."]
 script = ExtResource("4_skin")

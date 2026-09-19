@@ -1,37 +1,37 @@
 [gd_resource type="Theme" load_steps=8 format=3]
 
 [sub_resource type="StyleBoxFlat" id="Panel"]
-bg_color = Color(0.016, 0.075, 0.115, 0.93)
+bg_color = Color(0.018, 0.14, 0.18, 0.88)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.65, 0.91, 0.86, 0.68)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
+border_color = Color(0.80, 0.98, 0.91, 0.86)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 content_margin_left = 18.0
 content_margin_top = 14.0
 content_margin_right = 18.0
 content_margin_bottom = 14.0
 
 [sub_resource type="StyleBoxFlat" id="ButtonNormal"]
-bg_color = Color(0.042, 0.245, 0.30, 0.97)
+bg_color = Color(0.03, 0.36, 0.42, 0.96)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.78, 0.95, 0.88, 0.82)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
+border_color = Color(0.87, 1, 0.95, 0.94)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
 content_margin_left = 20.0
 content_margin_right = 20.0
 
 [sub_resource type="StyleBoxFlat" id="ButtonHover"]
-bg_color = Color(0.10, 0.45, 0.48, 0.98)
+bg_color = Color(0.10, 0.58, 0.58, 0.98)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -43,7 +43,7 @@ corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
 [sub_resource type="StyleBoxFlat" id="ButtonPressed"]
-bg_color = Color(0.94, 0.39, 0.31, 0.98)
+bg_color = Color(1, 0.43, 0.35, 0.98)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12

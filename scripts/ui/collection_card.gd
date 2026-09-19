@@ -15,7 +15,7 @@ const FACTION_COLORS := {
 
 func setup(card: CardData, copies: int, stars: int, dust: int,
 		on_upgrade: Callable, on_view: Callable = Callable()) -> void:
-	custom_minimum_size = Vector2(250, 340)
+	custom_minimum_size = Vector2(260, 326)
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	mouse_entered.connect(func() -> void:
 		var tween := create_tween()
@@ -34,10 +34,10 @@ func setup(card: CardData, copies: int, stars: int, dust: int,
 				accept_event())
 	var faction: Color = FACTION_COLORS.get(card.faction, Color("78949b"))
 	var frame := StyleBoxFlat.new()
-	frame.bg_color = Color("091923")
+	frame.bg_color = Color(0.025, 0.13, 0.17, 0.96)
 	frame.border_color = GameEnums.rarity_color(card.rarity).lerp(faction, 0.35)
 	frame.set_border_width_all(2)
-	frame.set_corner_radius_all(14)
+	frame.set_corner_radius_all(18)
 	frame.content_margin_left = 12
 	frame.content_margin_right = 12
 	frame.content_margin_top = 12
@@ -51,7 +51,7 @@ func setup(card: CardData, copies: int, stars: int, dust: int,
 	var art := ArtRegistry.texture_for(card.id)
 	if art != null:
 		var portrait := TextureRect.new()
-		portrait.custom_minimum_size = Vector2(0, 112)
+		portrait.custom_minimum_size = Vector2(0, 118)
 		portrait.texture = art
 		portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
@@ -62,7 +62,7 @@ func setup(card: CardData, copies: int, stars: int, dust: int,
 	title.text = "%s   %s" % [card.display_name(true), card.mana_cost_text]
 	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	title.add_theme_color_override("font_color", faction)
-	title.add_theme_font_size_override("font_size", 17)
+	title.add_theme_font_size_override("font_size", 18)
 	column.add_child(title)
 
 	var meta := Label.new()
@@ -99,7 +99,7 @@ func setup(card: CardData, copies: int, stars: int, dust: int,
 	rules.max_lines_visible = 4
 	rules.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	rules.add_theme_color_override("font_color", Color("18313a") if not printed_rules.is_empty() else Color("87949a"))
-	rules.add_theme_font_size_override("font_size", 13)
+	rules.add_theme_font_size_override("font_size", 14)
 	text_column.add_child(rules)
 
 	var flavor_text := card.display_flavor(true)
