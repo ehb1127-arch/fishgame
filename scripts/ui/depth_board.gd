@@ -27,12 +27,16 @@ func render(game: Game, human_index: int, chosen_attackers: Array[int] = [],
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	add_theme_constant_override("separation", 6)
 
-	var opponent_index := game.opponent_of(human_index)
+	var other_indices: Array[int] = []
+	for player in game.players:
+		if player.index != human_index:
+			other_indices.append(player.index)
 	var possible_attackers: Array = game.possible_attackers(human_index) if game.awaiting == "attackers" else []
 	var possible_blocks: Dictionary = game.possible_blocks(human_index) if game.awaiting == "blockers" else {}
-	_add_player_header(game, opponent_index, true)
+	for index in other_indices:
+		_add_player_header(game, index, true)
 	for band in GameEnums.DEPTH_ORDER:
-		_add_depth_lane(game, human_index, opponent_index, band, possible_attackers,
+		_add_depth_lane(game, human_index, other_indices, band, possible_attackers,
 			possible_blocks, chosen_attackers, chosen_blocks, on_card_action)
 	_add_player_header(game, human_index, false)
 
@@ -86,7 +90,7 @@ func _add_player_header(game: Game, index: int, show_backs: bool) -> void:
 	row.add_child(resources)
 
 
-func _add_depth_lane(game: Game, human_index: int, opponent_index: int,
+func _add_depth_lane(game: Game, human_index: int, other_indices: Array[int],
 		band: GameEnums.Depth, possible_attackers: Array, possible_blocks: Dictionary,
 		chosen_attackers: Array[int], chosen_blocks: Dictionary,
 		on_card_action: Callable) -> void:
@@ -118,8 +122,11 @@ func _add_depth_lane(game: Game, human_index: int, opponent_index: int,
 	sides.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	sides.add_theme_constant_override("separation", 4)
 	row.add_child(sides)
-	_add_card_row(sides, game, game.get_player(opponent_index), band, "상대",
-		[], {}, [], {}, Callable())
+	for index in other_indices:
+		var player := game.get_player(index)
+		var relation := "아군" if game.are_allies(human_index, index) else "상대"
+		_add_card_row(sides, game, player, band, "%s · %s" % [relation, player.name],
+			[], {}, [], {}, Callable())
 	_add_card_row(sides, game, game.get_player(human_index), band, "나",
 		possible_attackers, possible_blocks, chosen_attackers, chosen_blocks, on_card_action)
 

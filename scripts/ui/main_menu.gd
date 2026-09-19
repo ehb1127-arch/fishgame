@@ -7,6 +7,7 @@ extends Control
 
 const MATCH_SCENE := "res://scenes/match.tscn"
 const DeckEditor := preload("res://scripts/ui/deck_editor.gd")
+const MultiplayerLobby := preload("res://scripts/ui/multiplayer_lobby.gd")
 
 var _content: VBoxContainer
 var _header: Label
@@ -55,6 +56,7 @@ func _show_home() -> void:
 	_refresh_header()
 	_button("첫 항해 튜토리얼" if not Player.tutorial_completed else "튜토리얼 다시 보기", _start_tutorial)
 	_button("빠른 대전", _show_quick_match)
+	_button("다인전 로비", func() -> void: MultiplayerLobby.open(self))
 	_button("항해 (스테이지 모드)", _show_voyage)
 	_button("컬렉션 / 강화", _show_collection)
 	_button("덱 편집", func() -> void: DeckEditor.open(self))
