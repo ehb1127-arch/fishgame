@@ -15,7 +15,7 @@ const FACTION_COLORS := {
 
 func setup(card: CardData, copies: int, stars: int, dust: int,
 		on_upgrade: Callable) -> void:
-	custom_minimum_size = Vector2(250, 270)
+	custom_minimum_size = Vector2(250, 340)
 	var faction: Color = FACTION_COLORS.get(card.faction, Color("78949b"))
 	var frame := StyleBoxFlat.new()
 	frame.bg_color = Color("091923")
@@ -55,14 +55,45 @@ func setup(card: CardData, copies: int, stars: int, dust: int,
 	meta.add_theme_font_size_override("font_size", 13)
 	column.add_child(meta)
 
+	# Printed cards always reserve a readable parchment area for both the
+	# mechanical rules and the worldbuilding line. Art never consumes it.
+	var text_panel := PanelContainer.new()
+	text_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var parchment := StyleBoxFlat.new()
+	parchment.bg_color = Color("f4ecd7")
+	parchment.border_color = faction.darkened(0.28)
+	parchment.set_border_width_all(1)
+	parchment.set_corner_radius_all(8)
+	parchment.content_margin_left = 9
+	parchment.content_margin_right = 9
+	parchment.content_margin_top = 7
+	parchment.content_margin_bottom = 7
+	text_panel.add_theme_stylebox_override("panel", parchment)
+	column.add_child(text_panel)
+
+	var text_column := VBoxContainer.new()
+	text_column.add_theme_constant_override("separation", 5)
+	text_panel.add_child(text_column)
 	var rules := Label.new()
 	rules.text = card.display_text(true)
 	rules.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	rules.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	rules.max_lines_visible = 3
+	rules.max_lines_visible = 4
 	rules.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	rules.add_theme_color_override("font_color", Color("18313a"))
 	rules.add_theme_font_size_override("font_size", 13)
-	column.add_child(rules)
+	text_column.add_child(rules)
+
+	var flavor_text := card.display_flavor(true)
+	if not flavor_text.is_empty():
+		var flavor := Label.new()
+		flavor.text = "“%s”" % flavor_text
+		flavor.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		flavor.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		flavor.max_lines_visible = 2
+		flavor.add_theme_color_override("font_color", Color("65747a"))
+		flavor.add_theme_font_size_override("font_size", 11)
+		text_column.add_child(flavor)
 
 	var cost := Currency.upgrade_cost(card.rarity, stars)
 	var upgrade := Button.new()
@@ -75,5 +106,3 @@ func setup(card: CardData, copies: int, stars: int, dust: int,
 		upgrade.disabled = not Player.collection.can_upgrade(card, dust)
 		upgrade.pressed.connect(on_upgrade)
 	column.add_child(upgrade)
-
-
